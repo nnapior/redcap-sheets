@@ -1,0 +1,9 @@
+# justin's text editor files
+.nova/
+
+# macos files
+.DS_Store
+
+# project files
+config.json
+*.csv
