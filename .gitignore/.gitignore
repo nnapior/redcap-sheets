@@ -1,2 +1,4 @@
 #files to be ignored
-
+*.csv
+*.txt
+*.env
