@@ -40,6 +40,9 @@ if __name__ == "__main__":
 	# get the raw records object
 	jsonObject = getRecords(apiKey)
 	
+	# initiate output object
+	outputObject = {}
+	
 	# for each record...
 	i = 1
 	for item in jsonObject:
@@ -47,28 +50,27 @@ if __name__ == "__main__":
 		participantID = item["participant_id"]
 		eventName = item["redcap_event_name"]
 		
-		# create a new file based on the event name
-		outputFile = open(eventName+".csv", 'w')
+		recordOutputObject = {
+			"participant_id":participantID
+		}
 		
 		# get the keys of the record dictionary
 		keys = list(item.keys())
 		
-		# set up the CSV header and insert the participant id
-		headerStr = "participant_id"
-		valueStr = participantID
 		
-		# for each key in the record...
+		# for each key in the record (except participant id and event name)...
 		for key in keys[2:]:
-			# add the key to the CSV header
-			headerStr+=", "+key
-			# add the value to the current row. if no value exists, add "n/a"
+			# if value is blank, write "n/a". else write the value to the record object
 			if(item[key] == ''):
-				valueStr+=", n/a"	
+				recordOutputObject[key] = "n/a"
 			else:
-				# sanitize input (remove newlines and tabs)
-				valueStr+=", "+item[key].replace("\r","").replace("\n"," ").replace("\t"," ")
-				
-		# write the header to the file
-		outputFile.write(headerStr+"\n")
-		# write the value to the file
-		outputFile.write(valueStr)
+				recordOutputObject[key] = item[key]
+		
+		# if event name is already in output JSON, append the new record. else add the event to the output JSON
+		if(eventName in outputObject):
+			outputObject[eventName, participantID]=recordOutputObject
+		else:
+			outputObject[eventName] = {participantID: recordOutputObject}
+	
+	# prettyprint json
+	print(json.dumps(outputObject, indent=4, sort_keys=False))
