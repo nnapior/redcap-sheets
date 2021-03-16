@@ -68,7 +68,7 @@ if __name__ == "__main__":
 		
 		# if event name is already in output JSON, append the new record. else add the event to the output JSON
 		if(eventName in outputObject):
-			outputObject[eventName, participantID]=recordOutputObject
+			outputObject[eventName][participantID]=recordOutputObject
 		else:
 			outputObject[eventName] = {participantID: recordOutputObject}
 	
