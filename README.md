@@ -24,14 +24,10 @@ you will also need your own clinet_secret.json
 Run this python script with "python redcap_sheets_webapp.py"
 
 
-## Update 2021-03-23-21:50
+## push-to-sheets Update 2021-03-24-10:51
 Added:
-* Added export logic. Just needs code to actually write to and select a sheet.
->>>>>>> web-app
+* Added a new `/pushData` app route in the Flask webapp that accepts JSON.
+* Added basic request code to `pushToSheets(object)` in `scripts.js`
 
 Changed:
-* Improved data preview before export.
-* Set body's font to Arial.
-* Improved layout.
-* Data now fetches on page load.
-* "get data" button changed to "Refresh Data"
+* Added a notice that creating a new sheet from the api isn't supported yet

@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 from py_REDcap import getValues
 
 app = Flask(__name__)
@@ -18,6 +18,13 @@ def hello_world():
 def getStyle():
    with open("style.css","r") as f:
       return f.read()
+      
+@app.route('/pushData', methods = ['PUT','POST','GET'])
+def pushData():
+   if(request.json):
+      return "1"
+   else:
+      return "-1"
 
 @app.route('/pullData') 
 def pullData():
