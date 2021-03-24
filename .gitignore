@@ -3,3 +3,4 @@
 *.txt
 *.env
 *.json
+*.pickle
