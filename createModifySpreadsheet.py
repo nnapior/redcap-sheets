@@ -88,11 +88,11 @@ def clearData(service, spreadsheet_id, sheetName: str):
     ).execute( )
 
 
-# TODO: Commented this function out due to incorrect formatting. Please fix.    
- # def createWorksheet(spreadsheet_id, request_body):
- #    spreadsheetId=spreadsheet_id,
- #    body = request_body
- #    ).execute()
+ def createWorksheet(spreadsheet_id, request_body):
+    service.spreadsheets().batchUpdate(
+    spreadsheetId=spreadsheet_id,
+    body = request_body
+     ).execute()
 
 if __name__ == "__main__":
     service = create_service()
