@@ -33,6 +33,8 @@ Changed:
 * `/pushData` JSON object is now in the format of `{"mode":"<EXPORT_MODE>", "object":{JSON OBJECT}}` for reasons of detecting export mode in backend
 * Removed "Append" export option
 
+View TODOs in code to see open tasks.
+
 ## push-to-sheets Update 2021-03-24-10:51
 Added:
 * Added a new `/pushData` app route in the Flask webapp that accepts JSON.

@@ -86,8 +86,14 @@ def clearData(service, spreadsheet_id, sheetName: str):
         range='{0}!A1:Z'.format( sheetName ),
         body={}
     ).execute( )
-    
-        
+
+
+# TODO: Commented this function out due to incorrect formatting. Please fix.    
+ # def createWorksheet(spreadsheet_id, request_body):
+ #    spreadsheetId=spreadsheet_id,
+ #    body = request_body
+ #    ).execute()
+
 if __name__ == "__main__":
     service = create_service()
     
@@ -99,6 +105,28 @@ if __name__ == "__main__":
         'majorDimension' : 'ROWS',
         'values' : values
     }
-    #tuple(outputObject.get('initial_data_arm_1').get('1').keys())
-    clearData(service,spreadsheet_id, "Sheet1")
-    #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+   
+    """
+    for loop to create multiple worksheets
+    """
+    worksheetTitles = ('Test1', 'Test2', 'Test3') 
+    for worksheetTitle in worksheetTitles
+    """
+    creates a new worksheet
+    """
+    request_body = {
+        'requests': [
+            {
+                'addSheet': {
+                    'title':'worksheetTitle',
+                    'gridProperties' : {
+                        'rowCount' : 20,
+                        'coulumnCount' : 5
+                    },
+                    'hidden' : False
+                }
+            }   
+        ]
+    }
+    updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    createWorksheet(spreadsheet_id, request_body)
