@@ -72,12 +72,23 @@ function pushToSheets(object) {
 	if(sheetDestination == "new") {
 		//put code to create/write to a new sheet here
 		console.log("writing to new sheet");
+		alert("there was an error exporting to an existing sheet: creating a new sheet is not supported yet");
 	} else {
 		if(sheetID != null) {
 			switch(sheetDestination) {
 				case "replace":
 					//put code to replace an existing sheet's data here
 					console.log("writing to an existing sheet (replacing) with id "+sheetID);
+					var r = new XMLHttpRequest();
+					r.open("PUT","/pushData",true);
+					r.onreadystatechange = function() {
+						if(this.status == 200 && this.readyState == 4) {
+							console.log(r.response);
+						}
+					}
+					var parameters = JSON.stringify(object);
+					r.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
+					r.send(parameters);
 					break;
 				case "append":
 					//put code to append to an existing sheet's data here
