@@ -2,13 +2,6 @@ import os
 from googleapiclient.http import MediaFileUpload
 from Google import Create_Service
 
-Client_SECRET_FILE = 'client_secret_GoogleCloudDemo.json'
-API_NAME ='drive'
-API_VERSION = 'v3'
-SCOPES = ['https://www.googleapis.com/auth/drive']
-
-serive = Create_Service(Client_SECRET_FILE,API_NAME,API_VERSION, SCOPES)
-
 def export_csv_file(file_path: str, parents: list=None):
     if not os.path.exists(file_path):
         print(f'{file_path} not found.')
