@@ -24,6 +24,15 @@ you will also need your own clinet_secret.json
 Run this python script with "python redcap_sheets_webapp.py"
 
 
+## push-to-sheets Update 2021-03-24-15:35
+Added:
+* Added `generateTuple()` to parse JSON into a tuple and `pushJSON()` for import mode logic in `createModifySpreadsheet.py`. 
+
+Changed:
+* Modified `/pushData` to use `pushJSON()`.
+* `/pushData` JSON object is now in the format of `{"mode":"<EXPORT_MODE>", "object":{JSON OBJECT}}` for reasons of detecting export mode in backend
+* Removed "Append" export option
+
 ## push-to-sheets Update 2021-03-24-10:51
 Added:
 * Added a new `/pushData` app route in the Flask webapp that accepts JSON.
