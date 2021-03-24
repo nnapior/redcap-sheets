@@ -27,6 +27,12 @@ def updateData(service,spreadsheet_id, worksheet_range: str, values: tuple, valu
         body = value_range_body
     ).execute()
 
+    
+ def createWorksheet(spreadsheet_id, request_body):
+    spreadsheetId=spreadsheet_id,
+    body = request_body
+    ).execute()
+
 if __name__ == "__main__":
     service = create_service()
     
@@ -41,5 +47,28 @@ if __name__ == "__main__":
         'majorDimension' : 'ROWS',
         'values' : values
     }
-    
+   
+    """
+    for loop to create multiple worksheets
+    """
+    worksheetTitles = ('Test1', 'Test2', 'Test3') 
+    for worksheetTitle in worksheetTitles
+    """
+    creates a new worksheet
+    """
+    request_body = {
+        'requests': [
+            {
+                'addSheet': {
+                    'title':'worksheetTitle',
+                    'gridProperties' : {
+                        'rowCount' : 20,
+                        'coulumnCount' : 5
+                    },
+                    'hidden' : False
+                }
+            }   
+        ]
+    }
     updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    createWorksheet(spreadsheet_id, request_body)
