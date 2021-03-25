@@ -87,8 +87,24 @@ def clearData(service, spreadsheet_id, sheetName: str):
         body={}
     ).execute( )
 
-
- def createWorksheet(service, spreadsheet_id, request_body):
+'''
+function that takes in the service, spreadsheetID, and title of the new worksheet
+creates a worksheet with 20 by 5 with the specified title
+'''
+def createWorksheet(service, spreadsheet_id, title:str):
+    request_body = {
+            'requests': [
+                {'addSheet': { "properties" :{
+                        'title': title,
+                        'gridProperties' : {
+                            'rowCount' : 20,
+                            'columnCount' : 5
+                        },
+                        'hidden' : False}
+                    }
+                }   
+            ]
+        }
     service.spreadsheets().batchUpdate(
     spreadsheetId=spreadsheet_id,
     body = request_body
@@ -100,7 +116,7 @@ if __name__ == "__main__":
     spreadsheet_id = getSpreadSheetID()
     mySpreadsheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
     worksheet_range = 'Sheet1!A1'
-    
+    values =[]
     value_range_body = {
         'majorDimension' : 'ROWS',
         'values' : values
@@ -109,25 +125,10 @@ if __name__ == "__main__":
     """
     for loop to create multiple worksheets
     """
-    worksheetTitles = ('Test1', 'Test2', 'Test3') 
-    for worksheetTitle in worksheetTitles: 
-        """
-        creates a new worksheet
-        """
-        request_body = {
-            'requests': [
-                {
-                    'addSheet': {
-                        'title': worksheetTitle,
-                        'gridProperties' : {
-                            'rowCount' : 20,
-                            'coulumnCount' : 5
-                        },
-                        'hidden' : False
-                    }
-                }   
-            ]
-        }
+    worksheetTitles = ('Test1', 'Test2', 'Test3')
+    '''for title in worksheetTitles:
+        createWorksheet(service, spreadsheet_id, title)'''
+    
     
     updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
-    createWorksheet(service, spreadsheet_id, request_body)
+    
