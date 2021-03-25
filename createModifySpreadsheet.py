@@ -118,7 +118,7 @@ if __name__ == "__main__":
             'requests': [
                 {
                     'addSheet': {
-                        'title':'worksheetTitle',
+                        'title': worksheetTitle,
                         'gridProperties' : {
                             'rowCount' : 20,
                             'coulumnCount' : 5
