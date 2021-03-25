@@ -23,9 +23,9 @@ def getStyle():
 @app.route('/pushData', methods = ['PUT','POST'])
 def pushData():
    if(request.json):
-      return pushJSON(request.json)
+       return pushJSON(request.json)
    else:
-      return "-1"
+       return print("-1")
 
 @app.route('/pullData') 
 def pullData():

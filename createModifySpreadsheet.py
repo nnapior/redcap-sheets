@@ -1,6 +1,6 @@
 import os, json
 from Google import Create_Service
-from py_REDcap import getValueDict
+from py_REDcap import getValues
 
 def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
@@ -27,8 +27,18 @@ def pushJSON(jsonObject):
         print("put code to replace sheet here")
     else:
         # creating new sheet
-        # TODO: put this code here
-        print("put code to create a new sheet here")
+        v = generateTuple(json.loads(getValues()))
+        service = create_service()
+        spreadsheet_id = getSpreadSheetID()
+        for x in v:
+            createWorksheet(service, spreadsheet_id, x)
+            values = v[x]
+            value_range_body = {
+                'majorDimension' : 'ROWS',
+                'values' : values
+            }
+            worksheet_range = x+'!A1'
+            updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
     
     return "1"
 
@@ -98,7 +108,7 @@ def createWorksheet(service, spreadsheet_id, title:str):
                         'title': title,
                         'gridProperties' : {
                             'rowCount' : 20,
-                            'columnCount' : 5
+                            'columnCount' : 40
                         },
                         'hidden' : False}
                     }
@@ -112,7 +122,6 @@ def createWorksheet(service, spreadsheet_id, title:str):
 
 if __name__ == "__main__":
     service = create_service()
-    
     spreadsheet_id = getSpreadSheetID()
     mySpreadsheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
     worksheet_range = 'Sheet1!A1'
@@ -121,7 +130,7 @@ if __name__ == "__main__":
         'majorDimension' : 'ROWS',
         'values' : values
     }
-   
+    clearData(service, spreadsheet_id, "Sheet1")
     """
     for loop to create multiple worksheets
     """
@@ -130,5 +139,9 @@ if __name__ == "__main__":
         createWorksheet(service, spreadsheet_id, title)'''
     
     
-    updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    
+    #print(generateTuple(json.loads(getValues())))
+    
+
     
