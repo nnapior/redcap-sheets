@@ -88,7 +88,7 @@ def clearData(service, spreadsheet_id, sheetName: str):
     ).execute( )
 
 
- def createWorksheet(spreadsheet_id, request_body):
+ def createWorksheet(service, spreadsheet_id, request_body):
     service.spreadsheets().batchUpdate(
     spreadsheetId=spreadsheet_id,
     body = request_body
@@ -130,4 +130,4 @@ if __name__ == "__main__":
         }
     
     updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
-    createWorksheet(spreadsheet_id, request_body)
+    createWorksheet(service, spreadsheet_id, request_body)
