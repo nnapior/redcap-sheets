@@ -1,38 +1,293 @@
 <html>
-   <head>
-      <script src="scripts.js" type="text/javascript"></script>
-      <link rel="stylesheet" type="text/css" href="style.css">
-   </head>
-   <body onload="getData()">
-      <button id="mainButton" onclick="getData()">Refresh Data</button>
-      <br>
-      <p><b>Preview Data</b></p>
-      Event: <select id="eventSelection" name="eventSelection"></select><br>
-      Participant: <select id="participantSelection" name="participantSelection"></select>
-      <br><br>
-      <div id="output">
-      </div>
-      <br>
-      <div id="exportOptions">
-         <p><b>Export</b></p>
-         Export: <select id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
-            <option value="all">All Events</option>
-            <option value="select">Selected Events</option>
-         </select><br>
-         <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10">
-         </div>
-         To: <select id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
-            <option value="new">New Sheet</option>
-            <option value="replace">Existing Sheet (Replace)</option>
-            <option value="append">Existing Sheet (Append)</option>
-         </select>
-         <br><br>
-         <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
-            <button style="display:inline" onclick="chooseSheet()">Choose Sheet</button>
-            <p style="display:inline"  id="sheetName">Choose A Sheet</p>
-            <br><br>
-         </div>
-         <button onclick="exportData()">Export To Sheets</button>
-      </div>
-   </body>
-</html>
+<head>
+
+    <!-- redcap scripts -->
+    <script src="scripts.js" type="text/javascript"></script>
+    <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+    <meta name="msapplication-TileColor" content="#206bc4"/>
+    <meta name="theme-color" content="#206bc4"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="mobile-web-app-capable" content="yes"/>
+    <meta name="HandheldFriendly" content="True"/>
+    <meta name="MobileOptimized" content="320"/>
+    <meta name="robots" content="noindex,nofollow,noarchive"/>
+
+    <!-- Tabler CDN -->
+    <script src="https://unpkg.com/@tabler/core@1.0.0-beta/dist/js/tabler.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/icons@latest/iconfont/tabler-icons.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-flags.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-payments.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-vendors.min.css">
+
+    <style>
+    body {
+        display: none;
+    }
+    </style>
+
+</head>
+<body onload="getData()" class="antialiased">
+
+    <!-- Top horizontal bar -->
+    <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
+        <div class="container">
+            <a href="{% url 'dashboard-home' %}" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical">
+                <h2 class="navbar-brand-logo navbar-brand-logo-large" id="secondary-logo">Redcap Google Sheets</h2>
+            </a>
+            <form class="form-inline w-50 mr-4 d-none d-md-flex ">
+                <div class="input-icon w-100">
+                    <span class="input-icon-addon">
+                        <i class="ti ti-search"></i>
+                    </span>
+                    <input type="text" class="form-control form-control-flush w-100" placeholder="Search…">
+                </div>
+            </form>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-2">
+                    <a href="#" class="nav-link px-0" data-toggle="modal" data-target="#modal-customize">
+                        <i class="ti ti-settings"></i>
+                    </a>
+                </li>
+                <li class="nav-item dropdown pl-3">
+                    <a href="#" class="nav-link d-flex lh-1 text-reset p-0 text-left" data-toggle="dropdown">
+                        <span class="avatar">EU</span>
+                        <div class="p-2 pt-0 pb-0 pr-0">
+                            <div>Example User</div>
+                            <!-- <div class="mt-1 small text-muted">Group</div> -->
+                        </div>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                        <a class="dropdown-item" href="#">
+                            <i class="ti ti-user"></i>
+                            Profile
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">
+                            <i class="ti ti-logout"></i>
+                            Logout...
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Navigation menu -->
+    <div class="page">
+        <nav class="navbar navbar-expand-lg navbar-light navbar-primary" id="navbar-primary">
+            <div class="container">
+                <div class="navbar-collapse collapse">
+                    <a href="{% url 'dashboard-home' %}" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical" id="primary-logo">
+                        <h2 class="navbar-brand-logo navbar-brand-logo-large">Redcap Google Sheets</h2>
+                    </a>
+                    <h4 class="navbar-heading" id="navbar-heading">Navigation</h4>
+                    <!-- Navigation items -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#" >
+                                <span class="nav-link-icon">
+                                    <i class="ti ti-home"></i>
+                                </span>
+                                <span class="nav-link-title">Home</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="container">
+            <div class="card">
+                <div class="card-body">
+                    <button id="mainButton" onclick="getData()">Refresh Data</button>
+                    <br>
+                    <p><b>Preview Data</b></p>
+                    Event: <select id="eventSelection" name="eventSelection"></select><br>
+                    Participant: <select id="participantSelection" name="participantSelection"></select>
+                    <br><br>
+                    <div id="output">
+                    </div>
+                    <br>
+                    <div id="exportOptions">
+                        <p><b>Export</b></p>
+                        Export: <select id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
+                            <option value="all">All Events</option>
+                            <option value="select">Selected Events</option>
+                        </select><br>
+                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10">
+                        </div>
+                        To: <select id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
+                            <option value="new">New Sheet</option>
+                            <option value="replace">Existing Sheet (Replace)</option>
+                            <option value="append">Existing Sheet (Append)</option>
+                        </select>
+                        <br><br>
+                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
+                            <button style="display:inline" onclick="chooseSheet()">Choose Sheet</button>
+                            <p style="display:inline"  id="sheetName">Choose A Sheet</p>
+                            <br><br>
+                        </div>
+                        <button onclick="exportData()">Export To Sheets</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <!-- dashboard customization card -->
+        <div class="modal modal-blur fade" id="modal-customize" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Customize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Color scheme</label>
+                            <div class="form-hint">Light or dark presentation.</div>
+                            <div class="btn-group w-100">
+                                <button class="btn btn-secondary" data-theme-toggle="theme:light"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                    Light</button>
+                                    <button class="btn btn-secondary" data-theme-toggle="theme:dark"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                        Dark</button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Navigation position</label>
+                                    <div class="form-hint">Choose where the main navigation in your project should be located.</div>
+                                    <div class="btn-group w-100">
+                                        <button class="btn btn-secondary" data-theme-toggle="navbar-position:horizontal">Top navigation</button>
+                                        <!-- <button class="btn btn-secondary" data-theme-toggle="navbar-position:vertical">Sidenav</button> -->
+                                        <button class="btn btn-secondary" data-theme-toggle="navbar-position:both">Side navigation</button>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Sidebar position</label>
+                                    <div class="form-hint">Choose whether the sidebar should appear on the left or on the right.</div>
+                                    <div class="btn-group w-100">
+                                        <button class="btn btn-secondary" data-theme-toggle="navbar-side:left">Left</button>
+                                        <button class="btn btn-secondary" data-theme-toggle="navbar-side:right">Right</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+                <!-- theme script for toggling naviation / theme -->
+                <script>
+                (function() {
+                    var navbarPrimary = document.getElementById('navbar-primary'),
+                    navbarSecondary = document.getElementById('navbar-secondary');
+                    var defaults = {
+                        theme: 'light',
+                        'navbar-position': 'horizontal',
+                        'navbar-side': 'left',
+                    };
+                    var eventsClean = {
+                        'theme': function () {
+                            document.body.classList.remove('theme-dark');
+                        },
+                        'navbar-position': function () {
+                            navbarPrimary.classList.remove('navbar-vertical');
+                            navbarSecondary.classList.remove('d-none');
+                        },
+                        'navbar-side': function () {
+                            navbarPrimary.classList.remove('navbar-right');
+                        },
+                    };
+                    var events = {
+                        'theme:light': function () {
+                        },
+                        'theme:dark': function () {
+                            document.body.classList.add('theme-dark');
+                        },
+                        'navbar-position:horizontal': function () {
+                            document.getElementById('secondary-logo').style.display = "block";
+                            document.getElementById('primary-logo').style.display = "none";
+                            document.getElementById('navbar-heading').style.display = "none";
+                        },
+                        'navbar-position:both': function () {
+                            navbarPrimary.classList.add('navbar-vertical');
+                            document.getElementById('navbar-heading').style.display = "block";
+                            document.getElementById('primary-logo').style.display = "block";
+                            document.getElementById('secondary-logo').style.display = "none";
+                        },
+                        'navbar-side:left': function () {
+                        },
+                        'navbar-side:right': function () {
+                            navbarPrimary.classList.add('navbar-right');
+                        },
+                    };
+                    var updateThemeConfig = function (name) {
+                        var key, value;
+                        if (name) {
+                            [key, value] = name.split(':');
+                            setConfig(key, value);
+                        }
+                        applyConfig();
+                    };
+                    var disableTransitions = function () {
+                        document.body.classList.add('no-transitions');
+                        setTimeout(function () {
+                            document.body.classList.remove('no-transitions');
+                        }, 300);
+                    };
+                    var getConfig = function () {
+                        var config = {};
+                        for (var key in defaults) {
+                            config[key] = localStorage.getItem('tabler-' + key) || defaults[key];
+                        }
+                        return config;
+                    };
+                    var setConfig = function (key, value) {
+                        localStorage.setItem('tabler-' + key, value);
+                    };
+                    var applyConfig = function () {
+                        disableTransitions();
+                        var config = getConfig();
+                        for (var key in config) {
+                            var value = config[key];
+                            eventsClean[key] && eventsClean[key].call();
+                            events[key + ':' + value] && events[key + ':' + value].call();
+                            ([].slice.call(document.querySelectorAll('[data-theme-toggle^="' + key + '"]'))).map(function (activeTrigger) {
+                                activeTrigger.classList.remove('active')
+                            });
+                            document.querySelector('[data-theme-toggle="' + key + ':' + value + '"]').classList.add('active');
+                        }
+                    };
+                    applyConfig();
+                    for (var name in events) {
+                        var event = events[name];
+                        (function (event, name) {
+                            document.querySelector('[data-theme-toggle="' + name + '"]').addEventListener("click", function (e) {
+                                updateThemeConfig(name);
+                                event.call();
+                                e.preventDefault();
+                                return false;
+                            });
+                        })(event, name);
+                    }
+                })();
+                </script>
+                <script>
+                document.body.style.display = "block"
+                </script>
+
+            </body>
+            </html>
