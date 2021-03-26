@@ -5,12 +5,12 @@ function getValues(object, level = 0) {
 	if(typeof(object) == "string") {
 		return object;
 	}
-	
+
 	if(level >= 10) {
 		return null;
 	}
 	var keys = Object.keys(object);
-	
+
 	var outputStr = "<br><div class='test'></div>"
 	for(key of keys) {
 		if(key != "0") {
@@ -20,7 +20,7 @@ function getValues(object, level = 0) {
 			 outputStr+=key+": "+(getValues(object[key], level+1))+"<br>";
 	 }
 	}
-	
+
 	return outputStr;
 }
 
@@ -41,7 +41,7 @@ function showParticipant(eventKey, participantID) {
 function exportData() {
 	//this function gets the json data ready to push to sheets
 	var exportMode = document.getElementById("exportMode").value;
-	
+
 	if(exportMode == "select") {
 		//export only selected events"
 		console.log("exporting selected events");
@@ -64,9 +64,9 @@ function exportData() {
 function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
-	
+
 	console.log(object)
-	
+
 	//if we're doing sheet destination control, use this outline
 	var sheetDestination = document.getElementById("sheetMode").value;
 	if(sheetDestination == "new") {
@@ -142,15 +142,15 @@ function setButtons(object) {
 	buttons.oninput = function() {
 		showEvent(this.value);
 	}
-	
+
 	var eventCheckboxes = document.getElementById("selectedEvents");
-	
+
 	for(key of keys) {
 		var option = document.createElement("option");
 		option.value = key;
 		option.innerHTML = key;
 		buttons.appendChild(option);
-		
+
 		var checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
 		checkbox.className = "eventSelectionCheckbox";
@@ -170,10 +170,10 @@ function setButtons(object) {
 function chooseSheet() {
 	//put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
 	console.log("choosing sheet");
-	
+
 	//placeholder id
 	sheetID = "1";
-	
+
 	document.getElementById("sheetName").innerHTML = sheetID;
 }
 
@@ -191,7 +191,6 @@ function showSheetSelection(value) {
 }
 
 function getData() {
-	document.getElementById("mainButton").innerHTML = "Working...";
 	var r = new XMLHttpRequest();
 	r.open("GET", "/pullData", true);
 	r.onreadystatechange = function() {
@@ -199,7 +198,6 @@ function getData() {
 			var parsedRes = JSON.parse(r.response);
 			data = parsedRes;
 			setButtons(data);
-			document.getElementById("mainButton").innerHTML = "Refresh Data";
 		}
 	}
 	r.send();

@@ -37,17 +37,17 @@
     <!-- Top horizontal bar -->
     <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
         <div class="container">
-            <a href="{% url 'dashboard-home' %}" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical">
+            <a href="#" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical">
                 <h2 class="navbar-brand-logo navbar-brand-logo-large" id="secondary-logo">Redcap Google Sheets</h2>
             </a>
-            <form class="form-inline w-50 mr-4 d-none d-md-flex ">
+            <!-- <form class="form-inline w-50 mr-4 d-none d-md-flex ">
                 <div class="input-icon w-100">
                     <span class="input-icon-addon">
                         <i class="ti ti-search"></i>
                     </span>
                     <input type="text" class="form-control form-control-flush w-100" placeholder="Search…">
                 </div>
-            </form>
+            </form> -->
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item mr-2">
                     <a href="#" class="nav-link px-0" data-toggle="modal" data-target="#modal-customize">
@@ -83,7 +83,7 @@
         <nav class="navbar navbar-expand-lg navbar-light navbar-primary" id="navbar-primary">
             <div class="container">
                 <div class="navbar-collapse collapse">
-                    <a href="{% url 'dashboard-home' %}" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical" id="primary-logo">
+                    <a href="#" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical" id="primary-logo">
                         <h2 class="navbar-brand-logo navbar-brand-logo-large">Redcap Google Sheets</h2>
                     </a>
                     <h4 class="navbar-heading" id="navbar-heading">Navigation</h4>
@@ -98,48 +98,77 @@
                             </a>
                         </li>
                     </ul>
-
                 </div>
             </div>
         </nav>
 
         <div class="content">
             <div class="container">
-            <div class="card">
-                <div class="card-body">
-                    <button id="mainButton" onclick="getData()">Refresh Data</button>
-                    <br>
-                    <p><b>Preview Data</b></p>
-                    Event: <select id="eventSelection" name="eventSelection"></select><br>
-                    Participant: <select id="participantSelection" name="participantSelection"></select>
-                    <br><br>
-                    <div id="output">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Redcap Data Preview</h3>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <div class="form-label">Refresh Redcap Data</div>
+                                        <button id="refresh-btn" type="button" onclick="getData()" class="btn btn-primary w-100">
+                                            <i id="refresh-btn-icon" class="ti ti-refresh p-2 pt-0 pb-0"></i>
+                                            Refresh
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-label">Event</div>
+                                        <select class="form-select" id="eventSelection" name="eventSelection"></select>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-label">Participant</div>
+                                        <select class="form-select "id="participantSelection" name="participantSelection"></select>
+                                    </div>
+                                </div>
+                                <div id="output">
+                                </div>
+                                <br>
+                            </div>
+                        </div>
                     </div>
-                    <br>
-                    <div id="exportOptions">
-                        <p><b>Export</b></p>
-                        Export: <select id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
-                            <option value="all">All Events</option>
-                            <option value="select">Selected Events</option>
-                        </select><br>
-                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10">
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">Export to Google Sheets</h3>
+                                <div class="row mb-3" id="exportOptions">
+                                    <div class="col">
+                                        <div class="form-label">Events to Export</div>
+                                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
+                                            <option value="all">All Events</option>
+                                            <option value="select">Selected Events</option>
+                                        </select>
+                                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-label">Target Sheet</div>
+                                        <select class="form-select mb-2" id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
+                                            <option value="new">New Sheet</option>
+                                            <option value="replace">Existing Sheet (Replace)</option>
+                                            <option value="append">Existing Sheet (Append)</option>
+                                        </select>
+                                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
+                                            <button style="display:inline" onclick="chooseSheet()" class="btn">Select Google Sheet</button>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="form-label">Run Export</div>
+                                        <button type="button" onclick="exportData()" class="btn btn-green w-100">
+                                            <i id="export-btn-icon" class="ti ti-table-export p-2 pt-0 pb-0"></i>
+                                            Export
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        To: <select id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
-                            <option value="new">New Sheet</option>
-                            <option value="replace">Existing Sheet (Replace)</option>
-                            <option value="append">Existing Sheet (Append)</option>
-                        </select>
-                        <br><br>
-                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
-                            <button style="display:inline" onclick="chooseSheet()">Choose Sheet</button>
-                            <p style="display:inline"  id="sheetName">Choose A Sheet</p>
-                            <br><br>
-                        </div>
-                        <button onclick="exportData()">Export To Sheets</button>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
 
         <!-- dashboard customization card -->
