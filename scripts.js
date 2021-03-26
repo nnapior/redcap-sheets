@@ -26,16 +26,40 @@ function getValues(object, level = 0) {
 
 function showParticipant(eventKey, participantID) {
 	console.log(eventKey, participantID);
-	var object = data[eventKey][participantID];
-	var output = document.getElementById("output");
-	output.innerHTML = "";
-	var keys = Object.keys(object);
+
+	// Populate table keys
+	var tableKeys = document.getElementById("table-keys");
+	var keys = Object.keys(data[eventKey][1]); // get keys from data object
 	var outputStr = "";
+	// add keys to table
 	for(key of keys) {
-		var objectStr = key+": "+object[key]+"<br>";
-		outputStr+=objectStr;
+		outputStr +="<th>"+key+"</th>\n";
 	}
-	output.innerHTML = outputStr;
+	tableKeys.innerHTML = outputStr;
+	outputStr = ""; // reset outputStr to be used for table body
+
+	var tableBody = document.getElementById("table-body");
+	tableBody.innerHTML = ""; // clear current table body
+	// populate table with all participants if "all" option is passed in as ID
+	if(participantID=="all"){
+		for(participant in data[eventKey]) {
+			outputStr += "<tr>\n"; // new table entry
+			// add all the values for this entry
+			for(key of keys) {
+				outputStr +="<td>"+data[eventKey][participant][key]+"</td>\n";
+			}
+			outputStr += "</tr>\n"; // close table entry
+		}
+	}
+	// else, just print the passed in ID
+	else {
+		outputStr += "<tr>\n";
+		for(key of keys) {
+			outputStr +="<td>"+data[eventKey][participantID][key]+"</td>\n";
+		}
+		outputStr += "</tr>\n";
+	}
+	tableBody.innerHTML = outputStr; // update table body
 }
 
 function exportData() {
@@ -125,14 +149,18 @@ function showEvent(eventKey) {
 	selection.oninput = function() {
 		showParticipant(eventKey, this.value);
 	}
+	var option = document.createElement("option");
+	option.value = "all";
+	option.innerHTML = "all";
+	selection.appendChild(option);
 	for(key of keys) {
 		var option = document.createElement("option");
 		option.value = key;
 		option.innerHTML = key;
 		selection.appendChild(option);
 	}
-	selection.value = keys[0];
-	showParticipant(eventKey, keys[0]);
+	selection.value = "all";
+	showParticipant(eventKey, "all");
 }
 
 function setButtons(object) {
@@ -191,6 +219,7 @@ function showSheetSelection(value) {
 }
 
 function getData() {
+	document.getElementById("refresh-btn").classList.add("btn-loading");
 	var r = new XMLHttpRequest();
 	r.open("GET", "/pullData", true);
 	r.onreadystatechange = function() {
@@ -198,6 +227,7 @@ function getData() {
 			var parsedRes = JSON.parse(r.response);
 			data = parsedRes;
 			setButtons(data);
+			document.getElementById("refresh-btn").classList.remove("btn-loading");
 		}
 	}
 	r.send();
