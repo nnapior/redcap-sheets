@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from py_REDcap import getValues
+from createModifySpreadsheet import *
 
 app = Flask(__name__)
 
@@ -19,12 +20,12 @@ def getStyle():
    with open("style.css","r") as f:
       return f.read()
       
-@app.route('/pushData', methods = ['PUT','POST','GET'])
+@app.route('/pushData', methods = ['PUT','POST'])
 def pushData():
    if(request.json):
-      return "1"
+       return pushJSON(request.json)
    else:
-      return "-1"
+       return print("-1")
 
 @app.route('/pullData') 
 def pullData():

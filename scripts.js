@@ -72,27 +72,48 @@ function pushToSheets(object) {
 	if(sheetDestination == "new") {
 		//put code to create/write to a new sheet here
 		console.log("writing to new sheet");
-		alert("there was an error exporting to an existing sheet: creating a new sheet is not supported yet");
+		var pushObject = {"mode":"new", "object":object};
+		
+		var r = new XMLHttpRequest();
+		r.open("POST","/pushData",true);
+		r.setRequestHeader("Content-Type","application/json");
+		r.onreadystatechange = function() {
+			if(this.readyState == 4 && this.status == 200) {
+				console.log(this.response);
+			}
+		}
+		
+		var data = JSON.stringify(pushObject);
+		data = data.replace("\n","");
+		data = data.replace("'", "\"");
+		console.log(data);
+		
+		r.send(data);
 	} else {
 		if(sheetID != null) {
 			switch(sheetDestination) {
 				case "replace":
 					//put code to replace an existing sheet's data here
 					console.log("writing to an existing sheet (replacing) with id "+sheetID);
+					
+					var pushObject = {"mode":"replace", "object":object};
+					
 					var r = new XMLHttpRequest();
-					r.open("PUT","/pushData",true);
+					r.open("POST","/pushData",true);
+					r.setRequestHeader("Content-Type","application/json");
 					r.onreadystatechange = function() {
-						if(this.status == 200 && this.readyState == 4) {
-							console.log(r.response);
+						if(this.readyState == 4 && this.status == 200) {
+							console.log(this.response);
 						}
 					}
-					var parameters = JSON.stringify(object);
-					r.setRequestHeader('Content-type', 'application/json;charset=UTF-8');
-					r.send(parameters);
-					break;
-				case "append":
-					//put code to append to an existing sheet's data here
-					console.log("writing to an existing sheet (appending) with id "+sheetID);
+					
+					var data = JSON.stringify(pushObject);
+					data = data.replace("\n","");
+					data = data.replace("'", "\"");
+					console.log(data);
+					
+					r.send(data);
+					
 					break;
 				default:
 					alert("there was an error exporting to an existing sheet: unknown export mode");
@@ -168,7 +189,7 @@ function setButtons(object) {
 }
 
 function chooseSheet() {
-	//put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
+	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
 	console.log("choosing sheet");
 	
 	//placeholder id
