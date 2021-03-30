@@ -16,6 +16,16 @@ def getSpreadSheetID():
     content = json.loads(configFile.read())
     return content["spreadsheet_id"]
 
+def getWorksheetID(title):
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
+    data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
+    
+    for x in data["sheets"]:
+        if x["properties"]["title"] == title:
+            return x["properties"]["sheetId"]
+    return None
+
 
 def pushJSON(jsonObject):
     importMode = jsonObject['mode']
@@ -74,6 +84,29 @@ def generateTuple(jsonObject):
     
     return newObject
 
+def batch(service, spreadsheet_id, requests):
+    """
+    function to run batch updates on the sheet.
+    """
+    body = {
+        'requests': requests
+    }
+    return service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
+
+
+def renameSheet(service, spreadsheet_id, new_name):
+    """
+    function to rename sheet
+    """
+    batch(service, spreadsheet_id, {
+        "updateSpreadsheetProperties": {
+            "properties": {
+                "title": new_name,
+            },
+            "fields": "title",
+        }
+    })
+
 """
 function that updates a google sheet's values
 """
@@ -85,23 +118,38 @@ def updateData(service,spreadsheet_id, worksheet_range: str, values: tuple, valu
         body = value_range_body
     ).execute()
 
-def getValues1():
-    v = getValueDict()
 
 
-#function that clears the 
-def clearData(service, spreadsheet_id, sheetName: str):
+#function that clears the data of a worksheet
+def clearData(sheetName: str):
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
     service.spreadsheets( ).values( ).clear(
         spreadsheetId=spreadsheet_id,
         range='{0}!A1:Z'.format( sheetName ),
         body={}
     ).execute( )
+    
+def deleteWorksheet(worksheetID):
+    request_body = {
+            'requests': [
+                {'deleteSheet': {
+                    'sheetId': worksheetID }
+                 }   
+            ]
+        }
+    service.spreadsheets().batchUpdate(
+    spreadsheetId=spreadsheet_id,
+    body = request_body
+     ).execute()
 
 '''
 function that takes in the service, spreadsheetID, and title of the new worksheet
 creates a worksheet with 20 by 5 with the specified title
 '''
-def createWorksheet(service, spreadsheet_id, title:str):
+def createWorksheet(title:str):
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
     request_body = {
             'requests': [
                 {'addSheet': { "properties" :{
@@ -130,7 +178,7 @@ if __name__ == "__main__":
         'majorDimension' : 'ROWS',
         'values' : values
     }
-    clearData(service, spreadsheet_id, "Sheet1")
+    clearData("Sheet1")
     """
     for loop to create multiple worksheets
     """
@@ -141,6 +189,8 @@ if __name__ == "__main__":
     
     #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
     
+    #print(getWorksheetID("a"))
+    deleteWorksheet(getWorksheetID("Sheet3"))
     #print(generateTuple(json.loads(getValues())))
     
 
