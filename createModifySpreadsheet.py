@@ -1,7 +1,9 @@
 import os, json
 from Google import Create_Service
 from py_REDcap import getValues
-
+'''
+Helper functions for api calls
+'''
 def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
@@ -25,33 +27,6 @@ def getWorksheetID(title):
         if x["properties"]["title"] == title:
             return x["properties"]["sheetId"]
     return None
-
-
-def pushJSON(jsonObject):
-    importMode = jsonObject['mode']
-    data = generateTuple(jsonObject['object'])
-    
-    if(importMode == "replace"):
-        # replacing sheet data
-        # TODO: put this code here
-        print("put code to replace sheet here")
-    else:
-        # creating new sheet
-        v = generateTuple(json.loads(getValues()))
-        service = create_service()
-        spreadsheet_id = getSpreadSheetID()
-        for x in v:
-            createWorksheet(service, spreadsheet_id, x)
-            values = v[x]
-            value_range_body = {
-                'majorDimension' : 'ROWS',
-                'values' : values
-            }
-            worksheet_range = x+'!A1'
-            updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
-    
-    return "1"
-
 """
 function to generate a values tuple from json
 """
@@ -84,24 +59,71 @@ def generateTuple(jsonObject):
     
     return newObject
 
-def batch(service, spreadsheet_id, requests):
+def pushJSON(jsonObject):
+    importMode = jsonObject['mode']
+    data = generateTuple(jsonObject['object'])
+    
+    if(importMode == "replace"):
+        # replacing sheet data
+        # TODO: put this code here
+        print("put code to replace sheet here")
+    else:
+        # creating new sheet
+        
+        pushCompletely()
+    
+    return "1"
+
+def pushCompletely():
+    cleanSheet()
+    # creating new sheet
+    dataSet = generateTuple(json.loads(getValues()))
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
+    for key in dataSet:
+        createWorksheet(key)
+        values = dataSet[key]
+        value_range_body = {
+            'majorDimension' : 'ROWS',
+            'values' : values
+        }
+        worksheet_range = key+'!A1'
+        updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    deleteWorksheet(getWorksheetID("Sheet1"))
+
+'''
+API funtion calls
+'''
+def batch(requests):
     """
     function to run batch updates on the sheet.
     """
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
     body = {
         'requests': requests
     }
     return service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
-
-def renameSheet(service, spreadsheet_id, new_name):
+#function that takes in a string a renames the google sheet
+def renameSheet(new_name):
     """
     function to rename sheet
     """
-    batch(service, spreadsheet_id, {
+    batch({
         "updateSpreadsheetProperties": {
             "properties": {
                 "title": new_name,
+            },
+            "fields": "title",
+        }
+    })
+def renameWorkSheet(sheetId, newName):
+    batch({
+        "updateSheetProperties": {
+            "properties": {
+                "sheetId": sheetId,
+                "title": newName,
             },
             "fields": "title",
         }
@@ -121,7 +143,7 @@ def updateData(service,spreadsheet_id, worksheet_range: str, values: tuple, valu
 
 
 #function that clears the data of a worksheet
-def clearData(sheetName: str):
+def clearWorksheet(sheetName: str):
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     service.spreadsheets( ).values( ).clear(
@@ -130,7 +152,10 @@ def clearData(sheetName: str):
         body={}
     ).execute( )
     
+#funtion that takes in a worksheetID and will delete the worksheet
 def deleteWorksheet(worksheetID):
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
     request_body = {
             'requests': [
                 {'deleteSheet': {
@@ -142,6 +167,18 @@ def deleteWorksheet(worksheetID):
     spreadsheetId=spreadsheet_id,
     body = request_body
      ).execute()
+    
+def cleanSheet():
+    service = create_service()
+    spreadsheet_id = getSpreadSheetID()
+    data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
+    #createWorksheet("Sheet1")
+    worksheetIds= [x["properties"]["sheetId"]for x in data["sheets"]]
+    for ids in worksheetIds[:-1]:
+        deleteWorksheet(ids)
+    renameWorkSheet(worksheetIds[-1],"Sheet1")
+    clearWorksheet("Sheet1")
+    
 
 '''
 function that takes in the service, spreadsheetID, and title of the new worksheet
@@ -178,7 +215,7 @@ if __name__ == "__main__":
         'majorDimension' : 'ROWS',
         'values' : values
     }
-    clearData("Sheet1")
+
     """
     for loop to create multiple worksheets
     """
@@ -190,8 +227,12 @@ if __name__ == "__main__":
     #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
     
     #print(getWorksheetID("a"))
-    deleteWorksheet(getWorksheetID("Sheet3"))
+    #deleteWorksheet(getWorksheetID("Sheet3"))
+    #CSV-to-Google-Sheet
+    renameSheet("CSV-to-Google-Sheet")
+    #renameWorkSheet(getWorksheetID("a"),"Sheet1")
     #print(generateTuple(json.loads(getValues())))
+    cleanSheet()
     
 
     
