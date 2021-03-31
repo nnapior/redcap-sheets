@@ -94,6 +94,14 @@ def pushCompletely():
 '''
 API funtion calls
 '''
+#create new google sheet
+def createSheet():
+    newSheetData = service.spreadsheets().create().execute()
+    
+
+
+
+
 def batch(requests):
     """
     function to run batch updates on the sheet.
