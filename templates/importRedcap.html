@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Redcap</title>
+</head>
+
+<body>
+    <h2>Import Events</h2>
+    <div>
+        <form action="/import_redcap" method="POST">
+            <select style=" font-size:1.3rem" id="importMode" name="importMode"
+                oninput="showImportEventCheckboxes(this.value)">
+                <option value="all">All Events</option>
+                <option value="select">Selected Events</option>
+            </select>
+            <div id="checkboxes" style="visibility: hidden; display: none;">
+                {% for item in events %}
+                <div style="    margin-top: 0.5rem;
+                font-size: 1.5rem;">
+                    <input type="checkbox" name="events" value={{item}} id={{item}}>
+                    <label for={{item}}>{{item}}</label>
+                </div>
+                {% endfor %}
+            </div>
+            <input style="font-size: 1.1rem;
+            display: block;
+            margin-top: 2rem;" type="submit" value="Import">
+        </form>
+        <div id="message" style="width: 30% ; visibility: visible;">
+            {% with message = get_flashed_messages() %} {% if message %}
+            {% for item in message %}
+            <h1>{{item}}</h3>
+                {% endfor %} {% endif %} {% endwith %}
+        </div>
+
+    </div>
+
+    <script src="../scripts.js"></script>
+</body>
+
+</html>
