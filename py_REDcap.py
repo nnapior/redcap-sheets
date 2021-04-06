@@ -105,7 +105,6 @@ def getValueDict():
     # for each record...
     i = 1
     for item in jsonObject:
-
         # save the event name and participant id
         participantID = item["participant_id"]
         eventName = item["redcap_event_name"]

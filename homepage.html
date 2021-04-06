@@ -3,6 +3,9 @@
 
     <!-- redcap scripts -->
     <script src="scripts.js" type="text/javascript"></script>
+    
+    <!-- Google Picker Scripts -->
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
     <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -190,10 +193,10 @@
                                         <select class="form-select mb-2" id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
                                             <option value="new">New Sheet</option>
                                             <option value="replace">Existing Sheet (Replace)</option>
-                                            <option value="append">Existing Sheet (Append)</option>
                                         </select>
                                         <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
                                             <button style="display:inline" onclick="chooseSheet()" class="btn">Select Google Sheet</button>
+                                            <p id="sheetName">Pick a Sheet</p>
                                         </div>
                                     </div>
                                     <div class="col">

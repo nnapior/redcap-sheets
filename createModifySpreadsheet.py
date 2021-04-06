@@ -4,6 +4,12 @@ from py_REDcap import *
 '''
 Helper functions for api calls
 '''
+def pickSheet():
+    
+    
+    
+    return "1"
+
 def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
@@ -14,6 +20,7 @@ def create_service():
     return service
 
 def createSpreadsheet():
+    print("======creating new spreadsheet======")
     service = create_service()
     spreadsheet = {
         'properties': {
@@ -77,15 +84,14 @@ def pushJSON(jsonObject):
     
     if(importMode == "replace"):
         # replacing sheet data
-        # TODO: put this code here
-        pushCompletely(data, getSpreadDheetID())
+        pushCompletely(data, getSpreadSheetID())
     else:
         # creating new sheet
-        pushCompletely(data)
+        pushCompletely(data, createSpreadsheet())
     
     return "1"
 
-def pushCompletely(object = getValues(), id = createSpreadsheet()):
+def pushCompletely(object = getValues(), id = getSpreadSheetID()):
     cleanSheet(id)
     # creating new sheet
     dataSet = object

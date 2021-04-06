@@ -39,6 +39,10 @@ def renameSheetRequest():
 def clearSheetRequest():
    return cleanSheet()
 
+@app.route('/pickSpreadsheet', methods = ['GET'])
+def pickSheetRequest():
+   return pickSheet()
+
 @app.route('/pullData') 
 def pullData():
     return getValues()

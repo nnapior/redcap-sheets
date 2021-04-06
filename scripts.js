@@ -216,10 +216,19 @@ function chooseSheet() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
 	console.log("choosing sheet");
 
-	//placeholder id
-	sheetID = "1";
+	var req = new XMLHttpRequest();
+	req.open("GET","/pickSpreadsheet", true);
+	req.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200) {
+			console.log(this.response);
+		}
+	}
+	req.send();
 
-	document.getElementById("sheetName").innerHTML = sheetID;
+	// //placeholder id
+	// sheetID = "1";
+// 
+	// document.getElementById("sheetName").innerHTML = sheetID;
 }
 
 function showSheetSelection(value) {
