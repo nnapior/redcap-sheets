@@ -27,6 +27,18 @@ def pushData():
    else:
        return print("-1")
 
+@app.route('/renameSheet', methods = ['PUT','POST'])
+def renameSheetRequest():
+   if(request.json):
+      if(request.json["newName"]):
+         return renameSheet(request.json["newName"])
+   else:
+       return print("-1")
+
+@app.route('/clearSheet', methods = ['PUT','POST'])
+def clearSheetRequest():
+   return cleanSheet()
+
 @app.route('/pullData') 
 def pullData():
     return getValues()

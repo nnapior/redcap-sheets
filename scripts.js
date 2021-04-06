@@ -88,16 +88,14 @@ function exportData() {
 function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
-
-	console.log(object)
-
+	
 	//if we're doing sheet destination control, use this outline
 	var sheetDestination = document.getElementById("sheetMode").value;
 	if(sheetDestination == "new") {
 		//put code to create/write to a new sheet here
 		console.log("writing to new sheet");
 		var pushObject = {"mode":"new", "object":object};
-
+		
 		var r = new XMLHttpRequest();
 		r.open("POST","/pushData",true);
 		r.setRequestHeader("Content-Type","application/json");
@@ -106,22 +104,21 @@ function pushToSheets(object) {
 				console.log(this.response);
 			}
 		}
-
-		var data = JSON.stringify(pushObject);
-		data = data.replace("\n","");
-		data = data.replace("'", "\"");
-		console.log(data);
-
-		r.send(data);
+		
+		var reqData = JSON.stringify(pushObject);
+		reqData = reqData.replace("\n","");
+		reqData = reqData.replace("'", "\"");
+		
+		r.send(reqData);
 	} else {
 		if(sheetID != null) {
 			switch(sheetDestination) {
 				case "replace":
 					//put code to replace an existing sheet's data here
 					console.log("writing to an existing sheet (replacing) with id "+sheetID);
-
+					
 					var pushObject = {"mode":"replace", "object":object};
-
+					
 					var r = new XMLHttpRequest();
 					r.open("POST","/pushData",true);
 					r.setRequestHeader("Content-Type","application/json");
@@ -130,14 +127,13 @@ function pushToSheets(object) {
 							console.log(this.response);
 						}
 					}
-
-					var data = JSON.stringify(pushObject);
-					data = data.replace("\n","");
-					data = data.replace("'", "\"");
-					console.log(data);
-
-					r.send(data);
-
+					
+					var reqData = JSON.stringify(pushObject);
+					reqData = reqData.replace("\n","");
+					reqData = reqData.replace("'", "\"");
+					
+					r.send(reqData);
+					
 					break;
 				default:
 					alert("there was an error exporting to an existing sheet: unknown export mode");

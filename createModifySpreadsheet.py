@@ -1,6 +1,6 @@
 import os, json
 from Google import Create_Service
-from py_REDcap import getValues
+from py_REDcap import *
 '''
 Helper functions for api calls
 '''
@@ -13,14 +13,26 @@ def create_service():
     service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     return service
 
+def createSpreadsheet():
+    service = create_service()
+    spreadsheet = {
+        'properties': {
+            'title': "New Spreadsheet"
+        }
+    }
+    newSpreadsheet = service.spreadsheets().create(body=spreadsheet,fields='spreadsheetId').execute()
+    print(newSpreadsheet.get('spreadsheetUrl'))
+    print(newSpreadsheet.get('spreadsheetId'))
+    return newSpreadsheet.get('spreadsheetId')
+
 def getSpreadSheetID():
     configFile = open("config.json","r")
     content = json.loads(configFile.read())
     return content["spreadsheet_id"]
 
-def getWorksheetID(title):
+def getWorksheetID(title, id = getSpreadSheetID()):
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
     
     for x in data["sheets"]:
@@ -61,27 +73,26 @@ def generateTuple(jsonObject):
 
 def pushJSON(jsonObject):
     importMode = jsonObject['mode']
-    data = generateTuple(jsonObject['object'])
+    data = generateTuple(jsonObject['object']) 
     
     if(importMode == "replace"):
         # replacing sheet data
         # TODO: put this code here
-        print("put code to replace sheet here")
+        pushCompletely(data, getSpreadDheetID())
     else:
         # creating new sheet
-        
-        pushCompletely()
+        pushCompletely(data)
     
     return "1"
 
-def pushCompletely():
-    cleanSheet()
+def pushCompletely(object = getValues(), id = createSpreadsheet()):
+    cleanSheet(id)
     # creating new sheet
-    dataSet = generateTuple(json.loads(getValues()))
+    dataSet = object
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     for key in dataSet:
-        createWorksheet(key)
+        createWorksheet(key, spreadsheet_id)
         values = dataSet[key]
         value_range_body = {
             'majorDimension' : 'ROWS',
@@ -89,45 +100,40 @@ def pushCompletely():
         }
         worksheet_range = key+'!A1'
         updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
-    deleteWorksheet(getWorksheetID("Sheet1"))
+    # TODO: only rename if no new name has been set
+    renameSheet(getProjName(), spreadsheet_id)
+    deleteWorksheet(getWorksheetID("Sheet1", spreadsheet_id), spreadsheet_id)
 
 '''
 API funtion calls
 '''
-#create new google sheet
-def createSheet():
-    newSheetData = service.spreadsheets().create().execute()
-    
-
-
-
-
-def batch(requests):
+def batch(requests, id = getSpreadSheetID()):
     """
     function to run batch updates on the sheet.
     """
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     body = {
         'requests': requests
     }
     return service.spreadsheets().batchUpdate(spreadsheetId=spreadsheet_id, body=body).execute()
 
 #function that takes in a string a renames the google sheet
-def renameSheet(new_name):
+def renameSheet(new_name, id):
     """
     function to rename sheet
     """
-    batch({
+    return batch({
         "updateSpreadsheetProperties": {
             "properties": {
                 "title": new_name,
             },
             "fields": "title",
         }
-    })
-def renameWorkSheet(sheetId, newName):
-    batch({
+    }, id)
+
+def renameWorkSheet(sheetId, newName, id=getSpreadSheetID()):
+    return batch({
         "updateSheetProperties": {
             "properties": {
                 "sheetId": sheetId,
@@ -135,7 +141,7 @@ def renameWorkSheet(sheetId, newName):
             },
             "fields": "title",
         }
-    })
+    }, id)
 
 """
 function that updates a google sheet's values
@@ -151,9 +157,9 @@ def updateData(service,spreadsheet_id, worksheet_range: str, values: tuple, valu
 
 
 #function that clears the data of a worksheet
-def clearWorksheet(sheetName: str):
+def clearWorksheet(sheetName: str, id=getSpreadSheetID()):
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     service.spreadsheets( ).values( ).clear(
         spreadsheetId=spreadsheet_id,
         range='{0}!A1:Z'.format( sheetName ),
@@ -161,9 +167,9 @@ def clearWorksheet(sheetName: str):
     ).execute( )
     
 #funtion that takes in a worksheetID and will delete the worksheet
-def deleteWorksheet(worksheetID):
+def deleteWorksheet(worksheetID, id=getSpreadSheetID()):
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     request_body = {
             'requests': [
                 {'deleteSheet': {
@@ -176,25 +182,26 @@ def deleteWorksheet(worksheetID):
     body = request_body
      ).execute()
     
-def cleanSheet():
+def cleanSheet(id = getSpreadSheetID()):
+    print("CLEANING SPREADSHEET ID "+id)
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
     #createWorksheet("Sheet1")
     worksheetIds= [x["properties"]["sheetId"]for x in data["sheets"]]
     for ids in worksheetIds[:-1]:
         deleteWorksheet(ids)
-    renameWorkSheet(worksheetIds[-1],"Sheet1")
-    clearWorksheet("Sheet1")
-    
+    renameWorkSheet(worksheetIds[-1],"Sheet1", spreadsheet_id)
+    clearWorksheet("Sheet1", spreadsheet_id)
+    return "1"
 
 '''
 function that takes in the service, spreadsheetID, and title of the new worksheet
 creates a worksheet with 20 by 5 with the specified title
 '''
-def createWorksheet(title:str):
+def createWorksheet(title:str, id = getSpreadSheetID()):
     service = create_service()
-    spreadsheet_id = getSpreadSheetID()
+    spreadsheet_id = id
     request_body = {
             'requests': [
                 {'addSheet': { "properties" :{
