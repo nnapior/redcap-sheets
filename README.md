@@ -24,21 +24,12 @@ you will also need your own clinet_secret.json
 Run this python script with "python redcap_sheets_webapp.py"
 
 
-## push-to-sheets Update 2021-03-24-15:35
+## main Update 2021-04-06-16:12
+
 Added:
-* Added `generateTuple()` to parse JSON into a tuple and `pushJSON()` for import mode logic in `createModifySpreadsheet.py`. 
+* Merged code for creating new spreadsheets with Tabler interface.
+* Added a placeholder function for choosing an existing spreadsheet. Currently nonfunctional.
 
 Changed:
-* Modified `/pushData` to use `pushJSON()`.
-* `/pushData` JSON object is now in the format of `{"mode":"<EXPORT_MODE>", "object":{JSON OBJECT}}` for reasons of detecting export mode in backend
-* Removed "Append" export option
-
-View TODOs in code to see open tasks.
-
-## push-to-sheets Update 2021-03-24-10:51
-Added:
-* Added a new `/pushData` app route in the Flask webapp that accepts JSON.
-* Added basic request code to `pushToSheets(object)` in `scripts.js`
-
-Changed:
-* Added a notice that creating a new sheet from the api isn't supported yet
+* Removed "Existing (Append)" spreadsheet destination.
+* Renamed page to "REDCap to Google Sheets"
