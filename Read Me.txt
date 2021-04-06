@@ -1,0 +1,10 @@
+About:
+In this program we use Google Sheets Api to get data from sheets and use RedCap APi
+to import data to RedCap in webapp.
+
+Requirements:
+Install python from https://www.python.org/downloads/
+Install the modules using these commands
+pip install pandas
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip install pycap
