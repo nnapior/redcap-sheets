@@ -5,16 +5,13 @@ from py_REDcap import *
 Helper functions for api calls
 '''
 def pickSheet():
-    
-    
-    
     return "1"
 
 def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
     API_VERSION = 'v4'
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
 
     service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
     return service
