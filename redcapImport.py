@@ -76,8 +76,8 @@ def import_redcap(sheet,service,project):
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
-        return "Failed"
-    return "Successful"
+        return "Import Data to RedCap Failed"
+    return "Import Data to RedCap Successful"
 
 def import_data(events):
     service = createService()
@@ -90,7 +90,7 @@ def import_data(events):
         events = getEvents(service)
         for event in events:
             response = import_redcap(event,service,project)
-            if response == "Successful":
+            if response == "Import Data to RedCap Successful":
                 imported = response
                 continue
             else:
@@ -99,7 +99,7 @@ def import_data(events):
     else:
         for event in events:
             response = import_redcap(event,service,project)
-            if response == "Successful":
+            if response == "Import Data to RedCap Successful":
                 imported = response
                 continue
             else:
