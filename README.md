@@ -19,7 +19,18 @@ if you use these scripts, you need a "config.json" file with the following conte
 }
 ```
 
-you will also need your own clinet_secret.json
+=======
+The user will also need a clinet_secret.json.
+To get the client secret.json you must go to:
+
+https://console.cloud.google.com/home/dashboard
+On this page click:
+	Navigation Menu->APIs & Services->Credentials ->Desktop client 1
+On this page click:
+	"DOWNLOAD JSON"
+Move this file into your project directory
+
+
 =======
 Run this python script with "python redcap_sheets_webapp.py"
 
