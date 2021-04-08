@@ -5,7 +5,21 @@ from py_REDcap import *
 Helper functions for api calls
 '''
 def pickSheet():
+    files = (create_drive_service().files().list().execute())
+    
+    print(files)
+    
     return "1"
+
+def create_drive_service():
+    CLIENT_SECRET_FILE = 'client_secret.json'
+    API_NAME = 'drive'
+    API_VERSION = 'v3'
+    SCOPES = ['https://www.googleapis.com/auth/drive']
+
+    #calls Create_Service from google module
+    service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    return service
 
 """
 create_service
@@ -20,7 +34,7 @@ def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
     API_VERSION = 'v4'
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
     #calls Create_Service from google module
     service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
@@ -34,7 +48,6 @@ createSpreadsheet
     returns a spreadsheet ID of the newly created spreadsheet
 """
 def createSpreadsheet():
-    print("======creating new spreadsheet======")
     service = create_service()
     spreadsheet = {
         'properties': {
