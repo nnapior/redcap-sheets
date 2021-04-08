@@ -9,12 +9,9 @@ def pickSheet():
 
 """
 create_service
-    Function that creates a google service object for google sheets
-    Uses client_secret from google console
-    Uses Sheets version 4
+    Function that creates a google service object for google sheets with no parameters
 
-    returns a service object to interface with google sheets api commands
-
+    Returns a service object to interface with google sheets api commands
 """
 def create_service():
     CLIENT_SECRET_FILE = 'client_secret.json'
@@ -28,10 +25,9 @@ def create_service():
 
 """
 createSpreadsheet
-    Creates a new spreadsheet in the user's google drive.
-    Names it "New Spreadsheet"
+    Function that creates a new spreadsheet in the user's google drive and names it "New Spreadsheet"
 
-    returns a spreadsheet ID of the newly created spreadsheet
+    Returns a spreadsheet ID of the newly created spreadsheet
 """
 def createSpreadsheet():
     print("======creating new spreadsheet======")
@@ -49,7 +45,7 @@ def createSpreadsheet():
 
 """
 getSpreadsheetID
-    Opens the config.json file and returns the spreadsheetID in the file
+    Function that opens the config.json file and returns the spreadsheetID in the file
 
     returns a spreadsheet ID of the spreadsheet in the config.json
 """
@@ -61,7 +57,7 @@ def getSpreadsheetID():
 
 """
 getWorksheetID
-    Funtion that takes in the name of a worksheet in a spreadsheet to find the ID of the worksheet
+    Function that takes in the name of a worksheet in a spreadsheet to find the ID of the worksheet
 
     Parameters:
         title: String that is the title of a worksheet

@@ -1,7 +1,10 @@
 import os
 from googleapiclient.http import MediaFileUpload
 from Google import Create_Service
+"""
+    Function that takes in a file path and adds it to a google sheet
 
+"""
 def export_csv_file(file_path: str, parents: list=None):
     if not os.path.exists(file_path):
         print(f'{file_path} not found.')
@@ -24,9 +27,9 @@ def export_csv_file(file_path: str, parents: list=None):
     except Exception as e:
         print(e)
         return
+if __name__ == "__main__":
+    csv_files = os.listdir('./CSV Files')
 
-csv_files = os.listdir('./CSV Files')
-
-for csv_file in csv_files:
-    export_csv_file(os.path.join('CSV Files', csv_file))
-    export_csv_file(os.path.join('CSV Files', csv_file), parents=['0AHXheLjvJGaQUk9PVA'])
+    for csv_file in csv_files:
+        export_csv_file(os.path.join('CSV Files', csv_file))
+        export_csv_file(os.path.join('CSV Files', csv_file), parents=['0AHXheLjvJGaQUk9PVA'])

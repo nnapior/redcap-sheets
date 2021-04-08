@@ -6,6 +6,19 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
 
 
+'''
+Create_Service
+    Function that returns
+
+    Paramaters:
+        client_secret_file : String name of the json file containing api access information
+        api_name : String name of the google API being accessed
+        api_version : String Version number of the api used
+        scopes : List of strings indicating the scope of the API service
+        
+    Returns a service object to interface with google api
+    
+'''
 def Create_Service(client_secret_file, api_name, api_version, *scopes):
     print(client_secret_file, api_name, api_version, scopes, sep='-')
     CLIENT_SECRET_FILE = client_secret_file
@@ -42,6 +55,10 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
         print(e)
         return None
 
+'''
+convert_to_RFC_datetime
+    Function that returns a datatime string for January 1st, 1900    
+'''
 def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
     dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
     return dt
