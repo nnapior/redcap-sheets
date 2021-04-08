@@ -4,12 +4,21 @@ from py_REDcap import *
 '''
 Helper functions for api calls
 '''
-def pickSheet():
-    files = (create_drive_service().files().list().execute())
+def getSheets():
+    service = create_drive_service()
+    files = (service.files().list().execute())
     
-    print(files)
+    result = {}
     
-    return "1"
+    for file in files["files"]:
+        print(file["name"])
+        id = (file["id"])
+        print(id)
+        md = service.files().get(fileId=file["id"]).execute()
+        if(md["mimeType"] == "application/vnd.google-apps.spreadsheet"):
+            result[file["id"]] = file["name"]
+    
+    return json.dumps(result)
 
 def create_drive_service():
     CLIENT_SECRET_FILE = 'client_secret.json'

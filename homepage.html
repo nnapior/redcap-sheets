@@ -186,7 +186,7 @@
                                             <option value="all">All Events</option>
                                             <option value="select">Selected Events</option>
                                         </select>
-                                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                                        <div id="selectedEvents" style="display:none"></div>
                                     </div>
                                     <div class="col">
                                         <div class="form-label">Target Sheet</div>
@@ -194,9 +194,10 @@
                                             <option value="new">New Sheet</option>
                                             <option value="replace">Existing Sheet (Replace)</option>
                                         </select>
-                                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
-                                            <button style="display:inline" onclick="chooseSheet()" class="btn">Select Google Sheet</button>
+                                        <div id="sheetSelection" style="display:none">
+                                            <button style="display:inline" onclick="refreshSheets()" class="btn" id="refreshSheetsButton">Refresh</button>
                                             <p id="sheetName">Pick a Sheet</p>
+                                            <select id="sheetIDSelect" type="select" style="display:none"></select>
                                         </div>
                                     </div>
                                     <div class="col">

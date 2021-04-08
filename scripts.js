@@ -1,5 +1,4 @@
 var data;
-var sheetID;
 
 function getValues(object, level = 0) {
 	if(typeof(object) == "string") {
@@ -20,7 +19,7 @@ function getValues(object, level = 0) {
 			 outputStr+=key+": "+(getValues(object[key], level+1))+"<br>";
 	 }
 	}
-
+	
 	return outputStr;
 }
 
@@ -111,7 +110,8 @@ function pushToSheets(object) {
 		
 		r.send(reqData);
 	} else {
-		if(sheetID != null) {
+		var sheetID = document.getElementById("sheetIDSelect").value;
+		if(sheetID != "NONE") {
 			switch(sheetDestination) {
 				case "replace":
 					//put code to replace an existing sheet's data here
@@ -148,13 +148,9 @@ function pushToSheets(object) {
 function showEventCheckboxes(value) {
 	var eventCheckboxes = document.getElementById("selectedEvents");
 	if(value == "select") {
-		eventCheckboxes.style.visibility = "visible";
-		eventCheckboxes.style.position = "relative";
-		eventCheckboxes.style.zIndex = 1;
+		eventCheckboxes.style.display = "block";
 	} else {
-		eventCheckboxes.style.visibility = "hidden";
-		eventCheckboxes.style.position = "absolute";
-		eventCheckboxes.style.zIndex = -10;
+		eventCheckboxes.style.display = "none";
 	}
 }
 
@@ -212,35 +208,56 @@ function setButtons(object) {
 	showEvent(keys[0]);
 }
 
-function chooseSheet() {
+var sheetIDs = {};
+var sheetsRefreshing = false;
+
+function refreshSheets() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
-	console.log("choosing sheet");
-
-	var req = new XMLHttpRequest();
-	req.open("GET","/pickSpreadsheet", true);
-	req.onreadystatechange = function() {
-		if(this.readyState == 4 && this.status == 200) {
-			console.log(this.response);
+	if(!sheetsRefreshing) {
+		sheetsRefreshing = true;
+		document.getElementById("sheetName").innerHTML = "Loading sheets...";
+		document.getElementById("refreshSheetsButton").innerHTML = "Refreshing...";
+		
+		var req = new XMLHttpRequest();
+		req.open("GET","/getSheets", true);
+		req.onreadystatechange = function() {
+			if(this.status == 200 && this.readyState == 4) {
+				var res = JSON.parse(this.response);
+				document.getElementById("sheetIDSelect");
+				if(res == {}) {
+					document.getElementById("sheetName").innerHTML = "No sheets found.";
+					document.getElementById("sheetIDSelect").style.display = "none";
+				} else {
+					document.getElementById("sheetName").innerHTML = "Pick a sheet";
+					document.getElementById("sheetIDSelect").style.display = "block";
+				}
+				
+				
+				document.getElementById("refreshSheetsButton").innerHTML = "Refresh";
+				sheetsRefreshing = false;
+				
+				
+				var selectContainer = document.getElementById("sheetIDSelect");
+				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
+				
+				for(var key in res) {
+					var option = document.createElement("option");
+					option.value = key;
+					option.innerHTML = res[key];
+					selectContainer.appendChild(option);
+				}
+			}
 		}
+		req.send();
 	}
-	req.send();
-
-	// //placeholder id
-	// sheetID = "1";
-// 
-	// document.getElementById("sheetName").innerHTML = sheetID;
 }
 
 function showSheetSelection(value) {
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
-		sheetSelection.style.visibility = "hidden";
-		sheetSelection.style.position = "absolute";
-		sheetSelection.style.zIndex = -10;
+		sheetSelection.style.display = "none";
 	} else {
-		sheetSelection.style.visibility = "visible";
-		sheetSelection.style.position = "relative";
-		sheetSelection.style.zIndex = 1;
+		sheetSelection.style.display = "block";
 	}
 }
 
