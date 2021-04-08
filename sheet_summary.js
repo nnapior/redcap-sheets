@@ -4,7 +4,20 @@ const sheets = google.sheets({version: 'v4', auth});
 
 //check column names to match red cap columns 
 function checkColumnNames(){
+    //check redcaps columns 
     
+    //cehck sheets columns
+    const = request{
+        spreadsheetId:'',
+        range:'',
+    };
+    try {
+        const response = (await sheets.spreadsheets.values.get(request)).data;
+        console.log(JSON.stringify(response, null, 2));
+      } catch (err) {
+        console.error(err);
+      }
+    sheets.spreadsheets.values.get(request)
 }
 
 //funtion to get # of worksheets
