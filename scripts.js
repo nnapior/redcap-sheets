@@ -117,7 +117,7 @@ function pushToSheets(object) {
 					//put code to replace an existing sheet's data here
 					console.log("writing to an existing sheet (replacing) with id "+sheetID);
 					
-					var pushObject = {"mode":"replace", "object":object};
+					var pushObject = {"mode":"replace","id":sheetID,"object":object};
 					
 					var r = new XMLHttpRequest();
 					r.open("POST","/pushData",true);
