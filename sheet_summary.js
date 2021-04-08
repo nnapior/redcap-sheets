@@ -2,6 +2,11 @@ var data
 var sheetID
 const sheets = google.sheets({version: 'v4', auth});
 
+//check column names to match red cap columns 
+function checkColumnNames(){
+    
+}
+
 //funtion to get # of worksheets
 function getWorksheets(params) {
     sheets.spreadsheets.values.get({
@@ -51,7 +56,7 @@ function sheet_summary(params) {
 
     //show number of incomplete entries 
     
-    
+   
 }
 
 
