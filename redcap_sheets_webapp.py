@@ -9,6 +9,11 @@ def getScripts():
    with open("scripts.js", "r") as f:
       return f.read()
 
+@app.route('/signin.js')
+def getSignin():
+   with open("signin.js", "r") as f:
+      return f.read()
+
 @app.route('/')
 def hello_world():
    with open("homepage.html", "r") as f:
@@ -42,6 +47,14 @@ def clearSheetRequest():
 @app.route('/pickSpreadsheet', methods = ['GET'])
 def pickSheetRequest():
    return pickSheet()
+
+@app.route('/authREDCap', methods = ['POST'])
+def authREDCapRequest():
+   return "1"
+
+@app.route('/authGoogle', methods = ['POST'])
+def authGoogleRequest():
+   return "1"
 
 @app.route('/pullData') 
 def pullData():
