@@ -29,15 +29,28 @@ function sheet_summary(params) {
             data_points = 0; 
             //if row/cell isn't empty add to datapoint counter
             if(){
-                
+
                 data_points+=1;
             }
             console.log('Number of Data Points: ', data_points);
         }
     }
-    //show number of etnries
+    //show number of empty data points
+    if(rows.length){
+        rows.map((row) => {
+            empty_data_points = 0; 
+            //if row/cell isn't empty add to datapoint counter
+            if(){
+
+                empty_data_points+=1;
+            }
+            console.log(empty_data_points, 'Data points are empty');
+        }
+    } 
+    //show number of complete entries 
 
     //show number of incomplete entries 
+    
     
 }
 
