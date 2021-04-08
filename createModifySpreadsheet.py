@@ -160,7 +160,8 @@ def pushJSON(jsonObject):
     
     if(importMode == "replace"):
         # replacing sheet data
-        pushCompletely(data, getSpreadsheetID())
+        print("SPREADSHEET ID NOT PRESENT YET")
+        # pushCompletely(data, getSpreadsheetID())
     else:
         # creating new sheet
         pushCompletely(data, createSpreadsheet())
