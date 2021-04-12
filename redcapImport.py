@@ -14,7 +14,8 @@ def createService():
     CLIENT_SECRET_FILE = "client_secret.json"
     API_NAME = 'sheets'
     API_VERSION = 'v4'
-    SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
+    SCOPES = ["https://www.googleapis.com/auth/spreadsheets",
+              'https://www.googleapis.com/auth/drive']
 
 
     #create google sheet service object

@@ -5,11 +5,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <style>
+        .submit-button,
+        .back-button {
+            display: block;
+            width: 10rem;
+            height: 2.5rem;
+            font-size: 1.6rem;
+            border-radius: 2rem;
+            border: none;
+            cursor: pointer;
+
+            color: white;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .submit-button {
+            background-color: green;
+        }
+
+        .back-button {
+            background-color: #2384d0;
+        }
+
+        .back-button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-button a:active {
+            color: white;
+        }
+    </style>
     <title>Import Redcap</title>
 </head>
 
 <body>
-    <h2>Import Events</h2>
+    <h1>Import Events</h1>
     <div>
         <form action="/import_redcap" method="POST">
             <select style=" font-size:1.3rem" id="importMode" name="importMode"
@@ -26,9 +61,7 @@
                 </div>
                 {% endfor %}
             </div>
-            <input style="font-size: 1.1rem;
-            display: block;
-            margin-top: 2rem;" type="submit" value="Import">
+            <button type="submit" class="submit-button">Import</button>
         </form>
         <div id="message" style="width: 30% ; visibility: visible;">
             {% with message = get_flashed_messages() %} {% if message %}
@@ -38,10 +71,9 @@
         </div>
 
     </div>
-    <button style = "
-margin-top: 1rem">
-        <a style="font-size: 1rem;" href="/">Go Back</a>
-      </button>
+    <button class="back-button">
+        <a href="/">Go Back</a>
+    </button>
 
     <script src="../scripts.js"></script>
 </body>

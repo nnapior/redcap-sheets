@@ -230,10 +230,10 @@ if __name__ == "__main__":
     worksheetTitles = ('Test1', 'Test2', 'Test3')
     '''for title in worksheetTitles:
         createWorksheet(service, spreadsheet_id, title)'''
-    
-    
+
+
     #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
-    
+
     #print(getWorksheetID("a"))
     #deleteWorksheet(getWorksheetID("Sheet3"))
     #CSV-to-Google-Sheet
@@ -241,6 +241,6 @@ if __name__ == "__main__":
     #renameWorkSheet(getWorksheetID("a"),"Sheet1")
     #print(generateTuple(json.loads(getValues())))
     cleanSheet()
-    
 
-    
+
+

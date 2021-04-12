@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, flash, redirect, url_for
 from py_REDcap import getValues
 from createModifySpreadsheet import *
 from redcapImport import import_data, getEvents
+from redcapDelete import delete_records
 
 app = Flask(__name__)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
@@ -39,6 +40,7 @@ def import_page():
     events = getEvents()
     return render_template("importRedcap.html", events = events)
 
+
 @app.route('/import_redcap', methods = ['PUT','POST'])
 def import_to_redcap():
     if request.method == "POST":
@@ -56,6 +58,14 @@ def import_to_redcap():
             else:
                 flash(response)
             return redirect(url_for("import_page"))
+
+
+@app.route('/delete_record', methods = ["POST"])
+def delete_record():
+    if request.method == "POST":
+        id = request.form['participantSelection']
+        delete_records(id)
+        return redirect(url_for("hello_world"))
 
 
 if __name__ == '__main__':

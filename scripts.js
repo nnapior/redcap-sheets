@@ -27,15 +27,24 @@ function getValues(object, level = 0) {
 function showParticipant(eventKey, participantID) {
   console.log(eventKey, participantID);
   var object = data[eventKey][participantID];
-  var output = document.getElementById("output");
-  output.innerHTML = "";
+  var output = document.getElementById("output")
+  output.innerHTML = ""
   var keys = Object.keys(object);
-  var outputStr = "";
   for (key of keys) {
-    var objectStr = key + ": " + object[key] + "<br>";
-    outputStr += objectStr;
+    tr = document.createElement('tr')
+    
+    heading = document.createElement("td")
+    heading.innerHTML = key
+    tr.append(heading)
+    
+    
+    value = document.createElement("td")
+    value.innerHTML = object[key]
+    tr.append(value)
+
+    output.append(tr)
   }
-  output.innerHTML = outputStr;
+
 }
 
 function exportData() {
