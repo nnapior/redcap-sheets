@@ -13,14 +13,14 @@ create_service
 
     Returns a service object to interface with google sheets api commands
 """
-def create_service():
+def create_service(creds):
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
     API_VERSION = 'v4'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
 
     #calls Create_Service from google module
-    service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
 
 """
@@ -29,9 +29,9 @@ createSpreadsheet
 
     Returns a spreadsheet ID of the newly created spreadsheet
 """
-def createSpreadsheet():
+def createSpreadsheet(creds):
     print("======creating new spreadsheet======")
-    service = create_service()
+    service = create_service(creds)
     spreadsheet = {
         'properties': {
             'title': "New Spreadsheet"
@@ -66,8 +66,8 @@ getWorksheetID
     returns the worksheet ID of the specifed worksheet title in a spreadsheet if worksheet in sheet
     returns None if the sheet does not contain the worksheet
 """
-def getWorksheetID(title, id = getSpreadsheetID()):
-    service = create_service()
+def getWorksheetID(title, creds, id = getSpreadsheetID()):
+    service = create_service(creds)
     spreadsheet_id = id
     #get data of spreadsheet
     spreadsheet_data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
@@ -131,13 +131,15 @@ returns a string "1" once completed
 def pushJSON(jsonObject):
     importMode = jsonObject['mode']
     data = generateTuple(jsonObject['object']) 
+    creds = jsonObject['creds']
+    print(creds)
     
     if(importMode == "replace"):
         # replacing sheet data
-        pushCompletely(data, getSpreadsheetID())
+        pushCompletely(data, getSpreadsheetID(), creds)
     else:
         # creating new sheet
-        pushCompletely(data, createSpreadsheet())
+        pushCompletely(data, createSpreadsheet(creds), creds)
     
     return "1"
 
@@ -150,16 +152,16 @@ pushCompletely
         dataSet : tuple representing the data to be added too the sheet
         spreadsheet_id : spreadsheetID of the spreadsheet to be populated
 """
-def pushCompletely(dataSet, spreadsheet_id):
+def pushCompletely(dataSet, spreadsheet_id, creds):
     
     #remove previous data
-    cleanSheet(spreadsheet_id)
+    cleanSheet(spreadsheet_id, creds)
     
-    service = create_service()
+    service = create_service(creds)
     
     #add data too sheet
     for table_title in dataSet:
-        createWorksheet(table_title, spreadsheet_id)
+        createWorksheet(table_title, spreadsheet_id, creds)
         table_content = dataSet[table_title]
         value_range_body = {
             'majorDimension' : 'ROWS',
@@ -168,10 +170,10 @@ def pushCompletely(dataSet, spreadsheet_id):
         worksheet_range = table_title+'!A1'
         updateData(service,spreadsheet_id, worksheet_range, table_content, value_range_body)
     # TODO: only rename if no new name has been set
-    renameSheet(getProjName(), spreadsheet_id)
+    renameSheet(getProjName(), spreadsheet_id, creds)
     
     #remove hanging empty worksheet from when sheet was cleaned
-    deleteWorksheet(getWorksheetID("Sheet1", spreadsheet_id), spreadsheet_id)
+    deleteWorksheet(getWorksheetID("Sheet1", creds, spreadsheet_id), spreadsheet_id, creds)
 
 '''
 API funtion calls
@@ -185,11 +187,11 @@ batch
         requests : json object representing a command to google sheets api
         spreadsheet_id : spreadsheetID of the spreadsheet to be updated
 """
-def batch(requests, spreadsheet_id):
+def batch(requests, spreadsheet_id, creds):
     """
     function to run batch updates on the sheet.
     """
-    service = create_service()
+    service = create_service(creds)
     body = {
         'requests': requests
     }
@@ -203,7 +205,7 @@ renameSheet
         new_name : string to become the new name of the google sheet
         spreadsheet_id : spreadsheetID of the spreadsheet to be updated
 """
-def renameSheet(new_name, spreadsheet_id):
+def renameSheet(new_name, spreadsheet_id, creds):
     batch({
         "updateSpreadsheetProperties": {
             "properties": {
@@ -211,7 +213,7 @@ def renameSheet(new_name, spreadsheet_id):
             },
             "fields": "title",
         }
-    }, spreadsheet_id)
+    }, spreadsheet_id, creds)
 
 
 """
@@ -223,7 +225,7 @@ renameWorkSheet
         new_name : string to become the new name of the google worksheet
         spreadsheet_id : spreadsheetID of the spreadsheet to be updated
 """
-def renameWorkSheet(worksheetId, newName, spreadsheet_id):
+def renameWorkSheet(worksheetId, newName, spreadsheet_id, creds):
     batch({
         "updateSheetProperties": {
             "properties": {
@@ -232,7 +234,7 @@ def renameWorkSheet(worksheetId, newName, spreadsheet_id):
             },
             "fields": "title",
         }
-    }, spreadsheet_id)
+    }, spreadsheet_id, creds)
 
 """
 updateData
@@ -263,8 +265,8 @@ clearWorksheet
         worksheetName : name of the worksheet to be cleared
         spreadsheet_id : spreadsheetID of the spreadsheet to be updated
 """
-def clearWorksheet(worksheetName: str, spreadsheet_id):
-    service = create_service()
+def clearWorksheet(worksheetName: str, spreadsheet_id, creds):
+    service = create_service(creds)
     service.spreadsheets( ).values( ).clear(
         spreadsheetId=spreadsheet_id,
         range='{0}!A1:Z'.format( worksheetName ),
@@ -279,8 +281,8 @@ deleteWorksheet
         worksheetID : ID of the worksheet in the sheet to be deleted
         spreadsheet_id : spreadsheetID of the spreadsheet to be updated
 """
-def deleteWorksheet(worksheetID, spreadsheet_id):
-    service = create_service()
+def deleteWorksheet(worksheetID, spreadsheet_id, creds):
+    service = create_service(creds)
     request_body = {
             'requests': [
                 {'deleteSheet': {
@@ -304,18 +306,18 @@ cleanSheet
         
     Returns the string "1" if successful
 """
-def cleanSheet(spreadsheet_id):
+def cleanSheet(spreadsheet_id, creds):
     print("CLEANING SPREADSHEET ID "+spreadsheet_id)
-    service = create_service()
+    service = create_service(creds)
     data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
     #createWorksheet("Sheet1")
     
     
     worksheetIds= [worksheet["properties"]["sheetId"] for worksheet in data["sheets"]]
     for ids in worksheetIds[:-1]:
-        deleteWorksheet(ids, spreadsheet_id)
-    renameWorkSheet(worksheetIds[-1],"Sheet1", spreadsheet_id)
-    clearWorksheet("Sheet1", spreadsheet_id)
+        deleteWorksheet(ids, spreadsheet_id, creds)
+    renameWorkSheet(worksheetIds[-1],"Sheet1", spreadsheet_id, creds)
+    clearWorksheet("Sheet1", spreadsheet_id, creds)
     return "1"
 
 
@@ -329,8 +331,8 @@ createWorksheet
         
     Returns the string "1" if successful
 """
-def createWorksheet(title:str, spreadsheet_id):
-    service = create_service()
+def createWorksheet(title:str, spreadsheet_id, creds):
+    service = create_service(creds)
     request_body = {
             'requests': [
                 {'addSheet': { "properties" :{

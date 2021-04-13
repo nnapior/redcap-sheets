@@ -14,7 +14,7 @@ function signInGoogle() {
 	req.open("POST","/authGoogle", true);
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
-			console.log(this.response);
+			window.localStorage.setItem("googleCreds",this.response);
 		}
 	}
 	req.send();

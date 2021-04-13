@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
 from py_REDcap import getValues
 from createModifySpreadsheet import *
+from Google import *
 
 app = Flask(__name__)
 
@@ -54,7 +55,12 @@ def authREDCapRequest():
 
 @app.route('/authGoogle', methods = ['POST'])
 def authGoogleRequest():
-   return "1"
+   CLIENT_SECRET_FILE = 'client_secret.json'
+   API_NAME = 'sheets'
+   API_VERSION = 'v4'
+   SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
+
+   return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
 @app.route('/pullData') 
 def pullData():
