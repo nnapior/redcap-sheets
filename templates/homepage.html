@@ -18,12 +18,12 @@
         <select id="participantSelection" name="participantSelection"></select>
         <button type="submit">Delete</button>
         {% with messages = get_flashed_messages() %}
-  {% if messages %}
-    {% for message in messages %}
-      <span class= "delete-error">{{message}}</span>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+        {% if messages %}
+        {% for message in messages %}
+        <span class="delete-error">{{message}}</span>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <table id="output">
           <tr id="output heading"></tr>
           <tr id="output data"></tr>

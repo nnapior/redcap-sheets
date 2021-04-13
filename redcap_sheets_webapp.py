@@ -70,6 +70,7 @@ def delete_record():
             flash("You donot have permission to delete records.")
             return redirect(url_for("hello_world"))
         else:
+            flash("Deleted Successfully")
             return redirect(url_for("hello_world"))
 
 
