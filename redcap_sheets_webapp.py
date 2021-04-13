@@ -14,9 +14,10 @@ def getScripts():
 
 @app.route('/')
 def hello_world():
-   with open("homepage.html", "r") as f:
-       read_data = f.read()
-   return read_data
+   # with open("homepage.html", "r") as f:
+   #     read_data = f.read()
+   # return read_data
+   return render_template("homepage.html")
 
 @app.route('/style.css')
 def getStyle():
@@ -64,8 +65,12 @@ def import_to_redcap():
 def delete_record():
     if request.method == "POST":
         id = request.form['participantSelection']
-        delete_records(id)
-        return redirect(url_for("hello_world"))
+        response = delete_records(id)
+        if response == '<?xml version="1.0" encoding="UTF-8" ?><hash><error>You do not have Delete Record privileges</error></hash>':
+            flash("You donot have permission to delete records.")
+            return redirect(url_for("hello_world"))
+        else:
+            return redirect(url_for("hello_world"))
 
 
 if __name__ == '__main__':

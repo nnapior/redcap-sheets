@@ -1,5 +1,6 @@
 body {
 	font-family: Arial, sans-serif, Helvetica;
+    background-color: aliceblue;
 }
 
 
@@ -30,6 +31,7 @@ body {
     align-self: center;
 	box-shadow: 0px 2px 10px rgb(0 0 0 / 30%);
     border-radius: 2rem;
+    background-color: white;
 }
 
 
@@ -48,6 +50,17 @@ body {
 	width: 90%;
 	align-self: center;
 	
+}
+
+.delete-error{
+    background: red;
+    color: white;
+    width: 63%;
+    font-size: rem;
+    margin-bottom: 1rem;
+    border-radius: 2rem;
+    align-self: flex-end;
+    text-align: center;
 }
 
 #eventSelection,#participantSelection, #exportMode, #sheetMode{
@@ -102,6 +115,7 @@ table, th, td {
     border-radius: 2rem;
     display: flex;
     justify-content: center;
+    background-color: white;
 }
 #exportOptions{
 	font-size: 1.2rem;
