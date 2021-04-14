@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% set active_page = "settings" %}
+{% from "_formhelpers.html" import render_field %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <form method=post>
+          <dl>
+            {{ render_field(form.redcap_api_key) }}
+          </dl>
+          <p><input type=submit value=Submit>
+        </form>
+    </div>
+</div>
+{% endblock content %}

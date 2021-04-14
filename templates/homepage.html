@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% set active_page = "home" %}
+
+{% block content %}
+<div class="row mb-3">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Redcap Data Preview</h3>
+                <div class="row mb-3">
+                    <div class="col">
+                        <div class="form-label">Refresh Redcap Data</div>
+                        <button id="refresh-btn" type="button" onclick="getData()" class="btn btn-primary w-100">
+                            <i id="refresh-btn-icon" class="ti ti-refresh p-2 pt-0 pb-0"></i>
+                            Pull Data
+                        </button>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Event</div>
+                        <select class="form-select" id="eventSelection" name="eventSelection"></select>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Participant</div>
+                        <select class="form-select "id="participantSelection" name="participantSelection">
+                            <option value="all">all</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-vcenter">
+                        <thread>
+                            <tr id="table-keys">
+                            </tr>
+                        </thread>
+                        <tbody id="table-body">
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Import From Google Sheets</h3>
+                <div class="row mb-3" id="">
+                    <div class="col">
+                        <div class="form-label">Events to Import</div>
+                        <select class="form-select mb-2" id="importMode" name="importMode" oninput="showEventCheckboxes(this.value)">
+                            <option value="import-all">All Events</option>
+                            <option value="import-select">Selected Events</option>
+                        </select>
+                        <div id="selectedImportEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Target Sheet</div>
+                        <select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="showSheetSelection(this.value)">
+                            <option value="new">New Sheet</option>
+                            <option value="replace">Existing Sheet (Replace)</option>
+                            <option value="append">Existing Sheet (Append)</option>
+                        </select>
+                        <div id="sheetImportSelection" style="visibility:hidden; position:absolute;z-index:-10">
+                            <button style="display:inline" onclick="chooseSheet()" class="btn btn-secondary">Select Google Sheet</button>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Run Import</div>
+                        <button type="button" onclick="importData()" class="btn btn-green w-100">
+                            <i id="" class="ti ti-table-export p-2 pt-0 pb-0"></i>
+                            Import
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Export to Google Sheets</h3>
+                <div class="row mb-3" id="exportOptions">
+                    <div class="col">
+                        <div class="form-label">Events to Export</div>
+                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
+                            <option value="all">All Events</option>
+                            <option value="select">Selected Events</option>
+                        </select>
+                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Target Sheet</div>
+                        <select class="form-select mb-2" id="sheetMode" name="sheetMode" oninput="showSheetSelection(this.value)">
+                            <option value="new">New Sheet</option>
+                            <option value="replace">Existing Sheet (Replace)</option>
+                        </select>
+                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
+                            <button style="display:inline" onclick="chooseSheet()" class="btn">Select Google Sheet</button>
+                            <p id="sheetName">Pick a Sheet</p>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-label">Run Export</div>
+                        <button type="button" onclick="exportData()" class="btn btn-green w-100">
+                            <i id="export-btn-icon" class="ti ti-table-export p-2 pt-0 pb-0"></i>
+                            Export
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
