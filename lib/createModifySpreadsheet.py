@@ -165,7 +165,7 @@ def pushJSON(jsonObject):
     data = generateTuple(jsonObject['object'])
     creds = jsonObject['creds']
     print(creds)
-
+    id = ""
     if(importMode == "replace"):
         # replacing sheet data
         id = jsonObject['id']
@@ -174,12 +174,12 @@ def pushJSON(jsonObject):
             return "NO SPREADSHEET ID"
 
         # print("SPREADSHEET ID NOT PRESENT YET")
-        pushCompletely(data, id, creds)
+        id = pushCompletely(data, id, creds)
     else:
         # creating new sheet
-        pushCompletely(data, createSpreadsheet(creds), creds)
+        id = pushCompletely(data, createSpreadsheet(creds), creds)
 
-    return "1"
+    return id
 
 
 def pushCompletely(dataSet, spreadsheet_id, creds):
@@ -211,6 +211,7 @@ def pushCompletely(dataSet, spreadsheet_id, creds):
 
     # remove hanging empty worksheet from when sheet was cleaned
     deleteWorksheet(getWorksheetID("Sheet1", creds, spreadsheet_id), spreadsheet_id, creds)
+    return spreadsheet_id
 
 
 '''
