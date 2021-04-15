@@ -117,12 +117,16 @@ function pushToRedcap(object) {
 		}
 	}
 
-	var data = JSON.stringify(object);
-	data = data.replace("\n","");
-	data = data.replace("'", "\"");
-	console.log(data);
+	if(window.localStorage.getItem("googleCreds") != undefined) {
+		var pushObject = {"events":object, "creds":window.localStorage.getItem("googleCreds")};
+		var reqData = JSON.stringify(pushObject);
+		reqData = reqData.replace("\n","");
+		reqData = reqData.replace("'", "\"");
 
-	r.send(data);
+		r.send(reqData);
+	} else {
+		alert("failed to import data from sheets. Please sign into google");
+	}
 }
 
 function pushToSheets(object) {

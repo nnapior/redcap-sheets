@@ -5,7 +5,7 @@ from redcap import Project
 from lib.Google import Create_Service
 
 
-def createService():
+def createService(creds):
     """
     THis funciton creates google sheets service
     :return: service object
@@ -17,7 +17,7 @@ def createService():
               'https://www.googleapis.com/auth/drive']
 
     # create google sheet service object
-    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
 
 
@@ -81,10 +81,12 @@ def import_redcap(sheet, service, project):
     return "Import Data to RedCap Successful"
 
 
-def import_data(events):
-    service = createService()
+def import_data(object):
     config = getConfig()
     imported = False
+    creds = object['creds']
+    events = object['events']
+    service = createService(creds)
 
     project = Project(config["api_url"], config["api_key"])
 
