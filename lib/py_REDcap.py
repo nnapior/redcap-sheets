@@ -110,6 +110,7 @@ def getValues(apiKey):
             outputObject[eventName] = {participantID: recordOutputObject}
 
     # prettyprint json
+    # print(json.dumps(outputObject, indent=4, sort_keys=False))
     # return(outputObject.get('initial_data_arm_1').get('1').keys())
     return(json.dumps(outputObject, indent=4, sort_keys=False))
 
@@ -166,4 +167,4 @@ def getValueDict():
 if __name__ == "__main__":
     # print(getValues())
 
-    print(getValueDict())
+    print(getValues(getAPIKey()))

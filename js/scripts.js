@@ -30,7 +30,7 @@ function showParticipant(eventKey, participantID) {
 	// Populate table keys
 	var tableKeys = document.getElementById("table-keys");
 	var keys = Object.keys(data[eventKey][1]); // get keys from data object
-	var outputStr = "";
+	var outputStr = "<th>delete</th>\n";
 	// add keys to table
 	for(key of keys) {
 		outputStr +="<th>"+key+"</th>\n";
@@ -43,7 +43,12 @@ function showParticipant(eventKey, participantID) {
 	// populate table with all participants if "all" option is passed in as ID
 	if(participantID=="all"){
 		for(participant in data[eventKey]) {
-			outputStr += "<tr>\n"; // new table entry
+			var btn = document.createElement("BUTTON");
+			btn.innerHTML = "delete";
+			btn.classList.add('btn');
+			btn.classList.add('btn-danger');
+			btn.setAttribute('onclick', "deleteUser("+participant+")");
+			outputStr += "<tr>\n<td>"+btn.outerHTML+"</td>\n"; // new table entry
 			// add all the values for this entry
 			for(key of keys) {
 				outputStr +="<td>"+data[eventKey][participant][key]+"</td>\n";
@@ -53,7 +58,12 @@ function showParticipant(eventKey, participantID) {
 	}
 	// else, just print the passed in ID
 	else {
-		outputStr += "<tr>\n";
+		var btn = document.createElement("BUTTON");
+		btn.innerHTML = "delete";
+		btn.classList.add('btn');
+		btn.classList.add('btn-danger');
+		btn.setAttribute('onclick', "deleteUser("+participantID+")");
+		outputStr += "<tr>\n<td>"+btn.outerHTML+"</td>\n"; // new table entry
 		for(key of keys) {
 			outputStr +="<td>"+data[eventKey][participantID][key]+"</td>\n";
 		}
@@ -337,6 +347,25 @@ function showSheetSelection(value) {
 	} else {
 		sheetSelection.style.display = "block";
 	}
+}
+
+function deleteUser(id) {
+	var r = new XMLHttpRequest();
+	r.open("POST", "/delete_record_redcap", true);
+	r.setRequestHeader("Content-Type","application/json");
+
+	r.onreadystatechange = function() {
+		if(this.status == 200 && this.readyState == 4) {
+			getData();
+		}
+	}
+
+	var pushObject = {"id":id};
+	var reqData = JSON.stringify(pushObject);
+	reqData = reqData.replace("\n","");
+	reqData = reqData.replace("'", "\"");
+
+	r.send(reqData);
 }
 
 function getData() {

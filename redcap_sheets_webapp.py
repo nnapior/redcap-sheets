@@ -5,6 +5,7 @@ from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
 from lib.Google import *
 from forms import SettingsForm
+import json
 
 
 app = Flask(__name__)
@@ -116,10 +117,9 @@ def import_to_redcap():
 
 @app.route('/delete_record_redcap', methods=["POST"])
 def delete_record():
-    if request.method == "POST":
-        id = request.form['participantSelection']
-        delete_records(id)
-        return redirect(url_for("home"))
+    if request.json:
+        deleted = delete_records(request.json['id'])
+        return json.dumps({'deleted': deleted})
 
 
 if __name__ == '__main__':
