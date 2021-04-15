@@ -141,7 +141,6 @@ def generateTuple(jsonObject):
         for eventKey in eventKeys:
             participantObject = ()
             for participantKey in list(event[eventKey].keys()):
-                print(event[eventKey][participantKey])
                 participantValue = str(event[eventKey][participantKey]).replace("\n", " ")
                 participantObject = participantObject+(participantValue,)
             eventObject = eventObject+(participantObject,)
