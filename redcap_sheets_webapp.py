@@ -58,7 +58,7 @@ def authGoogleRequest():
    CLIENT_SECRET_FILE = 'client_secret.json'
    API_NAME = 'sheets'
    API_VERSION = 'v4'
-   SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
+   SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.metadata.readonly']
 
    return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 

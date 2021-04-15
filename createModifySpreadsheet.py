@@ -17,7 +17,7 @@ def create_service(creds):
     CLIENT_SECRET_FILE = 'client_secret.json'
     API_NAME = 'sheets'
     API_VERSION = 'v4'
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive']
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.metadata.readonly']
 
     #calls Create_Service from google module
     service= Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
