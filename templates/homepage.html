@@ -58,9 +58,7 @@
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
                         <select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="showSheetSelection(this.value)">
-                            <option value="new">New Sheet</option>
-                            <option value="replace">Existing Sheet (Replace)</option>
-                            <option value="append">Existing Sheet (Append)</option>
+                            <option value="disabled">DISABLED</option>
                         </select>
                         <div id="sheetImportSelection" style="visibility:hidden; position:absolute;z-index:-10">
                             <button style="display:inline" onclick="chooseSheet()" class="btn btn-secondary">Select Google Sheet</button>
@@ -96,9 +94,10 @@
                             <option value="new">New Sheet</option>
                             <option value="replace">Existing Sheet (Replace)</option>
                         </select>
-                        <div id="sheetSelection" style="visibility:hidden; position:absolute;z-index:-10">
-                            <button style="display:inline" onclick="chooseSheet()" class="btn">Select Google Sheet</button>
+                        <div id="sheetSelection" style="display:none">
+                            <button style="display:inline" onclick="refreshSheets()" class="btn" id="refreshSheetsButton">Refresh</button>
                             <p id="sheetName">Pick a Sheet</p>
+                            <select id="sheetIDSelect" type="select" style="display:none"></select>
                         </div>
                     </div>
                     <div class="col">

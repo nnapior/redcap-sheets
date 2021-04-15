@@ -1,5 +1,4 @@
 var data;
-var sheetID;
 
 function getValues(object, level = 0) {
 	if(typeof(object) == "string") {
@@ -128,10 +127,6 @@ function pushToRedcap(object) {
 function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
-
-	console.log(window.localStorage.getItem("googleCreds"));
-
-
 	if(window.localStorage.getItem("googleCreds") != undefined) {
 
 		//if we're doing sheet destination control, use this outline
@@ -156,13 +151,14 @@ function pushToSheets(object) {
 
 			r.send(reqData);
 		} else {
+			var sheetID = document.getElementById("sheetIDSelect").value;
 			if(sheetID != null) {
 				switch(sheetDestination) {
 					case "replace":
 						//put code to replace an existing sheet's data here
 						console.log("writing to an existing sheet (replacing) with id "+sheetID);
 
-						var pushObject = {"mode":"replace", "object":object, "creds":window.localStorage.getItem("googleCreds")};
+						var pushObject = {"mode":"replace", "id":sheetID, "object":object, "creds":window.localStorage.getItem("googleCreds")};
 
 						var r = new XMLHttpRequest();
 						r.open("POST","/pushData",true);
@@ -188,25 +184,17 @@ function pushToSheets(object) {
 				alert("there was an error exporting to an existing sheet: sheet not selected");
 			}
 		}
+	} else {
+		alert("there was an error exporting to an existing sheet: not signed in to google");
 	}
 }
 
 function showEventCheckboxes(value) {
-	var eventCheckboxes;
-	console.log(value.startsWith('import'));
-	if(value.startsWith('import')) {
-		eventCheckboxes = document.getElementById("selectedImportEvents");
+	var eventCheckboxes = document.getElementById("selectedEvents");
+	if(value == "select") {
+		eventCheckboxes.style.display = "block";
 	} else {
-		eventCheckboxes = document.getElementById("selectedEvents");
-	}
-	if(value.endsWith('select')) {
-		eventCheckboxes.style.visibility = "visible";
-		eventCheckboxes.style.position = "relative";
-		eventCheckboxes.style.zIndex = 1;
-	} else {
-		eventCheckboxes.style.visibility = "hidden";
-		eventCheckboxes.style.position = "absolute";
-		eventCheckboxes.style.zIndex = -10;
+		eventCheckboxes.style.display = "none";
 	}
 }
 
@@ -277,35 +265,66 @@ function setButtons(object) {
 	showEvent(keys[0]);
 }
 
-function chooseSheet() {
+var sheetIDs = {};
+var sheetsRefreshing = false;
+
+function refreshSheets() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
-// 	console.log("choosing sheet");
-//
-// 	var req = new XMLHttpRequest();
-// 	req.open("GET","/pickSpreadsheet", true);
-// 	req.onreadystatechange = function() {
-// 		if(this.readyState == 4 && this.status == 200) {
-// 			console.log(this.response);
-// 		}
-// 	}
-	// req.send();
+	if(!sheetsRefreshing) {
+		sheetsRefreshing = true;
+		document.getElementById("sheetName").innerHTML = "Loading sheets...";
+		document.getElementById("refreshSheetsButton").innerHTML = "Refreshing...";
 
-	//placeholder id
-	sheetID = "1";
+		var req = new XMLHttpRequest();
+		req.open("POST","/getSheets", true);
+		req.setRequestHeader("Content-Type","application/json");
+		req.onreadystatechange = function() {
+			if(this.status == 200 && this.readyState == 4) {
+				var res = JSON.parse(this.response);
+				document.getElementById("sheetIDSelect");
+				if(res == {}) {
+					document.getElementById("sheetName").innerHTML = "No sheets found.";
+					document.getElementById("sheetIDSelect").style.display = "none";
+				} else {
+					document.getElementById("sheetName").innerHTML = "Pick a sheet";
+					document.getElementById("sheetIDSelect").style.display = "block";
+				}
 
-	document.getElementById("sheetName").innerHTML = sheetID;
+
+				document.getElementById("refreshSheetsButton").innerHTML = "Refresh";
+				sheetsRefreshing = false;
+
+
+				var selectContainer = document.getElementById("sheetIDSelect");
+				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
+
+				for(var key in res) {
+					var option = document.createElement("option");
+					option.value = key;
+					option.innerHTML = res[key];
+					selectContainer.appendChild(option);
+				}
+			}
+		}
+		if(window.localStorage.getItem("googleCreds") != undefined) {
+			var pushObject = {"creds":window.localStorage.getItem("googleCreds")};
+			var reqData = JSON.stringify(pushObject);
+			reqData = reqData.replace("\n","");
+			reqData = reqData.replace("'", "\"");
+
+			req.send(reqData);
+		} else {
+			alert("There was an error reading your google credentials. please make sure you are logged in");
+		}
+	}
 }
 
 function showSheetSelection(value) {
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
-		sheetSelection.style.visibility = "hidden";
-		sheetSelection.style.position = "absolute";
-		sheetSelection.style.zIndex = -10;
+		sheetSelection.style.display = "none";
 	} else {
-		sheetSelection.style.visibility = "visible";
-		sheetSelection.style.position = "relative";
-		sheetSelection.style.zIndex = 1;
+		sheetSelection.style.display = "block";
 	}
 }
 

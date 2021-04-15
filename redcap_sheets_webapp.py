@@ -68,9 +68,12 @@ def clearSheetRequest():
     return cleanSheet()
 
 
-@app.route('/pickSpreadsheet', methods=['GET'])
-def pickSheetRequest():
-    return pickSheet()
+@app.route('/getSheets', methods=['PUT', 'POST'])
+def getSheetsRequest():
+    if request.json:
+        return getSheets(request.json)
+    else:
+        return print("-1")
 
 
 @app.route('/authREDCap', methods=['POST'])

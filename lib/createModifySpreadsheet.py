@@ -9,8 +9,32 @@ Helper functions for api calls
 '''
 
 
-def pickSheet():
-    return "1"
+def getSheets(creds):
+    service = create_drive_service(creds['creds'])
+    files = (service.files().list().execute())
+
+    result = {}
+
+    for file in files["files"]:
+        print(file["name"])
+        id = (file["id"])
+        print(id)
+        md = service.files().get(fileId=file["id"]).execute()
+        if(md["mimeType"] == "application/vnd.google-apps.spreadsheet"):
+            result[file["id"]] = file["name"]
+
+    return json.dumps(result)
+
+
+def create_drive_service(creds):
+    CLIENT_SECRET_FILE = 'config/client_secret.json'
+    API_NAME = 'drive'
+    API_VERSION = 'v3'
+    SCOPES = ['https://www.googleapis.com/auth/drive']
+
+    # calls Create_Service from google module
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
+    return service
 
 
 def create_service(creds):
@@ -144,7 +168,13 @@ def pushJSON(jsonObject):
 
     if(importMode == "replace"):
         # replacing sheet data
-        pushCompletely(data, getSpreadsheetID(), creds)
+        id = jsonObject['id']
+
+        if(id is None):
+            return "NO SPREADSHEET ID"
+
+        # print("SPREADSHEET ID NOT PRESENT YET")
+        pushCompletely(data, id, creds)
     else:
         # creating new sheet
         pushCompletely(data, createSpreadsheet(creds), creds)
@@ -377,7 +407,7 @@ if __name__ == "__main__":
     '''for title in worksheetTitles:
         createWorksheet(service, spreadsheet_id, title)'''
 
-    #updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
+    # updateData(service,spreadsheet_id, worksheet_range, values, value_range_body)
 
     # print(getWorksheetID("a"))
     # deleteWorksheet(getWorksheetID("Sheet3"))
