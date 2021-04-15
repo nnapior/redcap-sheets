@@ -26,14 +26,24 @@ Move this file into your project directory
 
 ## Running the webapp
 Run this python script with `python redcap_sheets_webapp.py`
+* Use `python3` on MacOS python doesn't work.
+	* ex. `python3 redcap_sheets_webapp.py`
 
+### main Update 2021-04-15
+Merged:
+* Add_Import_to_webapp
+* cleanup
+* create-new-spreadsheet-tabler
+* security-reinforcement
 
-### main Update 2021-04-06-16:12
-
-Added:
-* Merged code for creating new spreadsheets with Tabler interface.
-* Added a placeholder function for choosing an existing spreadsheet. Currently nonfunctional.
-
-Changed:
-* Removed "Existing (Append)" spreadsheet destination.
-* Renamed page to "REDCap to Google Sheets"
+Changes:
+* Sign in to Google
+* Sign out of Google
+* Import from Google Sheets to REDcap
+* Select and export to existing sheet in Google Drive
+* Settings page to enter REDcap API key
+* Redirect to Google sheet in new window when export is complete
+* Added documentation
+* Added folder structure for webapp
+* Added folder structure for `lib/` for Dependencies of the webapp
+* Updated requirements.txt, README, and .gitignore
