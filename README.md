@@ -35,12 +35,11 @@ Move this file into your project directory
 Run this python script with "python redcap_sheets_webapp.py"
 
 
-## main Update 2021-04-06-16:12
+## `security-reinforcement` Update 2021-04-14-23:53
 
 Added:
-* Merged code for creating new spreadsheets with Tabler interface.
-* Added a placeholder function for choosing an existing spreadsheet. Currently nonfunctional.
+* Added a button to sign into Google
+* Added a button to revoke access of your Google account to the webapp
 
 Changed:
-* Removed "Existing (Append)" spreadsheet destination.
-* Renamed page to "REDCap to Google Sheets"
+* Modified the `.pickle` file behavior, so your user credentials are returned to the browser and stored locally rather than server-side
