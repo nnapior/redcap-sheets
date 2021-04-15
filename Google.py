@@ -6,6 +6,14 @@ from googleapiclient.http import MediaFileUpload, MediaIoBaseDownload
 from google.auth.transport.requests import Request
 import io
 import codecs
+import requests
+
+def signOutGoogle(credData):
+    cred = pickle.loads(codecs.decode(credData.encode(), "base64"))
+    requests.post('https://oauth2.googleapis.com/revoke',
+        params={'token': cred.token},
+        headers = {'content-type': 'application/x-www-form-urlencoded'})
+    return "1"
 
 def signInGoogle(client_secret_file, api_name, api_version, *scopes):
     print(client_secret_file, api_name, api_version, scopes, sep='-')

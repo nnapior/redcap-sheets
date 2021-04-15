@@ -88,10 +88,6 @@ function exportData() {
 function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
-	
-	console.log(window.localStorage.getItem("googleCreds"));
-	
-	
 	if(window.localStorage.getItem("googleCreds") != undefined) {
 		
 		//if we're doing sheet destination control, use this outline
@@ -148,6 +144,8 @@ function pushToSheets(object) {
 				alert("there was an error exporting to an existing sheet: sheet not selected");
 			}
 		}
+	} else {
+		alert("there was an error exporting to an existing sheet: not signed in to google");
 	}
 }
 

@@ -38,8 +38,7 @@ def renameSheetRequest():
    if(request.json):
       if(request.json["newName"]):
          return renameSheet(request.json["newName"])
-   else:
-       return print("-1")
+   return "-1"
 
 @app.route('/clearSheet', methods = ['PUT','POST'])
 def clearSheetRequest():
@@ -61,6 +60,13 @@ def authGoogleRequest():
    SCOPES = ['https://www.googleapis.com/auth/spreadsheets','https://www.googleapis.com/auth/drive.metadata.readonly']
 
    return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+
+@app.route('/signOutGoogle', methods = ['POST'])
+def signOutGoogleRequest():
+   if(request.json):
+      if(request.json["creds"]):
+         return signOutGoogle(request.json["creds"])
+   return "-1"
 
 @app.route('/pullData') 
 def pullData():
