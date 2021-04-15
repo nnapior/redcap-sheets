@@ -134,12 +134,14 @@ def pushJSON(jsonObject):
     
     if(importMode == "replace"):
         # replacing sheet data
-        pushCompletely(data, getSpreadsheetID())
+        pushCompletely(data, newSpreadsheetID())
+        return newSpreadsheetID()
     else:
         # creating new sheet
-        pushCompletely(data, createSpreadsheet())
-    
-    return "1"
+        
+        newSpreadsheetID = createSpreadsheet()
+        pushCompletely(data, newSpreadsheetID)
+        return newSpreadsheetID
 
 
 """

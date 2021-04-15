@@ -97,19 +97,27 @@ function pushToSheets(object) {
 		var pushObject = {"mode":"new", "object":object};
 		
 		var r = new XMLHttpRequest();
+		var spreadsheet_address = "https://docs.google.com/spreadsheets/d/";
 		r.open("POST","/pushData",true);
 		r.setRequestHeader("Content-Type","application/json");
 		r.onreadystatechange = function() {
 			if(this.readyState == 4 && this.status == 200) {
 				console.log(this.response);
+				var id = this.response;
+				window.open(spreadsheet_address+this.response);
 			}
 		}
+		
+		//window.open(spreadsheet_address);
 		
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
 		reqData = reqData.replace("'", "\"");
+
 		
 		r.send(reqData);
+
+		//window.open("https://git-scm.com/docs/git-restore");
 	} else {
 		if(sheetID != null) {
 			switch(sheetDestination) {
