@@ -1,9 +1,11 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from lib.py_REDcap import getValues
-from lib.createModifySpreadsheet import pushJSON, renameSheet, cleanSheet, pickSheet
+from lib.createModifySpreadsheet import *
 from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
+from lib.Google import *
 from forms import SettingsForm
+
 
 app = Flask(__name__)
 
@@ -11,6 +13,12 @@ app = Flask(__name__)
 @app.route('/scripts.js')
 def getScripts():
     with open("js/scripts.js", "r") as f:
+        return f.read()
+
+
+@app.route('/signin.js')
+def getSignin():
+    with open("js/signin.js", "r") as f:
         return f.read()
 
 
@@ -63,6 +71,22 @@ def clearSheetRequest():
 @app.route('/pickSpreadsheet', methods=['GET'])
 def pickSheetRequest():
     return pickSheet()
+
+
+@app.route('/authREDCap', methods=['POST'])
+def authREDCapRequest():
+    return "1"
+
+
+@app.route('/authGoogle', methods=['POST'])
+def authGoogleRequest():
+    CLIENT_SECRET_FILE = 'config/client_secret.json'
+    API_NAME = 'sheets'
+    API_VERSION = 'v4'
+    SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
+              'https://www.googleapis.com/auth/drive']
+
+    return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
 
 @app.route('/pullData')

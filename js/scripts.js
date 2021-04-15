@@ -18,7 +18,7 @@ function getValues(object, level = 0) {
 				outputStr+="--";
 			}
 			 outputStr+=key+": "+(getValues(object[key], level+1))+"<br>";
-	 }
+		}
 	}
 
 	return outputStr;
@@ -129,58 +129,64 @@ function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
 
-	//if we're doing sheet destination control, use this outline
-	var sheetDestination = document.getElementById("sheetMode").value;
-	if(sheetDestination == "new") {
-		//put code to create/write to a new sheet here
-		console.log("writing to new sheet");
-		var pushObject = {"mode":"new", "object":object};
+	console.log(window.localStorage.getItem("googleCreds"));
 
-		var r = new XMLHttpRequest();
-		r.open("POST","/pushData",true);
-		r.setRequestHeader("Content-Type","application/json");
-		r.onreadystatechange = function() {
-			if(this.readyState == 4 && this.status == 200) {
-				console.log(this.response);
+
+	if(window.localStorage.getItem("googleCreds") != undefined) {
+
+		//if we're doing sheet destination control, use this outline
+		var sheetDestination = document.getElementById("sheetMode").value;
+		if(sheetDestination == "new") {
+			//put code to create/write to a new sheet here
+			console.log("writing to new sheet");
+			var pushObject = {"mode":"new", "object":object, "creds":window.localStorage.getItem("googleCreds")};
+
+			var r = new XMLHttpRequest();
+			r.open("POST","/pushData",true);
+			r.setRequestHeader("Content-Type","application/json");
+			r.onreadystatechange = function() {
+				if(this.readyState == 4 && this.status == 200) {
+					console.log(this.response);
+				}
 			}
-		}
 
-		var reqData = JSON.stringify(pushObject);
-		reqData = reqData.replace("\n","");
-		reqData = reqData.replace("'", "\"");
+			var reqData = JSON.stringify(pushObject);
+			reqData = reqData.replace("\n","");
+			reqData = reqData.replace("'", "\"");
 
-		r.send(reqData);
-	} else {
-		if(sheetID != null) {
-			switch(sheetDestination) {
-				case "replace":
-					//put code to replace an existing sheet's data here
-					console.log("writing to an existing sheet (replacing) with id "+sheetID);
-
-					var pushObject = {"mode":"replace", "object":object};
-
-					var r = new XMLHttpRequest();
-					r.open("POST","/pushData",true);
-					r.setRequestHeader("Content-Type","application/json");
-					r.onreadystatechange = function() {
-						if(this.readyState == 4 && this.status == 200) {
-							console.log(this.response);
-						}
-					}
-
-					var reqData = JSON.stringify(pushObject);
-					reqData = reqData.replace("\n","");
-					reqData = reqData.replace("'", "\"");
-
-					r.send(reqData);
-
-					break;
-				default:
-					alert("there was an error exporting to an existing sheet: unknown export mode");
-					break;
-			}
+			r.send(reqData);
 		} else {
-			alert("there was an error exporting to an existing sheet: sheet not selected");
+			if(sheetID != null) {
+				switch(sheetDestination) {
+					case "replace":
+						//put code to replace an existing sheet's data here
+						console.log("writing to an existing sheet (replacing) with id "+sheetID);
+
+						var pushObject = {"mode":"replace", "object":object, "creds":window.localStorage.getItem("googleCreds")};
+
+						var r = new XMLHttpRequest();
+						r.open("POST","/pushData",true);
+						r.setRequestHeader("Content-Type","application/json");
+						r.onreadystatechange = function() {
+							if(this.readyState == 4 && this.status == 200) {
+								console.log(this.response);
+							}
+						}
+
+						var reqData = JSON.stringify(pushObject);
+						reqData = reqData.replace("\n","");
+						reqData = reqData.replace("'", "\"");
+
+						r.send(reqData);
+
+						break;
+					default:
+						alert("there was an error exporting to an existing sheet: unknown export mode");
+						break;
+				}
+			} else {
+				alert("there was an error exporting to an existing sheet: sheet not selected");
+			}
 		}
 	}
 }
@@ -273,21 +279,21 @@ function setButtons(object) {
 
 function chooseSheet() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
-	console.log("choosing sheet");
-
-	var req = new XMLHttpRequest();
-	req.open("GET","/pickSpreadsheet", true);
-	req.onreadystatechange = function() {
-		if(this.readyState == 4 && this.status == 200) {
-			console.log(this.response);
-		}
-	}
-	req.send();
-
-	// //placeholder id
-	// sheetID = "1";
+// 	console.log("choosing sheet");
 //
-	// document.getElementById("sheetName").innerHTML = sheetID;
+// 	var req = new XMLHttpRequest();
+// 	req.open("GET","/pickSpreadsheet", true);
+// 	req.onreadystatechange = function() {
+// 		if(this.readyState == 4 && this.status == 200) {
+// 			console.log(this.response);
+// 		}
+// 	}
+	// req.send();
+
+	//placeholder id
+	sheetID = "1";
+
+	document.getElementById("sheetName").innerHTML = sheetID;
 }
 
 function showSheetSelection(value) {

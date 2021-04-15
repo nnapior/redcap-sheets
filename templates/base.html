@@ -23,6 +23,7 @@
 
     <!-- redcap scripts -->
     <script src="scripts.js" type="text/javascript"></script>
+    <script src="signin.js" type="text/javascript"></script>
 
     <!-- Tabler CDN -->
     <script src="https://unpkg.com/@tabler/core@1.0.0-beta/dist/js/tabler.min.js"></script>
@@ -141,6 +142,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Sign In</label>
+                            <div class="form-hint">Sign in to REDCap and Google.</div>
+                            <div class="btn-group w-100">
+                                <button class="btn btn-secondary" onclick="signInGoogle()">
+                                    Sign In To Google
+                                </button>
+                            </div>
+                        </div>
                         <div class="mb-3">
                             <label class="form-label">Color scheme</label>
                             <div class="form-hint">Light or dark presentation.</div>
