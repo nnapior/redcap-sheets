@@ -87,7 +87,8 @@ def authGoogleRequest():
     API_NAME = 'sheets'
     API_VERSION = 'v4'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
-              'https://www.googleapis.com/auth/drive.metadata.readonly']
+              'https://www.googleapis.com/auth/drive.metadata.readonly',
+              'https://www.googleapis.com/auth/userinfo.profile']
 
     return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
@@ -97,6 +98,13 @@ def signOutGoogleRequest():
     if(request.json):
         if(request.json["creds"]):
             return signOutGoogle(request.json["creds"])
+    return "-1"
+
+
+@app.route('/userinfo', methods=['POST'])
+def user_info():
+    if(request.json):
+        return get_user_info(request.json['creds'])
     return "-1"
 
 

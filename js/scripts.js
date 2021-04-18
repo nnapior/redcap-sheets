@@ -1,6 +1,47 @@
 var data;
 var sheetID;
 
+function getUserInfo() {
+	if(window.localStorage.getItem("googleCreds") != undefined) {
+		var creds = window.localStorage.getItem("googleCreds");
+		var r = new XMLHttpRequest();
+		r.open("POST","/userinfo",true);
+		r.setRequestHeader("Content-Type","application/json");
+		r.onreadystatechange = function() {
+			if(this.readyState == 4 && this.status == 200) {
+				var userData = JSON.parse(this.response);
+				console.log(userData);
+				var avatar = document.getElementById('avatar');
+				var name = document.getElementById('userName');
+				avatar.style.backgroundImage = "url('"+userData["picture"]+"')";
+				name.innerHTML = userData["name"];
+				var userInfo = document.getElementById('userInfo');
+				var signinBtn = document.getElementById('googleBtn');
+				signinBtn.style.display = "none";
+				userInfo.style.display = "block";
+				avatar.style.display = "block";
+			}
+		}
+
+		var pushObject = {"creds":creds};
+		var reqData = JSON.stringify(pushObject);
+		reqData = reqData.replace("\n","");
+		reqData = reqData.replace("'", "\"");
+
+		r.send(reqData);
+	} else {
+		var userInfo = document.getElementById('userInfo');
+		var signinBtn = document.getElementById('googleBtn');
+		userInfo.style.display = "none";
+		signinBtn.style.display = "block";
+	}
+}
+
+function pageLoad() {
+	getUserInfo();
+	getData();
+}
+
 function getValues(object, level = 0) {
 	if(typeof(object) == "string") {
 		return object;
