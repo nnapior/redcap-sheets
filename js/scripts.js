@@ -211,12 +211,17 @@ function pushToSheets(object) {
 }
 
 function showEventCheckboxes(value) {
+	console.log("here")
 	var eventCheckboxes = document.getElementById("selectedEvents");
-	if(value == "select") {
-		eventCheckboxes.style.display = "block";
-	} else {
-		eventCheckboxes.style.display = "none";
-	}
+	if (value == "select") {
+		eventCheckboxes.style.visibility = "visible";
+		eventCheckboxes.style.position = "relative";
+		eventCheckboxes.style.zIndex = 1;
+	  } else {
+		eventCheckboxes.style.visibility = "hidden";
+		eventCheckboxes.style.position = "absolute";
+		eventCheckboxes.style.zIndex = -10;
+	  }
 }
 
 function showEvent(eventKey) {
@@ -376,6 +381,7 @@ function getData() {
 		if(this.status == 200 && this.readyState == 4) {
 			var parsedRes = JSON.parse(r.response);
 			data = parsedRes;
+			console.log(data)
 			setButtons(data);
 			document.getElementById("refresh-btn").classList.remove("btn-loading");
 		}

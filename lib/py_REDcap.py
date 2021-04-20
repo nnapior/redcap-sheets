@@ -74,7 +74,7 @@ def getValues(apiKey):
         Returns a json object containing the data within a REDCap
     """
     # get the api key from config.json
-    #apiKey = getAPIKey()
+    # apiKey = getAPIKey()
 
     # get the raw records object
     jsonObject = getRecords(apiKey)
@@ -166,5 +166,4 @@ def getValueDict():
 # main function
 if __name__ == "__main__":
     # print(getValues())
-
     print(getValues(getAPIKey()))
