@@ -213,14 +213,26 @@ function pushToSheets(object) {
 function showEventCheckboxes(value) {
 	console.log("here")
 	var eventCheckboxes = document.getElementById("selectedEvents");
+	var eventImportCheckboxes = document.getElementById("selectedImportEvents");
 	if (value == "select") {
 		eventCheckboxes.style.visibility = "visible";
 		eventCheckboxes.style.position = "relative";
 		eventCheckboxes.style.zIndex = 1;
-	  } else {
+	  } 
+	  else if (value == "all") {
 		eventCheckboxes.style.visibility = "hidden";
 		eventCheckboxes.style.position = "absolute";
 		eventCheckboxes.style.zIndex = -10;
+	  }
+	if (value == "import-select") {
+		eventImportCheckboxes.style.visibility = "visible";
+		eventImportCheckboxes.style.position = "relative";
+		eventImportCheckboxes.style.zIndex = 1;
+	  } 
+	  else if(value == "import-all") {
+		eventImportCheckboxes.style.visibility = "hidden";
+		eventImportCheckboxes.style.position = "absolute";
+		eventImportCheckboxes.style.zIndex = -10;
 	  }
 }
 
