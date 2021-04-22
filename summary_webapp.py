@@ -2,7 +2,7 @@ import requests, json, os
 from py_REDcap import getValueDict
 from createModifySpreadsheet import *
 
-
+#compares column names b/w google and redcap 
 def checkColumnNames():
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
@@ -29,6 +29,7 @@ def checkColumnNames():
             print("Column", column_count, "does not match!") 
             column_count += 1
 
+#check red cap and google sheets data cells for missing values
 def checkcellData():
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
@@ -58,33 +59,39 @@ def checkcellData():
             cell_count += 1
     #print(spreadsheet_data)
    
-
+#checks redcap worksheets and google sheets to see if they match 
 def checkworksheetNames():
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     #redcap worksheet names
     redcap_worksheets = (getValueDict()) 
-    redcap_worksheets = list(list(list(redcap_worksheets.values())[0].values())[0].values())
-    #currently print data values not sheet name
+    list(redcap_worksheets.keys())
+    redcap_worksheets = getValueDict()
+    redcap_worksheets = list(redcap_worksheets.keys())
+    #currently printing data values not sheet name
     print(redcap_worksheets)
 
     #Google worksheet names
-    results = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
-    google_worksheet_names = results.get('sheets', [])
-    goole_worksheet_names = google_worksheet_names[0].get('properties', [])
+    data = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute() 
+    google_worksheet_names = [worksheet["properties"]["title"]for worksheet in data["sheets"]]
     print(google_worksheet_names)
+    #print(google_worksheet_names)
     
-    worksheet_count = 0 
-    while worksheet_count < len(google_worksheet_names):
-        if google_worksheet_names[worksheet_count] == redcap_worksheets[worksheet_count]:
+    google_worksheet_count = 0 
+    redcap_worksheet_count = 1
+    
+    while google_worksheet_count < len(google_worksheet_names):
+        if google_worksheet_names[google_worksheet_count] == redcap_worksheets[redcap_worksheet_count]:
             print("Worksheets Match")
-            worksheet_count += 1
-            print(worksheet_count, "Worksheets")
+            print(google_worksheet_count, "Worksheets")
+            google_worksheet_count += 1
+            redcap_worksheet_count += 1
         else: 
-            print("Worksheet do not match")
+            print("Worksheet does not match")
+            print(google_worksheet_count, "Worksheets")
             worksheet_count += 1
-            print(worksheet_count, "Worksheets")
-
+            redcap_worksheet_count += 1
+    
 if __name__ == "__main__":
     checkColumnNames()
     checkcellData()
