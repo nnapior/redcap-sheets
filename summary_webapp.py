@@ -70,18 +70,20 @@ def checkworksheetNames():
 
     #Google worksheet names
     results = service.spreadsheets().get(spreadsheetId=spreadsheet_id, ranges=[], includeGridData=False).execute()
-    worksheet_names = results.get('sheets', [])
-    worksheet_names = worksheet_names[0].get('properties', [])
+    google_worksheet_names = results.get('sheets', [])
+    goole_worksheet_names = google_worksheet_names[0].get('properties', [])
+    print(google_worksheet_names)
     
-    print(worksheet_names)
     worksheet_count = 0 
-    while worksheet_count < len(worksheet_names):
-        if worksheet_names == '':
-            print("Missing Google Worksheet")
+    while worksheet_count < len(google_worksheet_names):
+        if google_worksheet_names[worksheet_count] == redcap_worksheets[worksheet_count]:
+            print("Worksheets Match")
             worksheet_count += 1
+            print(worksheet_count, "Worksheets")
         else: 
-            print("No Google workssheet Missing")
+            print("Worksheet do not match")
             worksheet_count += 1
+            print(worksheet_count, "Worksheets")
 
 if __name__ == "__main__":
     checkColumnNames()
