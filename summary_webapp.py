@@ -18,7 +18,7 @@ def checkColumnNames():
     results = service.spreadsheets().values().batchGet(spreadsheetId=spreadsheet_id, ranges=range_names).execute()
     google_column_values = results.get('valueRanges', [])
     google_column_values = google_column_values[0].get("values")[0]
-    print(google_column_values)
+    #print(google_column_values)
     #check against each other 
     column_count = 0
     while column_count < len(google_column_values):
@@ -59,7 +59,7 @@ def checkcellData():
     #print(spreadsheet_data)
    
 
-def checkworksheetNumbers():
+def checkworksheetNames():
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     #redcap worksheet names
@@ -86,4 +86,4 @@ def checkworksheetNumbers():
 if __name__ == "__main__":
     checkColumnNames()
     checkcellData()
-    checkworksheetNumbers()
+    checkworksheetNames()
