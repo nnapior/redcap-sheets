@@ -95,8 +95,8 @@ def authGoogleRequest():
 @app.route('/signOutGoogle', methods=['POST'])
 def signOutGoogleRequest():
     if(request.json):
-        if(request.json["creds"]):
-            return signOutGoogle(request.json["creds"])
+        if(request.json["creds"] and request.json["key"]):
+            return signOutGoogle(request.json["creds"], request.json["key"])
     return "-1"
 
 

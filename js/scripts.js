@@ -142,14 +142,19 @@ function pushToRedcap(object) {
 function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
-	if(window.localStorage.getItem("googleCreds") != undefined) {
-
+	if(window.localStorage.getItem("googleCredData") != undefined && window.localStorage.getItem("googleCredKey") != undefined) {
+	document.getElementById("export-btn-icon").classList.add("btn-loading");
 		//if we're doing sheet destination control, use this outline
 		var sheetDestination = document.getElementById("sheetMode").value;
 		if(sheetDestination == "new") {
 			//put code to create/write to a new sheet here
 			console.log("writing to new sheet");
-			var pushObject = {"mode":"new", "object":object, "creds":window.localStorage.getItem("googleCreds")};
+			var pushObject = {
+				"mode":"new",
+				"object":object, 
+				"key":window.localStorage.getItem("googleCredKey"),
+				"creds":window.localStorage.getItem("googleCredData")
+			};
 
 			var r = new XMLHttpRequest();
 			var spreadsheet_address = "https://docs.google.com/spreadsheets/d/";
@@ -160,13 +165,16 @@ function pushToSheets(object) {
 					console.log(this.response);
 					var id = this.response;
 					window.open(spreadsheet_address+this.response);
+					document.getElementById("export-btn-icon").classList.remove("btn-loading");
 				}
 			}
 
 			var reqData = JSON.stringify(pushObject);
 			reqData = reqData.replace("\n","");
-			reqData = reqData.replace("'", "\"");
+			reqData = reqData.replace("'", "\'");
 
+			console.log(reqData);
+			
 			r.send(reqData);
 		} else {
 			var sheetID = document.getElementById("sheetIDSelect").value;
@@ -176,7 +184,13 @@ function pushToSheets(object) {
 						//put code to replace an existing sheet's data here
 						console.log("writing to an existing sheet (replacing) with id "+sheetID);
 
-						var pushObject = {"mode":"replace", "id":sheetID, "object":object, "creds":window.localStorage.getItem("googleCreds")};
+						var pushObject = {
+							"mode":"replace",
+							"id":sheetID,
+							"object":object,
+							"key":window.localStorage.getItem("googleCredKey"),
+							"creds":window.localStorage.getItem("googleCredData")
+						};
 
 						var r = new XMLHttpRequest();
 						var spreadsheet_address = "https://docs.google.com/spreadsheets/d/";
@@ -187,6 +201,7 @@ function pushToSheets(object) {
 								console.log(this.response);
 								var id = this.response;
 								window.open(spreadsheet_address+this.response);
+								document.getElementById("export-btn-icon").classList.remove("btn-loading");
 							}
 						}
 
@@ -199,13 +214,19 @@ function pushToSheets(object) {
 						break;
 					default:
 						alert("there was an error exporting to an existing sheet: unknown export mode");
+						
+						document.getElementById("export-btn-icon").classList.remove("btn-loading");
 						break;
 				}
 			} else {
+				
+				document.getElementById("export-btn-icon").classList.remove("btn-loading");
 				alert("there was an error exporting to an existing sheet: sheet not selected");
 			}
 		}
 	} else {
+		
+		document.getElementById("export-btn-icon").classList.remove("btn-loading");
 		alert("there was an error exporting to an existing sheet: not signed in to google");
 	}
 }

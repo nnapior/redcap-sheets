@@ -7,9 +7,11 @@ from google.auth.transport.requests import Request
 import io
 import codecs
 import requests
+from cryptography.fernet import Fernet
+import json
 
-
-def signOutGoogle(credData):
+def signOutGoogle(credData, key):
+    
     cred = pickle.loads(codecs.decode(credData.encode(), "base64"))
     requests.post('https://oauth2.googleapis.com/revoke',
                   params={'token': cred.token},
@@ -23,7 +25,6 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
     API_SERVICE_NAME = api_name
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
-    print(SCOPES)
     cred = None
 
     if not cred or not cred.valid:
@@ -32,8 +33,24 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
         else:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
             cred = flow.run_local_server()
-
-        return codecs.encode(pickle.dumps(cred), "base64").decode()
+        
+        content = codecs.encode(pickle.dumps(cred), "base64").decode()
+        
+        key = Fernet.generate_key()
+        print(key)
+        
+        fernet = Fernet(key)
+        
+        encrypted = fernet.encrypt(content.encode())
+        
+        object = {}
+        
+        object["key"] = key.decode("utf-8")
+        object["data"] = str(encrypted);
+        
+        print(object)
+        
+        return json.dumps(object)
 
 
 def Create_Service(client_secret_file, api_name, api_version, credData, *scopes):
