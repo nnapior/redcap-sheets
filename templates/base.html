@@ -21,6 +21,8 @@
     <meta name="MobileOptimized" content="320"/>
     <meta name="robots" content="noindex,nofollow,noarchive"/>
 
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+
     <!-- redcap scripts -->
     <script src="{{ url_for('static', filename='js/scripts.js') }}" type="text/javascript"></script>
     <script src="{{ url_for('static', filename='js/signin.js') }}"></script>
@@ -57,7 +59,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <button id="googleBtn" type="button" class="btn btn-google" onclick="signInGoogle()">
+                    <button id="googleBtn" type="button" class="btn btn-google" style="display:none;" onclick="signInGoogle()">
                         <i class="ti ti-brand-google"></i>
                         Sign in with Google
                     </button>
