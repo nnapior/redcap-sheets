@@ -43,7 +43,7 @@
 </div>
 <div class="row">
     <div class="col">
-        <div class="card">
+        <div class="card cursor-not-allowed" id="importCard">
             <div class="card-body">
                 <h3 class="card-title">Import From Google Sheets</h3>
                 <div class="row mb-3" id="">
@@ -66,7 +66,7 @@
                     </div>
                     <div class="col">
                         <div class="form-label">Run Import</div>
-                        <button type="button" onclick="importData()" class="btn btn-green w-100">
+                        <button type="button" onclick="importData()" class="btn btn-green w-100 disabled" id="importBtn">
                             <i id="" class="ti ti-table-export p-2 pt-0 pb-0"></i>
                             Import
                         </button>
@@ -76,7 +76,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card">
+        <div class="card cursor-not-allowed" id="exportCard">
             <div class="card-body">
                 <h3 class="card-title">Export to Google Sheets</h3>
                 <div class="row mb-3" id="exportOptions">
@@ -102,7 +102,7 @@
                     </div>
                     <div class="col">
                         <div class="form-label">Run Export</div>
-                        <button type="button" onclick="exportData()" class="btn btn-green w-100">
+                        <button type="button" onclick="exportData()" class="btn btn-green w-100 disabled" id="exportBtn">
                             <i id="export-btn-icon" class="ti ti-table-export p-2 pt-0 pb-0"></i>
                             Export
                         </button>

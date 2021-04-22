@@ -11,18 +11,6 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/scripts.js')
-def getScripts():
-    with open("js/scripts.js", "r") as f:
-        return f.read()
-
-
-@app.route('/signin.js')
-def getSignin():
-    with open("js/signin.js", "r") as f:
-        return f.read()
-
-
 @app.route('/')
 @app.route('/home')
 def home():
@@ -39,12 +27,6 @@ def settings():
         flash('REDcap API key entered successfully!', "success")
         return redirect(url_for('home'))
     return render_template('settings.html', form=form)
-
-
-@app.route('/style.css')
-def getStyle():
-    with open("css/style.css", "r") as f:
-        return f.read()
 
 
 @app.route('/pushData', methods=['PUT', 'POST'])

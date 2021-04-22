@@ -11,15 +11,11 @@ function getUserInfo() {
 			if(this.readyState == 4 && this.status == 200) {
 				var userData = JSON.parse(this.response);
 				console.log(userData);
-				var avatar = document.getElementById('avatar');
-				var name = document.getElementById('userName');
-				avatar.style.backgroundImage = "url('"+userData["picture"]+"')";
-				name.innerHTML = userData["name"];
-				var userInfo = document.getElementById('userInfo');
-				var signinBtn = document.getElementById('googleBtn');
-				signinBtn.style.display = "none";
-				userInfo.style.display = "block";
-				avatar.style.display = "block";
+				console.log(userData["name"]);
+				console.log(userData["picture"]);
+				showUser(userData["name"], userData["picture"]);
+				enableImport();
+				enableExport();
 			}
 		}
 
@@ -30,11 +26,57 @@ function getUserInfo() {
 
 		r.send(reqData);
 	} else {
-		var userInfo = document.getElementById('userInfo');
-		var signinBtn = document.getElementById('googleBtn');
-		userInfo.style.display = "none";
-		signinBtn.style.display = "block";
+		showSignInGoogle();
+		disableImport();
+		disableExport();
 	}
+}
+
+function showUser(name, avatar_url) {
+	var avatar = document.getElementById('avatar');
+	var nameDiv = document.getElementById('userName');
+	var signinBtn = document.getElementById('googleBtn');
+	var userInfo = document.getElementById('userInfo');
+	avatar.style.backgroundImage = "url('"+avatar_url+"')";
+	nameDiv.innerHTML = name;
+	signinBtn.style.display = "none";
+	userInfo.style.display = "block";
+	avatar.style.display = "block";
+}
+
+function showSignInGoogle() {
+	var signinBtn = document.getElementById('googleBtn');
+	var userInfo = document.getElementById('userInfo');
+	userInfo.style.display = "none";
+	signinBtn.style.display = "block";
+}
+
+function disableImport() {
+	var importCard = document.getElementById('importCard');
+	var importBtn = document.getElementById('importBtn');
+	importCard.classList.add('cursor-not-allowed');
+	importBtn.classList.add('disabled');
+}
+
+function disableExport() {
+	var exportCard = document.getElementById('exportCard');
+	var exportBtn = document.getElementById('exportBtn');
+	exportCard.classList.add('cursor-not-allowed');
+	exportBtn.classList.add('disabled');
+}
+
+function enableImport() {
+	var importCard = document.getElementById('importCard');
+	var importBtn = document.getElementById('importBtn');
+	importCard.classList.remove('cursor-not-allowed');
+	importBtn.classList.remove('disabled');
+}
+
+function enableExport() {
+	var exportCard = document.getElementById('exportCard');
+	var exportBtn = document.getElementById('exportBtn');
+	exportCard.classList.remove('cursor-not-allowed');
+	exportBtn.classList.remove('disabled');
 }
 
 function pageLoad() {
