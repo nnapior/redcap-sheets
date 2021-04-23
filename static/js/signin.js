@@ -16,6 +16,7 @@ function signInGoogle() {
 		if(this.readyState == 4 && this.status == 200) {
 			window.localStorage.setItem("googleCreds",this.response);
 			alert("successfully signed in");
+			getUserInfo();
 		}
 	}
 	req.send();
@@ -26,7 +27,7 @@ function signOutGoogle() {
 	var reqData = JSON.stringify(obj);
 	reqData = reqData.replace("\n","");
 	reqData = reqData.replace("'", "\"");
-	
+
 	var req = new XMLHttpRequest();
 	req.open("POST","/signOutGoogle", true);
 	req.setRequestHeader("Content-Type","application/json");
@@ -34,6 +35,7 @@ function signOutGoogle() {
 		if(this.readyState == 4 && this.status == 200) {
 			window.localStorage.removeItem("googleCreds");
 			alert("successfully signed out");
+			getUserInfo();
 		}
 	}
 	req.send(reqData);

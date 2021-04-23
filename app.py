@@ -12,18 +12,6 @@ app = Flask(__name__)
 app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
 
 
-@app.route('/scripts.js')
-def getScripts():
-    with open("js/scripts.js", "r") as f:
-        return f.read()
-
-
-@app.route('/signin.js')
-def getSignin():
-    with open("js/signin.js", "r") as f:
-        return f.read()
-
-
 @app.route('/')
 @app.route('/home')
 def home():
