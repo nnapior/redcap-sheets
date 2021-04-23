@@ -211,12 +211,29 @@ function pushToSheets(object) {
 }
 
 function showEventCheckboxes(value) {
+	console.log("here")
 	var eventCheckboxes = document.getElementById("selectedEvents");
-	if(value == "select") {
-		eventCheckboxes.style.display = "block";
-	} else {
-		eventCheckboxes.style.display = "none";
-	}
+	var eventImportCheckboxes = document.getElementById("selectedImportEvents");
+	if (value == "select") {
+		eventCheckboxes.style.visibility = "visible";
+		eventCheckboxes.style.position = "relative";
+		eventCheckboxes.style.zIndex = 1;
+	  } 
+	  else if (value == "all") {
+		eventCheckboxes.style.visibility = "hidden";
+		eventCheckboxes.style.position = "absolute";
+		eventCheckboxes.style.zIndex = -10;
+	  }
+	if (value == "import-select") {
+		eventImportCheckboxes.style.visibility = "visible";
+		eventImportCheckboxes.style.position = "relative";
+		eventImportCheckboxes.style.zIndex = 1;
+	  } 
+	  else if(value == "import-all") {
+		eventImportCheckboxes.style.visibility = "hidden";
+		eventImportCheckboxes.style.position = "absolute";
+		eventImportCheckboxes.style.zIndex = -10;
+	  }
 }
 
 function showEvent(eventKey) {
@@ -376,6 +393,7 @@ function getData() {
 		if(this.status == 200 && this.readyState == 4) {
 			var parsedRes = JSON.parse(r.response);
 			data = parsedRes;
+			console.log(data)
 			setButtons(data);
 			document.getElementById("refresh-btn").classList.remove("btn-loading");
 		}
