@@ -9,6 +9,7 @@ import json
 
 
 app = Flask(__name__)
+app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
 
 
 @app.route('/')
@@ -113,5 +114,4 @@ def delete_record():
 
 
 if __name__ == '__main__':
-    app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
     app.run(debug=True)
