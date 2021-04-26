@@ -9,6 +9,35 @@ import codecs
 import requests
 
 
+def authGoogle(client_secret_file, scopes, redirect_uri):
+    # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
+    flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes)
+    # The URI created here must exactly match one of the authorized redirect URIs
+    # for the OAuth 2.0 client, which you configured in the API Console. If this
+    # value doesn't match an authorized URI, you will get a 'redirect_uri_mismatch'
+    # error.
+    flow.redirect_uri = redirect_uri
+
+    authorization_url, state = flow.authorization_url(
+        # Enable offline access so that you can refresh an access token without
+        # re-prompting the user for permission. Recommended for web server apps.
+        access_type='offline',
+        # Enable incremental authorization. Recommended as a best practice.
+        include_granted_scopes='true')
+
+    return (authorization_url, state)
+
+
+def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri):
+    flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes, state=state)
+    flow.redirect_uri = redirect_uri
+
+    flow.fetch_token(authorization_response=response)
+    creds = flow.credentials
+
+    return codecs.encode(pickle.dumps(creds), "base64").decode()
+
+
 def signOutGoogle(credData):
     cred = pickle.loads(codecs.decode(credData.encode(), "base64"))
     requests.post('https://oauth2.googleapis.com/revoke',
