@@ -6,6 +6,7 @@ from lib.py_REDcap_delete import delete_records
 from lib.Google import *
 from forms import SettingsForm
 import json
+import cv2
 
 
 app = Flask(__name__)

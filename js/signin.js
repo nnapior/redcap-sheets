@@ -30,7 +30,7 @@ function signOutGoogle() {
 	 };
 	var reqData = JSON.stringify(obj);
 	reqData = reqData.replace("\n","");
-	reqData = reqData.replace("'", "\"");
+	reqData = reqData.replace("'", "\'");
 	
 	var req = new XMLHttpRequest();
 	req.open("POST","/signOutGoogle", true);
@@ -42,5 +42,7 @@ function signOutGoogle() {
 			alert("successfully signed out");
 		}
 	}
+	console.log(reqData);
+	
 	req.send(reqData);
 }
