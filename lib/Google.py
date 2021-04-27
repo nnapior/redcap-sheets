@@ -11,10 +11,16 @@ from cryptography.fernet import Fernet
 import json
 
 def signOutGoogle(credData, key):
+    encCreds = bytes(credData.encode("utf-8"))
+    key = bytes(key.encode("utf-8"))
+    print(key)
     
-    cred = pickle.loads(codecs.decode(credData.encode(), "base64"))
+    fernet = Fernet(key)
+    
+    creds = pickle.loads(codecs.decode(fernet.decrypt(encCreds), "base64"))
+    
     requests.post('https://oauth2.googleapis.com/revoke',
-                  params={'token': cred.token},
+                  params={'token': creds.token},
                   headers={'content-type': 'application/x-www-form-urlencoded'})
     return "1"
 
@@ -46,7 +52,7 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
         object = {}
         
         object["key"] = key.decode("utf-8")
-        object["data"] = str(encrypted);
+        object["data"] = encrypted.decode("utf-8")
         
         print(object)
         

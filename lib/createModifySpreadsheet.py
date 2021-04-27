@@ -165,12 +165,13 @@ def pushJSON(jsonObject):
     """
     importMode = jsonObject['mode']
     data = generateTuple(jsonObject['object'])
-    encCreds = jsonObject['creds']
+    encCreds = bytes(jsonObject["creds"].encode("utf-8"))
     print(jsonObject["key"])
     key = bytes(jsonObject["key"].encode("utf-8"))
     print(key)
     
     fernet = Fernet(key)
+    
     creds = fernet.decrypt(encCreds).decode()
     
     id = ""
