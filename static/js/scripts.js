@@ -1,6 +1,89 @@
 var data;
 var sheetID;
 
+function getUserInfo() {
+	if(window.localStorage.getItem("googleCreds") != undefined) {
+		var creds = window.localStorage.getItem("googleCreds");
+		var r = new XMLHttpRequest();
+		r.open("POST","/userinfo",true);
+		r.setRequestHeader("Content-Type","application/json");
+		r.onreadystatechange = function() {
+			if(this.readyState == 4 && this.status == 200) {
+				var userData = JSON.parse(this.response);
+				console.log(userData);
+				console.log(userData["name"]);
+				console.log(userData["picture"]);
+				showUser(userData["name"], userData["picture"]);
+				enableImport();
+				enableExport();
+			}
+		}
+
+		var pushObject = {"creds":creds};
+		var reqData = JSON.stringify(pushObject);
+		reqData = reqData.replace("\n","");
+		reqData = reqData.replace("'", "\"");
+
+		r.send(reqData);
+	} else {
+		showSignInGoogle();
+		disableImport();
+		disableExport();
+	}
+}
+
+function showUser(name, avatar_url) {
+	var avatar = document.getElementById('avatar');
+	var nameDiv = document.getElementById('userName');
+	var signinBtn = document.getElementById('googleBtn');
+	var userInfo = document.getElementById('userInfo');
+	avatar.style.backgroundImage = "url('"+avatar_url+"')";
+	nameDiv.innerHTML = name;
+	signinBtn.style.display = "none";
+	userInfo.style.display = "block";
+	avatar.style.display = "block";
+}
+
+function showSignInGoogle() {
+	var signinBtn = document.getElementById('googleBtn');
+	var userInfo = document.getElementById('userInfo');
+	userInfo.style.display = "none";
+	signinBtn.style.display = "block";
+}
+
+function disableImport() {
+	var importCard = document.getElementById('importCard');
+	var importBtn = document.getElementById('importBtn');
+	importCard.classList.add('cursor-not-allowed');
+	importBtn.classList.add('disabled');
+}
+
+function disableExport() {
+	var exportCard = document.getElementById('exportCard');
+	var exportBtn = document.getElementById('exportBtn');
+	exportCard.classList.add('cursor-not-allowed');
+	exportBtn.classList.add('disabled');
+}
+
+function enableImport() {
+	var importCard = document.getElementById('importCard');
+	var importBtn = document.getElementById('importBtn');
+	importCard.classList.remove('cursor-not-allowed');
+	importBtn.classList.remove('disabled');
+}
+
+function enableExport() {
+	var exportCard = document.getElementById('exportCard');
+	var exportBtn = document.getElementById('exportBtn');
+	exportCard.classList.remove('cursor-not-allowed');
+	exportBtn.classList.remove('disabled');
+}
+
+function pageLoad() {
+	getUserInfo();
+	getData();
+}
+
 function getValues(object, level = 0) {
 	if(typeof(object) == "string") {
 		return object;
@@ -30,7 +113,7 @@ function showParticipant(eventKey, participantID) {
 	// Populate table keys
 	var tableKeys = document.getElementById("table-keys");
 	var keys = Object.keys(data[eventKey][1]); // get keys from data object
-	var outputStr = "";
+	var outputStr = "<th>delete</th>\n";
 	// add keys to table
 	for(key of keys) {
 		outputStr +="<th>"+key+"</th>\n";
@@ -43,7 +126,12 @@ function showParticipant(eventKey, participantID) {
 	// populate table with all participants if "all" option is passed in as ID
 	if(participantID=="all"){
 		for(participant in data[eventKey]) {
-			outputStr += "<tr>\n"; // new table entry
+			var btn = document.createElement("BUTTON");
+			btn.innerHTML = "delete";
+			btn.classList.add('btn');
+			btn.classList.add('btn-danger');
+			btn.setAttribute('onclick', "deleteUser("+participant+")");
+			outputStr += "<tr>\n<td>"+btn.outerHTML+"</td>\n"; // new table entry
 			// add all the values for this entry
 			for(key of keys) {
 				outputStr +="<td>"+data[eventKey][participant][key]+"</td>\n";
@@ -53,7 +141,12 @@ function showParticipant(eventKey, participantID) {
 	}
 	// else, just print the passed in ID
 	else {
-		outputStr += "<tr>\n";
+		var btn = document.createElement("BUTTON");
+		btn.innerHTML = "delete";
+		btn.classList.add('btn');
+		btn.classList.add('btn-danger');
+		btn.setAttribute('onclick', "deleteUser("+participantID+")");
+		outputStr += "<tr>\n<td>"+btn.outerHTML+"</td>\n"; // new table entry
 		for(key of keys) {
 			outputStr +="<td>"+data[eventKey][participantID][key]+"</td>\n";
 		}
@@ -109,11 +202,13 @@ function importData() {
 
 function pushToRedcap(object) {
 	var r = new XMLHttpRequest();
+	var importBtn = document.getElementById('importBtn');
 	r.open("POST","/import_sheets_to_redcap",true);
 	r.setRequestHeader("Content-Type","application/json");
 	r.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			console.log(this.response);
+			importBtn.classList.remove("btn-loading");
 		}
 	}
 
@@ -122,7 +217,7 @@ function pushToRedcap(object) {
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
 		reqData = reqData.replace("'", "\"");
-
+		importBtn.classList.add("btn-loading");
 		r.send(reqData);
 	} else {
 		alert("failed to import data from sheets. Please sign into google");
@@ -136,6 +231,7 @@ function pushToSheets(object) {
 
 		//if we're doing sheet destination control, use this outline
 		var sheetDestination = document.getElementById("sheetMode").value;
+		var exportBtn = document.getElementById('exportBtn');
 		if(sheetDestination == "new") {
 			//put code to create/write to a new sheet here
 			console.log("writing to new sheet");
@@ -149,6 +245,7 @@ function pushToSheets(object) {
 				if(this.readyState == 4 && this.status == 200) {
 					console.log(this.response);
 					var id = this.response;
+					exportBtn.classList.remove("btn-loading");
 					window.open(spreadsheet_address+this.response);
 				}
 			}
@@ -156,7 +253,7 @@ function pushToSheets(object) {
 			var reqData = JSON.stringify(pushObject);
 			reqData = reqData.replace("\n","");
 			reqData = reqData.replace("'", "\"");
-
+			exportBtn.classList.add("btn-loading");
 			r.send(reqData);
 		} else {
 			var sheetID = document.getElementById("sheetIDSelect").value;
@@ -176,6 +273,7 @@ function pushToSheets(object) {
 							if(this.readyState == 4 && this.status == 200) {
 								console.log(this.response);
 								var id = this.response;
+								exportBtn.classList.remove("btn-loading");
 								window.open(spreadsheet_address+this.response);
 							}
 						}
@@ -183,7 +281,7 @@ function pushToSheets(object) {
 						var reqData = JSON.stringify(pushObject);
 						reqData = reqData.replace("\n","");
 						reqData = reqData.replace("'", "\"");
-
+						exportBtn.classList.add("btn-loading");
 						r.send(reqData);
 
 						break;
@@ -337,6 +435,25 @@ function showSheetSelection(value) {
 	} else {
 		sheetSelection.style.display = "block";
 	}
+}
+
+function deleteUser(id) {
+	var r = new XMLHttpRequest();
+	r.open("POST", "/delete_record_redcap", true);
+	r.setRequestHeader("Content-Type","application/json");
+
+	r.onreadystatechange = function() {
+		if(this.status == 200 && this.readyState == 4) {
+			getData();
+		}
+	}
+
+	var pushObject = {"id":id};
+	var reqData = JSON.stringify(pushObject);
+	reqData = reqData.replace("\n","");
+	reqData = reqData.replace("'", "\"");
+
+	r.send(reqData);
 }
 
 function getData() {

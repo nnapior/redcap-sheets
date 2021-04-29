@@ -5,21 +5,11 @@ from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
 from lib.Google import *
 from forms import SettingsForm
+import json
 
 
 app = Flask(__name__)
-
-
-@app.route('/scripts.js')
-def getScripts():
-    with open("js/scripts.js", "r") as f:
-        return f.read()
-
-
-@app.route('/signin.js')
-def getSignin():
-    with open("js/signin.js", "r") as f:
-        return f.read()
+app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
 
 
 @app.route('/')
@@ -44,12 +34,6 @@ def settings():
         flash('REDcap API key entered successfully!', "success")
         return redirect(url_for('home'))
     return render_template('settings.html', form=form, hasKey=hasKey)
-
-
-@app.route('/style.css')
-def getStyle():
-    with open("css/style.css", "r") as f:
-        return f.read()
 
 
 @app.route('/pushData', methods=['PUT', 'POST'])
@@ -92,7 +76,8 @@ def authGoogleRequest():
     API_NAME = 'sheets'
     API_VERSION = 'v4'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
-              'https://www.googleapis.com/auth/drive.metadata.readonly']
+              'https://www.googleapis.com/auth/drive.metadata.readonly',
+              'https://www.googleapis.com/auth/userinfo.profile']
 
     return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
@@ -102,6 +87,13 @@ def signOutGoogleRequest():
     if(request.json):
         if(request.json["creds"]):
             return signOutGoogle(request.json["creds"])
+    return "-1"
+
+
+@app.route('/userinfo', methods=['POST'])
+def user_info():
+    if(request.json):
+        return get_user_info(request.json['creds'])
     return "-1"
 
 
@@ -122,12 +114,10 @@ def import_to_redcap():
 
 @app.route('/delete_record_redcap', methods=["POST"])
 def delete_record():
-    if request.method == "POST":
-        id = request.form['participantSelection']
-        delete_records(id)
-        return redirect(url_for("home"))
+    if request.json:
+        deleted = delete_records(request.json['id'])
+        return json.dumps({'deleted': deleted})
 
 
 if __name__ == '__main__':
-    app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
     app.run(debug=True)

@@ -1,0 +1,9 @@
+version: '3'  # version of compose format 
+
+services:
+  observatory-service:
+    build: ./observatory  # path is relative to docker-compose.yml localtion
+    volumes:
+      - ./observatory:/usr/src/app # mount point
+    ports:
+      - 5001:80  # host:container

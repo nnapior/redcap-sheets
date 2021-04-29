@@ -1,14 +1,21 @@
 {% extends 'base.html' %}
 {% set active_page = "settings" %}
-{% from "_formhelpers.html" import render_field %}
 {% block content %}
 <div class="card">
     <div class="card-body">
         <form method=post>
-          <dl>
-            {{ render_field(form.redcap_api_key) }}
-          </dl>
-          <p><input type=submit value=Submit>
+            <label class="form-label mb-2">{{ form.redcap_api_key.label }}</label>
+            {% if form.redcap_api_key.errors %}
+                {{ form.redcap_api_key(class="form-control is-invalid mb-2") }}
+                <div class="invalid-feedback mb-2">
+                    {% for error in form.redcap_api_key.errors %}
+                        {{error}}
+                    {% endfor %}
+                </div>
+            {% else %}
+            {{ form.redcap_api_key(class="form-control mb-2") }}
+            {% endif %}
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         {% if hasKey %}
     

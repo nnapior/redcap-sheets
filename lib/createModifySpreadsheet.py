@@ -48,10 +48,32 @@ def create_service(creds):
     API_NAME = 'sheets'
     API_VERSION = 'v4'
     SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
-              'https://www.googleapis.com/auth/drive']
+              'https://www.googleapis.com/auth/drive',
+              'https://www.googleapis.com/auth/userinfo.profile']
 
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
+
+
+def create_user_service(creds):
+    """
+    create_service
+        Function that creates a google service object for google sheets with no parameters
+
+        Returns a service object to interface with google sheets api commands
+    """
+    CLIENT_SECRET_FILE = 'config/client_secret.json'
+    API_NAME = 'oauth2'
+    API_VERSION = 'v2'
+    SCOPES = ['https://www.googleapis.com/auth/userinfo.profile']
+
+    service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
+    return service
+
+
+def get_user_info(creds):
+    service = create_user_service(creds)
+    return service.userinfo().get().execute()
 
 
 def createSpreadsheet(creds):
@@ -141,7 +163,7 @@ def generateTuple(jsonObject):
         for eventKey in eventKeys:
             participantObject = ()
             for participantKey in list(event[eventKey].keys()):
-                participantValue = event[eventKey][participantKey].replace("\n", " ")
+                participantValue = str(event[eventKey][participantKey]).replace("\n", " ")
                 participantObject = participantObject+(participantValue,)
             eventObject = eventObject+(participantObject,)
 
@@ -391,9 +413,9 @@ def createWorksheet(title: str, spreadsheet_id, creds):
 
 
 if __name__ == "__main__":
-    service = create_service()
-    spreadsheet_id = getSpreadsheetID()
-    mySpreadsheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
+    #service = create_service()
+    #spreadsheet_id = getSpreadsheetID()
+    #mySpreadsheets = service.spreadsheets().get(spreadsheetId=spreadsheet_id).execute()
     worksheet_range = 'Sheet1!A1'
     values = []
     value_range_body = {
@@ -416,4 +438,5 @@ if __name__ == "__main__":
     # renameSheet("CSV-to-Google-Sheet")
     # renameWorkSheet(getWorksheetID("a"),"Sheet1")
     # print(generateTuple(json.loads(getValues())))
-    pushCompletely(generateTuple(json.loads(getValues())), getSpreadsheetID())
+    # pushCompletely(generateTuple(json.loads(getValues())), getSpreadsheetID())
+    print(get_user_info(creds='test'))
