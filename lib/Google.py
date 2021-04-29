@@ -10,6 +10,12 @@ import requests
 
 
 def signOutGoogle(credData):
+    """
+    Function that signs out of google 
+    Parameters
+
+    Returns
+    """
     cred = pickle.loads(codecs.decode(credData.encode(), "base64"))
     requests.post('https://oauth2.googleapis.com/revoke',
                   params={'token': cred.token},
@@ -18,6 +24,18 @@ def signOutGoogle(credData):
 
 
 def signInGoogle(client_secret_file, api_name, api_version, *scopes):
+    """
+    Function that signs into google 
+    
+    Parameters
+    client_secret_file : String name of the json file containing api access information
+    api_name : String name of the google API being accessed
+    api_version : String Version number of the api used
+    scopes : List of strings indicating the scope of the API service
+
+    Returns
+    
+    """
     print(client_secret_file, api_name, api_version, scopes, sep='-')
     CLIENT_SECRET_FILE = client_secret_file
     API_SERVICE_NAME = api_name
