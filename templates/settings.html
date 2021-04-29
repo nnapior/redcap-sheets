@@ -10,6 +10,14 @@
           </dl>
           <p><input type=submit value=Submit>
         </form>
+        {% if hasKey %}
+    
+          <button type="button" onclick="getRedCapAPIKey()">Show API Key</button>
+          <p id="key" style="visibility: hidden;">
+            Your current REDcap API key is:
+            {{ key}}
+          </p>
+        {% endif %}
     </div>
 </div>
 {% endblock content %}

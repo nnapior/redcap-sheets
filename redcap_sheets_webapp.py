@@ -32,12 +32,18 @@ def home():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
+    hasKey = False;
     form = SettingsForm(request.form)
+    if 'redcap_api_key' in session:
+        flash('REDcap API key entered successfully!', "info")
+        hasKey =True;
+        theKey = session['redcap_api_key']
+        return render_template('settings.html', form=form, hasKey=hasKey, key = theKey)
     if request.method == 'POST' and form.validate():
         session['redcap_api_key'] = form.redcap_api_key.data
         flash('REDcap API key entered successfully!', "success")
         return redirect(url_for('home'))
-    return render_template('settings.html', form=form)
+    return render_template('settings.html', form=form, hasKey=hasKey)
 
 
 @app.route('/style.css')
