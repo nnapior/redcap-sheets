@@ -2,8 +2,12 @@ import requests, json, os
 from py_REDcap import getValueDict
 from createModifySpreadsheet import *
 
-#compares column names b/w google and redcap 
+ 
 def checkColumnNames():
+    """
+    checkColumnNames
+        Function that checks redcap sheet columns against google sheets columns to compare column names
+    """
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     
@@ -29,8 +33,12 @@ def checkColumnNames():
             print("Column", column_count, "does not match!") 
             column_count += 1
 
-#check red cap and google sheets data cells for missing values
 def checkcellData():
+    """
+    checkcellData
+        Function that checks redcap sheet data against google sheets data to 
+        compare data and highlight any missing data points between the two
+    """
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     
@@ -59,8 +67,13 @@ def checkcellData():
             cell_count += 1
     #print(spreadsheet_data)
    
-#checks redcap worksheets and google sheets to see if they match 
+
 def checkworksheetNames():
+    """
+    checkworksheetNames
+        Function that checks redcap sheet names against google sheets names to 
+        compare sheet names and identify if any sheets are missing between the two
+    """
     service = create_service()
     spreadsheet_id = getSpreadSheetID()
     #redcap worksheet names
