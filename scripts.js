@@ -2,6 +2,7 @@ var data;
 var sheetID;
 
 function getValues(object, level = 0) {
+	//getValues
 	//Function that gets google sheets values 
 	//Parameters: object: any datatype, level: number 
 	//Returns outputStr: 
@@ -28,9 +29,9 @@ function getValues(object, level = 0) {
 }
 
 function showParticipant(eventKey, participantID) {
+	//showParticpant
 	//Function that gets google sheets values 
 	//Parameters: eventKey , participantID:
-	//
 	console.log(eventKey, participantID);
 	var object = data[eventKey][participantID];
 	var output = document.getElementById("output");
@@ -196,7 +197,8 @@ function setButtons(object) {
 }
 
 function chooseSheet() {
-	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
+	//chooseSheet
+	//Function that chooses and sheet and sets sheetId global variable 
 	console.log("choosing sheet");
 	
 	//placeholder id
@@ -206,6 +208,9 @@ function chooseSheet() {
 }
 
 function showSheetSelection(value) {
+	//showSheetSelection
+	//Function that gets sheet selection based on sheet ID 
+	//Parameters: value: 
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
 		sheetSelection.style.visibility = "hidden";
@@ -219,6 +224,8 @@ function showSheetSelection(value) {
 }
 
 function getData() {
+	//getData
+	//Function that retrieves data 
 	document.getElementById("mainButton").innerHTML = "Working...";
 	var r = new XMLHttpRequest();
 	r.open("GET", "/pullData", true);
