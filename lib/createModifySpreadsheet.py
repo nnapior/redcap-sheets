@@ -95,8 +95,8 @@ def createSpreadsheet(creds):
     print(newSpreadsheet.get('spreadsheetId'))
     return newSpreadsheet.get('spreadsheetId')
 
-
-def getSpreadsheetID():
+'''
+def getSpreadsheetID(apiKey):
     """
     getSpreadsheetID
         Function that opens the config.json file and returns the spreadsheetID in the file
@@ -106,9 +106,9 @@ def getSpreadsheetID():
     configFile = open("config/config.json", "r")
     content = json.loads(configFile.read())
     return content["spreadsheet_id"]
+'''
 
-
-def getWorksheetID(title, creds, id=getSpreadsheetID()):
+def getWorksheetID(title, creds, id):
     """
     getWorksheetID
         Function that takes in the name of a worksheet in a spreadsheet to find the ID of the worksheet
