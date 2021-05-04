@@ -10,6 +10,11 @@ Helper functions for api calls
 
 
 def getSheets(creds):
+    """ 
+    getSheets
+    Function that prints google sheets information 
+    Returns json of sheets results 
+    """
     service = create_drive_service(creds['creds'])
     files = (service.files().list().execute())
 
@@ -72,6 +77,12 @@ def create_user_service(creds):
 
 
 def get_user_info(creds):
+    """
+    get_user_info
+    Function that gets google users information
+
+    Returns user info and credentials 
+    """
     service = create_user_service(creds)
     return service.userinfo().get().execute()
 

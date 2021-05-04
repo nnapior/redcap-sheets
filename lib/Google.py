@@ -107,6 +107,8 @@ def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
     '''
     convert_to_RFC_datetime
         Function that returns a datatime string for January 1st, 1900
+
+        Returns converted time in RFC
     '''
     dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
     return dt
