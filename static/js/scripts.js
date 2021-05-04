@@ -16,6 +16,7 @@ function getUserInfo() {
 				showUser(userData["name"], userData["picture"]);
 				enableImport();
 				enableExport();
+				return true;
 			}
 		}
 
@@ -29,6 +30,7 @@ function getUserInfo() {
 		showSignInGoogle();
 		disableImport();
 		disableExport();
+		return false;
 	}
 }
 
@@ -80,8 +82,9 @@ function enableExport() {
 }
 
 function pageLoad() {
-	getUserInfo();
-	getData();
+	if(getUserInfo()) {
+		getData();
+	}
 }
 
 function getValues(object, level = 0) {
@@ -462,10 +465,12 @@ function getData() {
 	r.open("GET", "/pullData", true);
 	r.onreadystatechange = function() {
 		if(this.status == 200 && this.readyState == 4) {
-			var parsedRes = JSON.parse(r.response);
-			data = parsedRes;
-			setButtons(data);
-			document.getElementById("refresh-btn").classList.remove("btn-loading");
+			if(this.response != "-1") {
+				var parsedRes = JSON.parse(r.response);
+				data = parsedRes;
+				setButtons(data);
+				document.getElementById("refresh-btn").classList.remove("btn-loading");
+			}
 		}
 	}
 	r.send();
