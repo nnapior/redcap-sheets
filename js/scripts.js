@@ -389,15 +389,22 @@ function deleteUser(id) {
 	r.send(reqData);
 }
 
+function setup() {
+	
+}
+
 function getData() {
 	document.getElementById("refresh-btn").classList.add("btn-loading");
 	var r = new XMLHttpRequest();
 	r.open("GET", "/pullData", true);
 	r.onreadystatechange = function() {
 		if(this.status == 200 && this.readyState == 4) {
-			var parsedRes = JSON.parse(r.response);
-			data = parsedRes;
-			setButtons(data);
+			if(this.response != -1) {
+				var parsedRes = JSON.parse(r.response);
+				data = parsedRes;
+				setButtons(data);
+			}
+			
 			document.getElementById("refresh-btn").classList.remove("btn-loading");
 		}
 	}
