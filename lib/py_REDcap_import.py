@@ -86,7 +86,7 @@ def import_data(object):
     Function that imports data to Redcap
 
     Parameters
-    Object : 
+    Object : list of redcap data 
     
     Returns
     Imported data
