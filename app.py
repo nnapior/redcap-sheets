@@ -99,7 +99,10 @@ def user_info():
 
 @app.route('/pullData')
 def pullData():
-    return getValues(session['redcap_api_key'])
+    if 'redcap_api_key' in session:
+        return getValues(session['redcap_api_key'])
+    else:
+        return "none"
 
 
 @app.route('/import_sheets_to_redcap', methods=['PUT', 'POST'])
