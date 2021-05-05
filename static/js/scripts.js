@@ -39,18 +39,22 @@ function showUser(name, avatar_url) {
 	var nameDiv = document.getElementById('userName');
 	var signinBtn = document.getElementById('googleBtn');
 	var userInfo = document.getElementById('userInfo');
+	var googleAlert = document.getElementById("googleAccountAlert");
 	avatar.style.backgroundImage = "url('"+avatar_url+"')";
 	nameDiv.innerHTML = name;
 	signinBtn.style.display = "none";
 	userInfo.style.display = "block";
 	avatar.style.display = "block";
+	googleAlert.style.display = "none";
 }
 
 function showSignInGoogle() {
 	var signinBtn = document.getElementById('googleBtn');
 	var userInfo = document.getElementById('userInfo');
+	var googleAlert = document.getElementById("googleAccountAlert");
 	userInfo.style.display = "none";
 	signinBtn.style.display = "block";
+	googleAlert.style.display = "block";
 }
 
 function disableImport() {
@@ -79,10 +83,6 @@ function enableExport() {
 	var exportBtn = document.getElementById('exportBtn');
 	exportCard.classList.remove('cursor-not-allowed');
 	exportBtn.classList.remove('disabled');
-}
-
-function checkIfAPIKeyEntered() {
-	
 }
 
 function pageLoad() {
