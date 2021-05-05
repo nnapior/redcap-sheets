@@ -172,7 +172,7 @@ def generateTuple(jsonObject):
     return newObject
 
 
-def pushJSON(jsonObject):
+def pushJSON(jsonObject, apiKey):
     """
     pushJSON
         Function that takes in a jsonObject and uses that json to replace data in a google sheet
@@ -196,15 +196,15 @@ def pushJSON(jsonObject):
             return "NO SPREADSHEET ID"
 
         # print("SPREADSHEET ID NOT PRESENT YET")
-        id = pushCompletely(data, id, creds)
+        id = pushCompletely(data, id, creds, apiKey)
     else:
         # creating new sheet
-        id = pushCompletely(data, createSpreadsheet(creds), creds)
+        id = pushCompletely(data, createSpreadsheet(creds), creds, apiKey)
 
     return id
 
 
-def pushCompletely(dataSet, spreadsheet_id, creds):
+def pushCompletely(dataSet, spreadsheet_id, creds, apiKey):
     """
     pushCompletely
         Function that deletes all data from a sheet and populates the same sheet with the data from a tuple
@@ -229,7 +229,7 @@ def pushCompletely(dataSet, spreadsheet_id, creds):
         worksheet_range = table_title+'!A1'
         updateData(service, spreadsheet_id, worksheet_range, table_content, value_range_body)
     # TODO: only rename if no new name has been set
-    renameSheet(getProjName(), spreadsheet_id, creds)
+    renameSheet(getProjName(apiKey), spreadsheet_id, creds)
 
     # remove hanging empty worksheet from when sheet was cleaned
     deleteWorksheet(getWorksheetID("Sheet1", creds, spreadsheet_id), spreadsheet_id, creds)

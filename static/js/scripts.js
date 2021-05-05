@@ -156,25 +156,40 @@ function showParticipant(eventKey, participantID) {
 }
 
 function exportData() {
-	//this function gets the json data ready to push to sheets
-	var exportMode = document.getElementById("exportMode").value;
-
-	if(exportMode == "select") {
-		//export only selected events"
-		console.log("exporting selected events");
-		var newObject = {};
-		var checkboxes = document.getElementsByClassName("eventSelectionCheckbox");
-		for(checkbox of checkboxes) {
-			if(checkbox.checked) {
-				newObject[checkbox.value] = data[checkbox.value];
-			}
+	var response ="";
+	var r = new XMLHttpRequest();
+	r.open("GET", "/hasAPIkey", true);
+	r.onreadystatechange = function() {
+		if(this.status == 200 && this.readyState == 4) {
+			response  = r.response;
+		
 		}
-		console.log(Object.keys(newObject));
-		pushToSheets(newObject);
-	} else {
-		//export all events in data
-		console.log("exporting all events");
-		pushToSheets(data);
+	}
+	r.send();
+	//this function gets the json data ready to push to sheets
+	if(response = "true"){
+		var exportMode = document.getElementById("exportMode").value;
+
+		if(exportMode == "select") {
+			//export only selected events"
+			console.log("exporting selected events");
+			var newObject = {};
+			var checkboxes = document.getElementsByClassName("eventSelectionCheckbox");
+			for(checkbox of checkboxes) {
+				if(checkbox.checked) {
+					newObject[checkbox.value] = data[checkbox.value];
+				}
+			}
+			console.log(Object.keys(newObject));
+			pushToSheets(newObject);
+		} else {
+			//export all events in data
+			console.log("exporting all events");
+			pushToSheets(data);
+		}
+	}
+	else{
+		alert("Enter Redcap API key")
 	}
 }
 

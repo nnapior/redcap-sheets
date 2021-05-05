@@ -35,13 +35,21 @@ def settings():
         return redirect(url_for('home'))
     return render_template('settings.html', form=form, hasKey=hasKey)
 
+@app.route('/hasAPIkey', methods=['GET', 'POST'])
+def hasAPIKey():
+    if 'redcap_api_key' in session:
+        return "true"
+    else:
+        return "false"
+
 
 @app.route('/pushData', methods=['PUT', 'POST'])
 def pushData():
-    if(request.json):
-        return pushJSON(request.json)
+    if(request.json) and 'redcap_api_key' in session:
+        return pushJSON(request.json, session['redcap_api_key'])
     else:
-        return print("-1")
+        flash("Please enter your REDcap API key in the Settings", "info")
+        return render_template('homepage.html')
 
 
 @app.route('/renameSheet', methods=['PUT', 'POST'])
