@@ -38,6 +38,13 @@ def settings():
     return render_template('settings.html', form=form, hasKey=hasKey)
 
 
+@app.route('/checkAPIKey', methods=['GET'])
+def checkKey():
+    if 'redcap_api_key' in session:
+        return "1"
+    else:
+        return "-1"
+
 @app.route('/pushData', methods=['PUT', 'POST'])
 def pushData():
     if(request.json):

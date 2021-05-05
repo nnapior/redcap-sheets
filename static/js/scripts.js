@@ -81,11 +81,25 @@ function enableExport() {
 	exportBtn.classList.remove('disabled');
 }
 
+function checkIfAPIKeyEntered() {
+	
+}
+
 function pageLoad() {
-	if(getData()) {
-		getUserInfo();
-	} else {
-		window.location = "/settings";
+	if(document.getElementById("dataContainer") != undefined) {
+		var r = new XMLHttpRequest();
+		r.open("GET", "/checkAPIKey", true);
+		r.onreadystatechange = function() {
+			if(this.status == 200 && this.readyState == 4) {
+				if(this.response != "-1") {
+					getData();
+					getUserInfo();
+				} else {
+					window.location = "/settings";
+				}
+			}
+		}
+		r.send();
 	}
 }
 
@@ -472,7 +486,9 @@ function getData() {
 				data = parsedRes;
 				setButtons(data);
 				document.getElementById("refresh-btn").classList.remove("btn-loading");
+				return true;
 			}
+			return false;
 		}
 	}
 	r.send();
