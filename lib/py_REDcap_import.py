@@ -20,14 +20,14 @@ def createService(creds):
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
 
-
+'''
 def getConfig():
     """This function returns the configuration data in json form
     :returns config"""
     file = open("config/config.json", "r")
     config = json.load(file)
     file.close()
-    return config
+    return config'''
 
 
 def getEvents(google_service=None):
@@ -81,14 +81,15 @@ def import_redcap(sheet, service, project):
     return "Import Data to RedCap Successful"
 
 
-def import_data(object):
-    config = getConfig()
+def import_data(object, apiKey):
+    
+    #config = getConfig()
     imported = False
     creds = object['creds']
     events = object['events']
     service = createService(creds)
 
-    project = Project(config["api_url"], config["api_key"])
+    project = Project("https://dri.udel.edu/redcap/api/", apiKey)
 
     if events == "All Events":
         events = getEvents(service)
