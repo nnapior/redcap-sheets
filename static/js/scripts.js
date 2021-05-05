@@ -82,6 +82,7 @@ function enableExport() {
 }
 
 function pageLoad() {
+	console.log("hello");
 	if(getUserInfo()) {
 		getData();
 	}
