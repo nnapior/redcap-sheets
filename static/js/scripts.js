@@ -24,6 +24,8 @@ function getUserInfo() {
 		reqData = reqData.replace("'", "\"");
 
 		r.send(reqData);
+
+		checkEnable();
 	} else {
 		showSignInGoogle();
 		
@@ -31,6 +33,7 @@ function getUserInfo() {
 }
 
 function checkEnable(){
+	var a = hasAPIkey();
 	
 
 	if(window.localStorage.getItem("googleCreds") != undefined) {
