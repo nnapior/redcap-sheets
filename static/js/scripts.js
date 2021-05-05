@@ -30,8 +30,10 @@ function getUserInfo() {
 	}
 }
 
-function checkeEnable(){
-	if(window.localStorage.getItem("googleCreds") != undefined && hasAPIkey() == "true") {
+function checkEnable(){
+	
+
+	if(window.localStorage.getItem("googleCreds") != undefined) {
 		enableImport();
 		enableExport();
 	}
@@ -51,6 +53,7 @@ function hasAPIkey(){
 		
 		}
 	}
+	console.log('ASHDFASJHDFASJFOASJDF')
 	return response;
 }
 
@@ -104,7 +107,8 @@ function enableExport() {
 function pageLoad() {
 	getUserInfo();
 	getData();
-	checkeEnable();
+	
+	checkEnable();
 }
 
 function getValues(object, level = 0) {
