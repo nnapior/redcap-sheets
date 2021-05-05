@@ -16,7 +16,7 @@ app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
 @app.route('/home')
 def home():
     if 'redcap_api_key' not in session:
-        flash("Please enter your REDcap API key in the Settings", "info")
+        flash("Please enter your REDCap API key in the Settings page", "info")
     return render_template('homepage.html')
 
 
@@ -29,6 +29,8 @@ def settings():
         hasKey =True;
         theKey = session['redcap_api_key']
         return render_template('settings.html', form=form, hasKey=hasKey, key = theKey)
+    else:
+        flash("Please enter your REDCap API key.", "info")
     if request.method == 'POST' and form.validate():
         session['redcap_api_key'] = form.redcap_api_key.data
         flash('REDcap API key entered successfully!', "success")

@@ -82,9 +82,10 @@ function enableExport() {
 }
 
 function pageLoad() {
-	console.log("hello");
-	if(getUserInfo()) {
-		getData();
+	if(getData()) {
+		getUserInfo();
+	} else {
+		window.location = "/settings";
 	}
 }
 
