@@ -166,8 +166,9 @@ function exportData() {
 		}
 	}
 	r.send();
+	console.log(response + " HERE")
 	//this function gets the json data ready to push to sheets
-	if(response = "true"){
+	if(response == "true"){
 		var exportMode = document.getElementById("exportMode").value;
 
 		if(exportMode == "select") {
