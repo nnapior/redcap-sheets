@@ -9,6 +9,21 @@ function signInREDCap() {
 	req.send();
 }
 
+function signInGoogle2() {
+	var req = new XMLHttpRequest();
+	req.open("POST","/auth", true);
+	req.onreadystatechange = function() {
+		console.log(this.response);
+		window.location.href = this.response;
+		if(this.readyState == 4 && this.status == 200) {
+			// window.localStorage.setItem("googleCreds",this.response);
+			// alert("successfully signed in");
+			// getUserInfo();
+		}
+	}
+	req.send();
+}
+
 function signInGoogle() {
 	var req = new XMLHttpRequest();
 	req.open("POST","/authGoogle", true);
@@ -34,7 +49,7 @@ function signOutGoogle() {
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			window.localStorage.removeItem("googleCreds");
-			alert("successfully signed out");
+			// alert("successfully signed out");
 			getUserInfo();
 		}
 	}

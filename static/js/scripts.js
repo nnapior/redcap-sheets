@@ -80,6 +80,13 @@ function enableExport() {
 }
 
 function pageLoad() {
+	var urlParams = new URLSearchParams(window.location.search);
+	console.log(urlParams.get('values'));
+	if(urlParams.get('values')){
+		window.localStorage.setItem("googleCreds",urlParams.get('values'));
+		window.location.replace(window.location.href.split('?')[0]);
+		// alert("successfully signed in");
+	}
 	getUserInfo();
 	getData();
 }

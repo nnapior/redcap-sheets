@@ -4,12 +4,17 @@ from lib.createModifySpreadsheet import *
 from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
 from lib.Google import *
+from lib.config import Config
 from forms import SettingsForm
+from wtforms import PasswordField, validators
 import json
+import os
 
 
 app = Flask(__name__)
-app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
+config = Config("config/config.json")
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+app.secret_key = config.get('secret_key')
 
 
 @app.route('/')
@@ -68,6 +73,28 @@ def getSheetsRequest():
 @app.route('/authREDCap', methods=['POST'])
 def authREDCapRequest():
     return "1"
+
+
+@app.route('/auth', methods=['POST'])
+def auth():
+    authorization_url, state = authGoogle(config.get('client_secret'), config.get(
+        'scopes'), config.get('base_url')+'authComplete')
+    # Store the state so the callback can verify the auth server response.
+    session['state'] = state
+    return authorization_url
+
+
+@app.route('/authComplete')
+def authComplete():
+    # Specify the state when creating the flow in the callback so that it can
+    # verified in the authorization server response.
+    state = session['state']
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    response = request.url
+    creds = authGoogleComplete(config.get('client_secret'), config.get(
+        'scopes'), state, response, config.get('base_url')+'authComplete')
+    #session['creds'] = creds
+    return redirect(url_for('home', values=creds))
 
 
 @app.route('/authGoogle', methods=['POST'])
