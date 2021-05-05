@@ -36,7 +36,7 @@ def settings():
     return render_template('settings.html', form=form, hasKey=hasKey)
 
 @app.route('/hasAPIkey', methods=['GET', 'POST'])
-def hasAPIKey():
+def hasAPIkey():
     if 'redcap_api_key' in session:
         return "true"
     else:

@@ -33,9 +33,19 @@ function getUserInfo() {
 }
 
 function checkEnable(){
-	var a = hasAPIkey();
-	
 
+	//var response ="";
+	var r = new XMLHttpRequest();
+	r.open("GET","/settings",true);
+	r.setRequestHeader("Content-Type","application/json");
+	r.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200) {
+			console.log(this.response);
+			
+		}
+	}
+
+	console.log('PASSED');
 	if(window.localStorage.getItem("googleCreds") != undefined) {
 		enableImport();
 		enableExport();
@@ -46,18 +56,17 @@ function checkEnable(){
 	}
 }
 
-function hasAPIkey(){
+function APIkey(){
 	var response ="";
 	var r = new XMLHttpRequest();
 	r.open("GET", "/hasAPIkey", true);
 	r.onreadystatechange = function() {
 		if(this.status == 200 && this.readyState == 4) {
-			response  = r.response;
+			return r.response;
 		
 		}
 	}
 	console.log('ASHDFASJHDFASJFOASJDF')
-	return response;
 }
 
 function showUser(name, avatar_url) {
