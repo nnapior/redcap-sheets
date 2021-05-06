@@ -4,12 +4,18 @@ from lib.createModifySpreadsheet import *
 from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
 from lib.Google import *
+from lib.config import Config
 from forms import SettingsForm
+from wtforms import PasswordField, validators
 import json
+import os
+import cv2
 
 
 app = Flask(__name__)
-app.secret_key = 'e71f3911e68fafd3249dc212cc9954ec'
+config = Config("config/config.json")
+os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
+app.secret_key = config.get('secret_key')
 
 
 @app.route('/')
@@ -22,13 +28,13 @@ def home():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    hasKey = False;
+    hasKey = False
     form = SettingsForm(request.form)
     if 'redcap_api_key' in session:
         flash('REDcap API key entered successfully!', "info")
-        hasKey =True;
+        hasKey = True
         theKey = session['redcap_api_key']
-        return render_template('settings.html', form=form, hasKey=hasKey, key = theKey)
+        return render_template('settings.html', form=form, hasKey=hasKey, key=theKey)
     if request.method == 'POST' and form.validate():
         session['redcap_api_key'] = form.redcap_api_key.data
         flash('REDcap API key entered successfully!', "success")
@@ -70,6 +76,29 @@ def authREDCapRequest():
     return "1"
 
 
+@app.route('/auth', methods=['POST'])
+def auth():
+    authorization_url, state = authGoogle(config.get('client_secret'), config.get(
+        'scopes'), config.get('base_url')+'authComplete')
+    # Store the state so the callback can verify the auth server response.
+    session['state'] = state
+    return authorization_url
+
+
+@app.route('/authComplete')
+def authComplete():
+    # Specify the state when creating the flow in the callback so that it can
+    # verified in the authorization server response.
+    state = session['state']
+    # Use the authorization server's response to fetch the OAuth 2.0 tokens.
+    response = request.url
+    object = authGoogleComplete(config.get('client_secret'), config.get(
+        'scopes'), state, response, config.get('base_url')+'authComplete')
+    #session['creds'] = creds
+    # print(object)
+    return redirect(url_for('home', values=object))
+
+
 @app.route('/authGoogle', methods=['POST'])
 def authGoogleRequest():
     CLIENT_SECRET_FILE = 'config/client_secret.json'
@@ -85,15 +114,15 @@ def authGoogleRequest():
 @app.route('/signOutGoogle', methods=['POST'])
 def signOutGoogleRequest():
     if(request.json):
-        if(request.json["creds"]):
-            return signOutGoogle(request.json["creds"])
+        if(request.json["creds"] and request.json["key"]):
+            return signOutGoogle(request.json["creds"], request.json["key"])
     return "-1"
 
 
 @app.route('/userinfo', methods=['POST'])
 def user_info():
     if(request.json):
-        return get_user_info(request.json['creds'])
+        return get_user_info(request.json)
     return "-1"
 
 

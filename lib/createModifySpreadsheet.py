@@ -2,6 +2,8 @@ import os
 import json
 from lib.Google import Create_Service
 from lib.py_REDcap import *
+from cryptography.fernet import Fernet
+import codecs
 
 
 '''
@@ -71,7 +73,15 @@ def create_user_service(creds):
     return service
 
 
-def get_user_info(creds):
+def get_user_info(jsonObject):
+    encCreds = bytes(jsonObject["creds"].encode("utf-8"))
+    print(jsonObject["key"])
+    key = bytes(jsonObject["key"].encode("utf-8"))
+    print(key)
+
+    fernet = Fernet(key)
+
+    creds = fernet.decrypt(encCreds).decode()
     service = create_user_service(creds)
     return service.userinfo().get().execute()
 
@@ -185,8 +195,15 @@ def pushJSON(jsonObject):
     """
     importMode = jsonObject['mode']
     data = generateTuple(jsonObject['object'])
-    creds = jsonObject['creds']
-    print(creds)
+    encCreds = bytes(jsonObject["creds"].encode("utf-8"))
+    print(jsonObject["key"])
+    key = bytes(jsonObject["key"].encode("utf-8"))
+    print(key)
+
+    fernet = Fernet(key)
+
+    creds = fernet.decrypt(encCreds).decode()
+
     id = ""
     if(importMode == "replace"):
         # replacing sheet data
