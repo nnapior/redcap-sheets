@@ -365,21 +365,47 @@ function setButtons(object) {
 		option.innerHTML = key;
 		buttons.appendChild(option);
 
+		var label = document.createElement("label");
+		label.className = "form-selectgroup-item";
+		
 		var checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
-		checkbox.className = "eventSelectionCheckbox";
+		checkbox.className = "form-selectgroup-input";
 		checkbox.value = key;
+		checkbox.name = "selectedEvents"
 		checkbox.checked = true;
-		var label = document.createElement("label");
-		label.htmlFor = key;
-		label.innerHTML = key;
-		eventCheckboxes.appendChild(checkbox);
+		
+		var div = document.createElement("div");
+		div.className = "form-selectgroup-label";
+		
+		var checkContainer = document.createElement("div");
+		checkContainer.className = "me-3";
+		
+		var checkBoxElement = document.createElement("span");
+		checkBoxElement.className = "form-selectgroup-check";
+		
+		var labelContainer = document.createElement("div");
+		labelContainer.className = "form-selectgroup-label-content d-flex align-items-center";
+		labelContainer.innerHTML = key;
+		
+		checkContainer.appendChild(checkBoxElement);
+		div.appendChild(checkContainer);
+		div.appendChild(labelContainer);
+		
+		label.appendChild(checkbox);
+		label.appendChild(div);
 		eventCheckboxes.appendChild(label);
-		eventCheckboxes.appendChild(document.createElement("br"));
+		
+		// var label = document.createElement("label");
+		// label.htmlFor = key;
+		// label.innerHTML = key;
+		// eventCheckboxes.appendChild(checkbox);
+		// eventCheckboxes.appendChild(label);
+		// eventCheckboxes.appendChild(document.createElement("br"));
 
 		checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
-		checkbox.className = "eventImportSelectionCheckbox";
+		checkbox.className = "form-selectgroup-input";
 		checkbox.value = key;
 		checkbox.checked = true;
 		label = document.createElement("label");
