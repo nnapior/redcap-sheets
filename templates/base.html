@@ -166,7 +166,7 @@
                                 <button class="btn btn-secondary" data-theme-toggle="navbar-position:both">Side navigation</button>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="sidebarPositionOptions">
                             <label class="form-label">Sidebar position</label>
                             <div class="form-hint">Choose whether the sidebar should appear on the left or on the right.</div>
                             <div class="btn-group w-100">
@@ -216,12 +216,14 @@
                         document.getElementById('secondary-logo').style.display = "block";
                         document.getElementById('primary-logo').style.display = "none";
                         document.getElementById('navbar-heading').style.display = "none";
+                        document.getElementById("sidebarPositionOptions").style.display = "none";
                     },
                     'navbar-position:both': function () {
                         navbarPrimary.classList.add('navbar-vertical');
                         document.getElementById('navbar-heading').style.display = "block";
                         document.getElementById('primary-logo').style.display = "block";
                         document.getElementById('secondary-logo').style.display = "none";
+                        document.getElementById("sidebarPositionOptions").style.display = "block";
                     },
                     'navbar-side:left': function () {
                     },
