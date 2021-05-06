@@ -11,8 +11,16 @@ Helper functions for api calls
 '''
 
 
-def getSheets(creds):
-    service = create_drive_service(creds['creds'])
+def getSheets(jsonObject):
+    encCreds = bytes(jsonObject["creds"].encode("utf-8"))
+    print(jsonObject["key"])
+    key = bytes(jsonObject["key"].encode("utf-8"))
+    print(key)
+
+    fernet = Fernet(key)
+
+    creds = fernet.decrypt(encCreds).decode()
+    service = create_drive_service(creds)
     files = (service.files().list().execute())
 
     result = {}

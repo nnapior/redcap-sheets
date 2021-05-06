@@ -239,7 +239,7 @@ function pushToSheets(object) {
 	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
 	if(window.localStorage.getItem("googleCredData") != undefined && window.localStorage.getItem("googleCredKey") != undefined) {
-	document.getElementById("export-btn-icon").classList.add("btn-loading");
+		document.getElementById("export-btn-icon").classList.add("btn-loading");
 		//if we're doing sheet destination control, use this outline
 		var sheetDestination = document.getElementById("sheetMode").value;
 		var exportBtn = document.getElementById('exportBtn');
@@ -307,7 +307,7 @@ function pushToSheets(object) {
 						var reqData = JSON.stringify(pushObject);
 						reqData = reqData.replace("\n","");
 						reqData = reqData.replace("'", "\"");
-						exportBtn.classList.add("btn-loading");
+
 						r.send(reqData);
 
 						break;
@@ -447,8 +447,11 @@ function refreshSheets() {
 				}
 			}
 		}
-		if(window.localStorage.getItem("googleCreds") != undefined) {
-			var pushObject = {"creds":window.localStorage.getItem("googleCreds")};
+		if(window.localStorage.getItem("googleCredData") != undefined && window.localStorage.getItem("googleCredKey") != undefined) {
+			var pushObject = {
+				"key":window.localStorage.getItem("googleCredKey"),
+				"creds":window.localStorage.getItem("googleCredData")
+			};
 			var reqData = JSON.stringify(pushObject);
 			reqData = reqData.replace("\n","");
 			reqData = reqData.replace("'", "\"");
@@ -486,10 +489,6 @@ function deleteUser(id) {
 	reqData = reqData.replace("'", "\"");
 
 	r.send(reqData);
-}
-
-function setup() {
-
 }
 
 function getData() {
