@@ -350,6 +350,15 @@ function showEventCheckboxes(value) {
 	}
 }
 
+function importShowEventCheckboxes(value) {
+	var eventCheckboxes = document.getElementById("selectedImportEvents");
+	if(value == "select") {
+		eventCheckboxes.style.display = "block";
+	} else {
+		eventCheckboxes.style.display = "none";
+	}
+}
+
 function showEvent(eventKey) {
 	var object = data[eventKey];
 	var keys = Object.keys(object);
@@ -471,7 +480,61 @@ function refreshSheets() {
 	}
 }
 
+
+
+/*function importRefreshSheets() {
+	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
+	if(!sheetsRefreshing) {
+		sheetsRefreshing = true;
+		document.getElementById("importSheetName").innerHTML = "Loading sheets...";
+		document.getElementById("importRefreshSheetsButton").innerHTML = "Refreshing...";
+
+		var req = new XMLHttpRequest();
+		req.open("POST","/getSheets", true);
+		req.setRequestHeader("Content-Type","application/json");
+		req.onreadystatechange = function() {
+			if(this.status == 200 && this.readyState == 4) {
+				var res = JSON.parse(this.response);
+				document.getElementById("importSheetIDSelect");
+				if(res == {}) {
+					document.getElementById("importSheetName").innerHTML = "No sheets found.";
+					document.getElementById("importSheetIDSelect").style.display = "none";
+				} else {
+					document.getElementById("importSheetName").innerHTML = "Pick a sheet";
+					document.getElementById("importSheetIDSelect").style.display = "block";
+				}
+
+
+				document.getElementById("importRefreshSheetsButton").innerHTML = "Refresh";
+				sheetsRefreshing = false;
+
+
+				var selectContainer = document.getElementById("importSheetIDSelect");
+				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
+
+				for(var key in res) {
+					var option = document.createElement("option");
+					option.value = key;
+					option.innerHTML = res[key];
+					selectContainer.appendChild(option);
+				}
+			}
+		}
+		if(window.localStorage.getItem("googleCreds") != undefined) {
+			var pushObject = {"creds":window.localStorage.getItem("googleCreds")};
+			var reqData = JSON.stringify(pushObject);
+			reqData = reqData.replace("\n","");
+			reqData = reqData.replace("'", "\"");
+
+			req.send(reqData);
+		} else {
+			alert("There was an error reading your google credentials. please make sure you are logged in");
+		}
+	}
+}*/
+
 function showSheetSelection(value) {
+	console.log(value);
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
 		sheetSelection.style.display = "none";
@@ -479,6 +542,7 @@ function showSheetSelection(value) {
 		sheetSelection.style.display = "block";
 	}
 }
+
 
 function deleteUser(id) {
 	var r = new XMLHttpRequest();
