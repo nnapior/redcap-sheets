@@ -82,6 +82,9 @@ def getValues(apiKey):
     # initiate output object
     outputObject = {}
 
+    if(jsonObject is None):
+        return "-1"
+
     # for each record...
     for item in jsonObject:
         # save the event name and participant id

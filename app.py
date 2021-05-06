@@ -9,6 +9,7 @@ from forms import SettingsForm
 from wtforms import PasswordField, validators
 import json
 import os
+import cv2
 
 
 app = Flask(__name__)
@@ -27,13 +28,13 @@ def home():
 
 @app.route('/settings', methods=['GET', 'POST'])
 def settings():
-    hasKey = False;
+    hasKey = False
     form = SettingsForm(request.form)
     if 'redcap_api_key' in session:
         flash('REDcap API key entered successfully!', "info")
-        hasKey =True;
+        hasKey = True
         theKey = session['redcap_api_key']
-        return render_template('settings.html', form=form, hasKey=hasKey, key = theKey)
+        return render_template('settings.html', form=form, hasKey=hasKey, key=theKey)
     if request.method == 'POST' and form.validate():
         session['redcap_api_key'] = form.redcap_api_key.data
         flash('REDcap API key entered successfully!', "success")
@@ -91,10 +92,11 @@ def authComplete():
     state = session['state']
     # Use the authorization server's response to fetch the OAuth 2.0 tokens.
     response = request.url
-    creds = authGoogleComplete(config.get('client_secret'), config.get(
+    object = authGoogleComplete(config.get('client_secret'), config.get(
         'scopes'), state, response, config.get('base_url')+'authComplete')
     #session['creds'] = creds
-    return redirect(url_for('home', values=creds))
+    # print(object)
+    return redirect(url_for('home', values=object))
 
 
 @app.route('/authGoogle', methods=['POST'])
@@ -112,15 +114,15 @@ def authGoogleRequest():
 @app.route('/signOutGoogle', methods=['POST'])
 def signOutGoogleRequest():
     if(request.json):
-        if(request.json["creds"]):
-            return signOutGoogle(request.json["creds"])
+        if(request.json["creds"] and request.json["key"]):
+            return signOutGoogle(request.json["creds"], request.json["key"])
     return "-1"
 
 
 @app.route('/userinfo', methods=['POST'])
 def user_info():
     if(request.json):
-        return get_user_info(request.json['creds'])
+        return get_user_info(request.json)
     return "-1"
 
 
