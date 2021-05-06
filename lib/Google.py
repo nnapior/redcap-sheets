@@ -11,25 +11,6 @@ from cryptography.fernet import Fernet
 import json
 
 
-def authGoogle(client_secret_file, scopes, redirect_uri):
-    # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
-    flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes)
-    # The URI created here must exactly match one of the authorized redirect URIs
-    # for the OAuth 2.0 client, which you configured in the API Console. If this
-    # value doesn't match an authorized URI, you will get a 'redirect_uri_mismatch'
-    # error.
-    flow.redirect_uri = redirect_uri
-
-    authorization_url, state = flow.authorization_url(
-        # Enable offline access so that you can refresh an access token without
-        # re-prompting the user for permission. Recommended for web server apps.
-        access_type='offline',
-        # Enable incremental authorization. Recommended as a best practice.
-        include_granted_scopes='true')
-
-    return (authorization_url, state)
-
-
 def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri):
     flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes, state=state)
     flow.redirect_uri = redirect_uri
@@ -55,6 +36,11 @@ def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri
 
 
 def signOutGoogle(credData, key):
+    """
+    Function that signs out of google 
+    Parameters: credData: and key: 
+    Returns "1"
+    """
     encCreds = bytes(credData.encode("utf-8"))
     key = bytes(key.encode("utf-8"))
     print(key)
@@ -62,14 +48,27 @@ def signOutGoogle(credData, key):
     fernet = Fernet(key)
 
     creds = pickle.loads(codecs.decode(fernet.decrypt(encCreds), "base64"))
-
     requests.post('https://oauth2.googleapis.com/revoke',
                   params={'token': creds.token},
                   headers={'content-type': 'application/x-www-form-urlencoded'})
     return "1"
 
 
+    
+
 def signInGoogle(client_secret_file, api_name, api_version, *scopes):
+    """
+    Function that signs into google 
+    
+    Parameters
+    client_secret_file : String name of the json file containing api access information
+    api_name : String name of the google API being accessed
+    api_version : String Version number of the api used
+    scopes : List of strings indicating the scope of the API service
+
+    Returns
+    
+    """
     print(client_secret_file, api_name, api_version, scopes, sep='-')
     CLIENT_SECRET_FILE = client_secret_file
     API_SERVICE_NAME = api_name
@@ -156,6 +155,8 @@ def convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0):
     '''
     convert_to_RFC_datetime
         Function that returns a datatime string for January 1st, 1900
+
+        Returns converted time in RFC
     '''
     dt = datetime.datetime(year, month, day, hour, minute, 0).isoformat() + 'Z'
     return dt

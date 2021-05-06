@@ -82,6 +82,16 @@ def import_redcap(sheet, service, project):
 
 
 def import_data(object):
+    """
+    Function that imports data to Redcap
+
+    Parameters
+    Object : list of redcap data 
+    
+    Returns
+    Imported data
+    """
+
     config = getConfig()
     imported = False
     creds = object['creds']

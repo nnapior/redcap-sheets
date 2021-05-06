@@ -9,6 +9,8 @@ url = "https://dri.udel.edu/redcap/api/"
 def getRecords(apiKey):
     """
     function to get the project records from the database
+
+    Returns None
     """
     # set up request
     data = {

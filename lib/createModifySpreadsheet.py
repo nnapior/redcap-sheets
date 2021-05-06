@@ -12,6 +12,11 @@ Helper functions for api calls
 
 
 def getSheets(creds):
+    """ 
+    getSheets
+    Function that prints google sheets information 
+    Returns json of sheets results 
+    """
     service = create_drive_service(creds['creds'])
     files = (service.files().list().execute())
 
@@ -74,17 +79,22 @@ def create_user_service(creds):
 
 
 def get_user_info(jsonObject):
+    """
+    get_user_info
+    Function that gets google users information
+
+    Returns user info and credentials 
+    """
     encCreds = bytes(jsonObject["creds"].encode("utf-8"))
     print(jsonObject["key"])
     key = bytes(jsonObject["key"].encode("utf-8"))
     print(key)
-
     fernet = Fernet(key)
-
     creds = fernet.decrypt(encCreds).decode()
     service = create_user_service(creds)
     return service.userinfo().get().execute()
 
+    
 
 def createSpreadsheet(creds):
     """
