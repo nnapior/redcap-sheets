@@ -61,18 +61,20 @@
                 <div class="row mb-3" id="">
                     <div class="col">
                         <div class="form-label">Events to Import</div>
-                        <select class="form-select mb-2" id="importMode" name="importMode" oninput="showEventCheckboxes(this.value)">
+                        <select class="form-select mb-2" id="importMode" name="importMode" oninput="showImportEventCheckboxes(this.value)" value="import-all">
                             <option value="import-all">All Events</option>
                             <option value="import-select">Selected Events</option>
                         </select>
-                        <div id="selectedImportEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                        <div id="importEventContainer" style="display:none">
+                            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="selectedImportEvents"></div>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
                         <select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="showSheetSelection(this.value)">
                             <option value="disabled">DISABLED</option>
                         </select>
-                        <div id="sheetImportSelection" style="visibility:hidden; position:absolute;z-index:-10">
+                        <div id="sheetImportSelection" style="display:none">
                             <button style="display:inline" onclick="chooseSheet()" class="btn btn-secondary">Select Google Sheet</button>
                         </div>
                     </div>
@@ -94,12 +96,12 @@
                 <div class="row mb-3" id="exportOptions">
                     <div class="col">
                         <div class="form-label">Events to Export</div>
-                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
+                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)" value="all">
                             <option value="all">All Events</option>
                             <option value="select">Selected Events</option>
                         </select>
-                        <div class="mb-3">
-                        <div class="form-selectgroup form-selectgroup-boxes" id="selectedEvents" style="display:hidden"></div>
+                        <div id="exportEventContainer" style="display:none">
+                        <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="selectedEvents"></div>
                         </div>
                     </div>
                     <div class="col">

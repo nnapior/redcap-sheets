@@ -318,8 +318,17 @@ function pushToSheets(object) {
 }
 
 function showEventCheckboxes(value) {
-	var eventCheckboxes = document.getElementById("selectedEvents");
+	var eventCheckboxes = document.getElementById("exportEventContainer");
 	if(value == "select") {
+		eventCheckboxes.style.display = "block";
+	} else {
+		eventCheckboxes.style.display = "none";
+	}
+}
+
+function showImportEventCheckboxes(value) {
+	var eventCheckboxes = document.getElementById("importEventContainer");
+	if(value == "import-select") {
 		eventCheckboxes.style.display = "block";
 	} else {
 		eventCheckboxes.style.display = "none";
@@ -403,17 +412,38 @@ function setButtons(object) {
 		// eventCheckboxes.appendChild(label);
 		// eventCheckboxes.appendChild(document.createElement("br"));
 
+		// eventImportCheckboxes.appendChild(label);
+		
+		label = document.createElement("label");
+		label.className = "form-selectgroup-item";
+		
 		checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
 		checkbox.className = "form-selectgroup-input";
 		checkbox.value = key;
+		checkbox.name = "selectedEvents"
 		checkbox.checked = true;
-		label = document.createElement("label");
-		label.htmlFor = key;
-		label.innerHTML = key;
-		eventImportCheckboxes.appendChild(checkbox);
+		
+		div = document.createElement("div");
+		div.className = "form-selectgroup-label";
+		
+		checkContainer = document.createElement("div");
+		checkContainer.className = "me-3";
+		
+		checkBoxElement = document.createElement("span");
+		checkBoxElement.className = "form-selectgroup-check";
+		
+		labelContainer = document.createElement("div");
+		labelContainer.className = "form-selectgroup-label-content d-flex align-items-center";
+		labelContainer.innerHTML = key;
+		
+		checkContainer.appendChild(checkBoxElement);
+		div.appendChild(checkContainer);
+		div.appendChild(labelContainer);
+		
+		label.appendChild(checkbox);
+		label.appendChild(div);
 		eventImportCheckboxes.appendChild(label);
-		eventImportCheckboxes.appendChild(document.createElement("br"));
 	}
 	buttons.value = keys[0];
 	showEvent(keys[0]);
