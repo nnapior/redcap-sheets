@@ -1,81 +1,130 @@
-# REDCap Google Sheets
-Creates a web application to interact with the REDcap and Google Sheets/Drive
+﻿**REDCap Google Sheets**
 
-## Features
-`TODO: add Features list`
+Created by:
 
+- Mario Durso
+- Justin Hamilton
+- Nick Napior
+- Kojo Otchere-Addo
+- Zhenghan Wang
 
-## Dependencies
-Install the `requirements.txt` file with `pip install -r requirements.txt`
-* Use `pip3` on MacOS. ex. `pip3 install -r requirements.txt`
+**Introduce:**
 
+Thanks for using our webapp.This web application used to interact with the REDcap API
 
-## Configuration
-if you use these scripts, you need a `config.json` file in `config/` with the following contents:
-```
-{
-	"api_key":"your-api-key",
-	"api_url":"link-to-REDCap-API",
-	"spreadsheet_id": "your-spreadsheet-id",
-	...
-}
-```
+**What can you do using this web app?**
 
-### Configuration variables
-* `api_key`: REDCap API key. (**Note**) This is only required for development
-* `spreadsheet_id`: Google sheets ID. (**Note**) This is only required for development
-	* ex. if the url to your sheet is `https://docs.google.com/spreadsheets/d/1fEncz_68ktr-o7CQd5TfYrv1AfKfJUPuWg0dv4HLgQA/edit#gid=80956627` then your sheet ID is `1fEncz_68ktr-o7CQd5TfYrv1AfKfJUPuWg0dv4HLgQA`
-* `api_url`: URL to your REDCap api. **Required**
-* `client_secret`: Path to `client_secret.json`. **Required**
-	* ex. `./config/client_secret.json`
-* `secret_key`: secret key for Flask cookie encryption. **Required**
-	* generate this key by using the python interpreter:
-	```
-	$ python3
-	Python 3.9.4 (default, Apr  5 2021, 01:50:46)
-	[Clang 12.0.0 (clang-1200.0.32.29)] on darwin
-	Type "help", "copyright", "credits" or "license" for more information.
-	>>> import secrets
-	>>> secrets.token_urlsafe(16)
-	'V4A5q52Bbe9WEc4f81i4iw' <-- THIS OUTPUT IS YOUR SECRET KEY. DO NOT SHARE
-	>>> exit()
-	```
-* `base_url`: base_url of webapp. **Required**
-	* if you're using `python app.py` your `base_url` should be `http://localhost:5000/`
-	* if you're using `docker` it should be something like `http://<docker-host-ip>:<target-server-port>`
-	or `http://example.com:<target-server-port>/` where `example.com` resolves to the docker host
+1.Export data to Google sheets.
 
-### Google Cloud Platform
-The user will also need a `client_secret.json` file in `config/`.
-* To get the client secret.json you must go to: https://console.cloud.google.com/home/dashboard
-* On this page click:
-	* Navigation Menu->APIs & Services->Credentials ->Desktop client 1
-* On this page click:
-	* "DOWNLOAD JSON"
-Move this file into your project directory
+2.Import data from Google sheets to REDCap. 3.Delete data from REDCap.
 
+**Dependencies**
 
-## Running the webapp
-Run this python script with `python redcap_sheets_webapp.py`
-* Use `python3` on MacOS python doesn't work.
-	* ex. `python3 redcap_sheets_webapp.py`
+Install therequirements.txt file withpip install -r requirements.txt
 
+- Usepip3 on MacOS. ex.pip3 install -r requirements.txt
 
-## Deploying on docker
-* **prerequisite** You must have `docker` installed and Running. See more at https://docs.docker.com/get-docker/
-	* confirm by running `docker ps` and you should receive the output of something like
-	```
-	CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
-	```
-* Clone this repository somewhere on your machine and `cd ../../wherever-this-repo-is`
-* Build the docker image with `docker build --tag redcap-sheets .`
-* after the image is built create a `config/` somewhere on your machine (even in this repository folder)
- 	* Follow the instructions in Configuration above to create `config/config.json` and `config/client_secret.json`
-* Run the container with `docker run -d -p <target-server-port>:8080 -v ../location/to/config:/app/config redcap-sheets:latest`
-* Verify it is running by running `docker ps` again, except this time we should see something like
-```
-CONTAINER ID   IMAGE                  COMMAND           CREATED         STATUS         PORTS                    NAMES
-8fa21640a09f   redcap-sheets:latest   "./gunicorn.sh"   4 seconds ago   Up 3 seconds   0.0.0.0:8080->8080/tcp   beautiful_shockley
-```
-* You can now stop,start,restart,delete,etc. by using the `CONTAINER ID`.
-	* ex. `docker stop 8fa21640a09f`
+Using all commands below to install all modules.
+
+pip install pandas
+
+pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
+pip install pycap
+
+**Configuration**
+
+**if you use these scripts, you need aconfig.json file inconfig/ with the following contents:**
+
+**{**
+
+**"api\_key":"your-api-key",**
+
+**"api\_url":"link-to-REDCap-API",**
+
+**"spreadsheet\_id": "your-spreadsheet-id"**
+
+**}**
+
+**The user will also need aclinet\_secret.json file inconfig/.**
+
+- **To get the client secret.json you must go to: [https://console.cloud.google.com/home/dashboard**](https://console.cloud.google.com/home/dashboard)**
+- **On this page click:**
+  - **Navigation Menu->APIs & Services->Credentials ->Desktop client 1**
+- **On this page click:**
+
+**○ "DOWNLOAD JSON" Move this file into your project directory**
+
+**What do you need?**
+
+1. A Google account named Which has the right to edit Google Sheets.
+1. A RedCap account and API key
+1. Install the above Requirements
+1. UD VPN
+
+**After installing the commands above.**
+
+**Running the webapp**
+
+1. Login to your UD VPN
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.001.png)
+
+2.Run this python script with the following:![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.002.jpeg)
+
+**python app.py**
+
+3.Copy this link to your website. (and do not exist this window)
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.003.jpeg)
+
+4.Then you will come to this page.
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.004.jpeg)
+
+5.Next, log in to your Google account with the red button at the top right
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.005.jpeg)
+
+6.When you log into your Google account, agree to all options, permissions, and continue.
+
+7.Next, Go to the setting at the top left
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.006.jpeg)
+
+8.Then submit your RedCap API
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.007.jpeg)9.After you submit your REDCap API, it will show that REDCap Api key entered successfully! Then back to the home page in the top left
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.008.jpeg)
+
+**Congratulations, you've completed all the steps. Now you can start using this app!!!**
+
+**Help on how to use all the features.**
+
+**1.How to export data to Google sheets.**
+
+1.In the lower right section, you can export data to Google Sheets.
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.009.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.010.jpeg)
+
+2. You can export all events or you can select the data which you want to. And also to choose the target sheet. Finally, click Export button
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.011.jpeg)
+
+**2.How to import data from Google sheets to REDCap.**
+
+1.In the lower left section, you can import data from Google Sheets to REDCap
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.012.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.013.jpeg)2. You can import all events to REDCap or you can select the data which you want to. And also to choose the target sheet. Finally, click Import Button
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.014.jpeg)
+
+**3.How to delete data from REDCap.**
+
+1.In the middle section, you can delete data from REDCap
+
+![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.015.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.016.jpeg)
+
+2. You can click the delete button (red one) to delete the data, but make sure that you have permission to delete those. If you don't have permission, it will show “you don't have permission to delete”. If you have permission to delete, it will show “delete successfully.”
+2. You can choose which event, and which participant ID you want to delete.
