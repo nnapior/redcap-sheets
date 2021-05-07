@@ -1,14 +1,5 @@
 # REDCap Google Sheets
 
-Created by:
-
-```
-● Mario Durso
-● Justin Hamilton
-● Nick Napior
-● Kojo Otchere-Addo
-● Zhenghan Wang
-```
 ### Introduce:
 
 Thanks for using our webapp.Thisweb application usedto interact with the REDcap API
@@ -120,5 +111,13 @@ permission to delete those. If you don't have permission,it will show “you don
 to delete”. If you have permission to delete, it willshow “delete successfully.”
 3. You can choose which event, and which participantID you want to delete.
 
+Created by:
 
+```
+● Mario Durso
+● Justin Hamilton
+● Nick Napior
+● Kojo Otchere-Addo
+● Zhenghan Wang
+```
 
