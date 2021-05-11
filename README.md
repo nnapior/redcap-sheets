@@ -7,8 +7,12 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 ### What can you do using this web app?
 
 1.Export data to Google sheets.
-2.Import data from Google sheets to REDCap.
-3.Delete data from REDCap.
+
+
+3.Import data from Google sheets to REDCap.
+
+
+5.Delete data from REDCap.
 
 ## Dependencies
 
