@@ -16,8 +16,10 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 
 ## Dependencies
 
-Install therequirements.txtfile withpip install-r requirements.txt
-
+Install the requirements.txt file with 
+```
+pip install-r requirements.txt
+```
 Using the command below for pip3 on MacOS. ex.
 ```
 ● pip3 install -r requirements.txt
@@ -33,7 +35,7 @@ pip install pycap
 
 ## Configuration
 
-**if you use these scripts, you need aconfig.jsonfileinconfig/with the following
+**if you use these scripts, you need a ```config.json ```file in ```config/``` with the following
 contents:**
 
 **{
@@ -42,7 +44,7 @@ contents:**
 "spreadsheet_id": "your-spreadsheet-id"
 }**
 
-**The user will also need aclinet_secret.jsonfileinconfig/.**
+**The user will also need a ```clinet_secret.json ```file in ```config/```.**
 
 ```
 ● To get the client secret.json you must go to:
