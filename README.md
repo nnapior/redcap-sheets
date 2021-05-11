@@ -125,6 +125,7 @@ to choose the target sheet. Finally, click ImportButton
 **3.How to delete data from REDCap.**
 1.In the middle section, you can delete data from REDCap
 
+![image](https://user-images.githubusercontent.com/54848986/117846283-e07b5000-b2b3-11eb-8211-b834a56b515f.png)
 
 2. You can click the delete button (red one) to deletethe data, but make sure that you have
 permission to delete those. If you don't have permission,it will show “you don't have permission
