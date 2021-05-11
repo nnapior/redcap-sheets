@@ -1,130 +1,134 @@
-﻿**REDCap Google Sheets**
+# REDCap Google Sheets
 
-Created by:
+### Introduce:
 
-- Mario Durso
-- Justin Hamilton
-- Nick Napior
-- Kojo Otchere-Addo
-- Zhenghan Wang
+Thanks for using our webapp.Thisweb application usedto interact with the REDcap API
 
-**Introduce:**
-
-Thanks for using our webapp.This web application used to interact with the REDcap API
-
-**What can you do using this web app?**
+### What can you do using this web app?
 
 1.Export data to Google sheets.
+2.Import data from Google sheets to REDCap.
+3.Delete data from REDCap.
 
-2.Import data from Google sheets to REDCap. 3.Delete data from REDCap.
+## Dependencies
 
-**Dependencies**
+Install therequirements.txtfile withpip install-r requirements.txt
 
-Install therequirements.txt file withpip install -r requirements.txt
-
-- Usepip3 on MacOS. ex.pip3 install -r requirements.txt
-
+```
+● Usepip3on MacOS. ex.pip3 install -r requirements.txt
+```
 Using all commands below to install all modules.
-
 pip install pandas
 
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+pip install --upgrade google-api-python-client google-auth-httplib2google-auth-oauthlib
 
 pip install pycap
 
-**Configuration**
 
-**if you use these scripts, you need aconfig.json file inconfig/ with the following contents:**
+## Configuration
 
-**{**
+**if you use these scripts, you need aconfig.jsonfileinconfig/with the following
+contents:**
 
-**"api\_key":"your-api-key",**
+**{
+"api_key":"your-api-key",
+"api_url":"link-to-REDCap-API",
+"spreadsheet_id": "your-spreadsheet-id"
+}**
 
-**"api\_url":"link-to-REDCap-API",**
+**The user will also need aclinet_secret.jsonfileinconfig/.**
 
-**"spreadsheet\_id": "your-spreadsheet-id"**
+```
+● To get the client secret.json you must go to:
+https://console.cloud.google.com/home/dashboard
+● On this page click:
+○ Navigation Menu->APIs & Services->Credentials ->Desktopclient 1
+● On this page click:
+○ "DOWNLOAD JSON" Move this file into your project directory
+```
+### What do you need?
 
-**}**
+1. A Google account named Which has the right to editGoogle Sheets.
+2. A RedCap account and API key
+3. Install the above Requirements
+4. UD VPN
 
-**The user will also need aclinet\_secret.json file inconfig/.**
 
-- **To get the client secret.json you must go to: [https://console.cloud.google.com/home/dashboard**](https://console.cloud.google.com/home/dashboard)**
-- **On this page click:**
-  - **Navigation Menu->APIs & Services->Credentials ->Desktop client 1**
-- **On this page click:**
+### After installing the commands above.
 
-**○ "DOWNLOAD JSON" Move this file into your project directory**
-
-**What do you need?**
-
-1. A Google account named Which has the right to edit Google Sheets.
-1. A RedCap account and API key
-1. Install the above Requirements
-1. UD VPN
-
-**After installing the commands above.**
-
-**Running the webapp**
+## Running the webapp
 
 1. Login to your UD VPN
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.001.png)
 
-2.Run this python script with the following:![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.002.jpeg)
+![image](https://user-images.githubusercontent.com/54848986/117843794-b9238380-b2b1-11eb-903c-0144cc3780e1.png)
 
+2.Run this python script with the following:
 **python app.py**
+
+![image](https://user-images.githubusercontent.com/54848986/117843979-e2dcaa80-b2b1-11eb-9a53-2e34b0944943.png)
 
 3.Copy this link to your website. (and do not exist this window)
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.003.jpeg)
+![image](https://user-images.githubusercontent.com/54848986/117844048-f4be4d80-b2b1-11eb-947a-915fa9641b19.png)
 
 4.Then you will come to this page.
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.004.jpeg)
+![image](https://user-images.githubusercontent.com/54848986/117844116-01db3c80-b2b2-11eb-848e-c761e281abae.png)
 
 5.Next, log in to your Google account with the red button at the top right
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.005.jpeg)
+![image](https://user-images.githubusercontent.com/54848986/117844214-13244900-b2b2-11eb-964a-862d404159bb.png)
 
-6.When you log into your Google account, agree to all options, permissions, and continue.
+6.When you log into your Google account, agree toall options, permissions, and continue.
+
 
 7.Next, Go to the setting at the top left
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.006.jpeg)
+![image](https://user-images.githubusercontent.com/54848986/117844305-29320980-b2b2-11eb-93d0-488e849b4041.png)
 
 8.Then submit your RedCap API
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.007.jpeg)9.After you submit your REDCap API, it will show that REDCap Api key entered successfully! Then back to the home page in the top left
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.008.jpeg)
+9.After you submit your REDCap API, it will show thatREDCap Api key entered successfully!
+Then back to the home page in the top left
 
-**Congratulations, you've completed all the steps. Now you can start using this app!!!**
+**Congratulations, you've completed all the steps. Nowyou can start using this
+app!!!**
 
-**Help on how to use all the features.**
+
+### Help on how to use all the features.
 
 **1.How to export data to Google sheets.**
+1.In the lower right section, you can export datato Google Sheets.
 
-1.In the lower right section, you can export data to Google Sheets.
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.009.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.010.jpeg)
-
-2. You can export all events or you can select the data which you want to. And also to choose the target sheet. Finally, click Export button
-
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.011.jpeg)
+2. You can export all events or you can select the data which you want to. And also to choose
+the target sheet. Finally, click Export button
 
 **2.How to import data from Google sheets to REDCap.**
+1.In the lower left section, you can import data fromGoogle Sheets to REDCap
 
-1.In the lower left section, you can import data from Google Sheets to REDCap
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.012.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.013.jpeg)2. You can import all events to REDCap or you can select the data which you want to. And also to choose the target sheet. Finally, click Import Button
-
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.014.jpeg)
+2. You can import all events to REDCap or you can select the data which you want to. And also
+to choose the target sheet. Finally, click ImportButton
 
 **3.How to delete data from REDCap.**
-
 1.In the middle section, you can delete data from REDCap
 
-![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.015.png)![](Aspose.Words.4047b0ed-f889-4645-a411-3ef0feff086c.016.jpeg)
 
-2. You can click the delete button (red one) to delete the data, but make sure that you have permission to delete those. If you don't have permission, it will show “you don't have permission to delete”. If you have permission to delete, it will show “delete successfully.”
-2. You can choose which event, and which participant ID you want to delete.
+2. You can click the delete button (red one) to deletethe data, but make sure that you have
+permission to delete those. If you don't have permission,it will show “you don't have permission
+to delete”. If you have permission to delete, it willshow “delete successfully.”
+3. You can choose which event, and which participantID you want to delete.
+
+
+Created by:
+
+```
+● Mario Durso
+● Justin Hamilton
+● Nick Napior
+● Kojo Otchere-Addo
+● Zhenghan Wang
+```
