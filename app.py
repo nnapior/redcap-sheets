@@ -126,8 +126,9 @@ def import_to_redcap():
 @app.route('/delete_record_redcap', methods=["POST"])
 def delete_record():
     if request.json:
-        deleted = delete_records(request.json['id'])
-        return json.dumps({'deleted': deleted})
+        if('redcap_api_key' in session):
+            deleted = delete_records(request.json['id'], session['redcap_api_key'] )
+            return json.dumps({'deleted': deleted})
 
 
 if __name__ == '__main__':

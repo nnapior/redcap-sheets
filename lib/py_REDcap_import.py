@@ -60,6 +60,7 @@ def import_redcap(sheet, service, project, sheetID):
     request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
     rows = request['values']
+    
 
     # create dataframe from rows get from sheet
     df = pandas.DataFrame(rows[1:], columns=rows[0])
@@ -67,6 +68,8 @@ def import_redcap(sheet, service, project, sheetID):
 
     # create dict from dataframe
     rows = df.to_dict(orient='records')
+    
+    
 
     try:
         # iterate through each record from rows: dict
@@ -74,11 +77,12 @@ def import_redcap(sheet, service, project, sheetID):
             row["redcap_event_name"] = sheet  # append event name to record
             rec = json.dumps(row)  # converting record to  json format
             data = [json.loads(rec)]  # load json object and put that in list
+            #print(data)
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
-        return "Import Data to RedCap Failed"
-    return "Import Data to RedCap Successful"
+        return print("Import Data to RedCap Failed")
+    return print("Import Data to RedCap Successful")
 
 
 def import_data(object, apiKey):
@@ -88,7 +92,7 @@ def import_data(object, apiKey):
     imported = False
     creds = object['creds']
     events = object['events']
-    sheetID = '1ztM8iHHvlmEt5SbYZQswNc2UN-4f6ifLHZd3O9aJ2HQ'
+    sheetID = object['id']
     service = createService(creds)
 
     project = Project("https://dri.udel.edu/redcap/api/", apiKey)
