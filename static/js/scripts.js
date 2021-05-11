@@ -43,10 +43,12 @@ function checkEnable(){
 			if(window.localStorage.getItem("googleCreds") != undefined &&this.response == "true") {
 				enableImport();
 				enableExport();
+				importShowSheetSelection("show");
 			}
 			else{
 				disableImport();
 				disableExport();
+				importShowSheetSelection("hide");
 			}
 			
 		}
@@ -244,7 +246,7 @@ function importData() {
 }
 
 function pushToRedcap(object) {
-	var sheetID = document.getElementById("sheetIDSelect").value;
+	var sheetID = document.getElementById("importSheetIDSelect").value;
 	var r = new XMLHttpRequest();
 	var importBtn = document.getElementById('importBtn');
 	r.open("POST","/import_sheets_to_redcap",true);
@@ -256,8 +258,9 @@ function pushToRedcap(object) {
 		}
 	}
 
-	if(window.localStorage.getItem("googleCreds") != undefined) {
+	if(window.localStorage.getItem("googleCreds") != undefined && sheetID != "") {
 		var pushObject = {"events":object, "id":sheetID, "creds":window.localStorage.getItem("googleCreds")};
+		console.log(pushObject);
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
 		reqData = reqData.replace("'", "\"");
@@ -543,9 +546,9 @@ function showSheetSelection(value) {
 }
 
 function importShowSheetSelection(value) {
-	console.log(value);
+	
 	let sheetSelection = document.getElementById("sheetImportSelection");
-	if(value == "new") {
+	if(value == "hide") {
 		sheetSelection.style.display = "none";
 	} else {
 		sheetSelection.style.display = "block";

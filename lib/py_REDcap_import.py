@@ -30,18 +30,18 @@ def getConfig():
     return config'''
 
 
-def getEvents(google_service=None):
+def getEvents(google_service, sheetID ):
     """This function get all the sheet events from google sheets
     :return events list"""
-    service = None
-    if google_service == None:
+    service = google_service
+    ''' if google_service == None:
         service = createService()
     else:
         service = google_service
-    config = getConfig()
+    config = getConfig()'''
 
     # request for google sheets data and extract the sheeets names
-    sheet_metadata = service.spreadsheets().get(spreadsheetId=config["spreadsheet_id"]).execute()
+    sheet_metadata = service.spreadsheets().get(spreadsheetId=sheetID).execute()
     sheets_info = sheet_metadata.get('sheets', '')
     events = [sheets_info[x].get("properties", {}).get("title", "Sheet1")
               for x in range(len(sheets_info))]
@@ -49,15 +49,15 @@ def getEvents(google_service=None):
     return events
 
 
-def import_redcap(sheet, service, project):
+def import_redcap(sheet, service, project, sheetID):
     """
     This funciton import records to redcap
     return: Successfull/Failed
     """
 
-    config = getConfig()
+   # config = getConfig()
     # request for particular sheet data
-    request = service.spreadsheets().values().get(spreadsheetId=config["spreadsheet_id"], majorDimension='ROWS',
+    request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
     rows = request['values']
 
@@ -82,19 +82,21 @@ def import_redcap(sheet, service, project):
 
 
 def import_data(object, apiKey):
+    print('here')
     
     #config = getConfig()
     imported = False
     creds = object['creds']
     events = object['events']
+    sheetID = '1ztM8iHHvlmEt5SbYZQswNc2UN-4f6ifLHZd3O9aJ2HQ'
     service = createService(creds)
 
     project = Project("https://dri.udel.edu/redcap/api/", apiKey)
 
     if events == "All Events":
-        events = getEvents(service)
+        events = getEvents(service, sheetID)
         for event in events:
-            response = import_redcap(event, service, project)
+            response = import_redcap(event, service, project, sheetID)
             if response == "Import Data to RedCap Successful":
                 imported = response
                 continue
@@ -103,7 +105,7 @@ def import_data(object, apiKey):
 
     else:
         for event in events:
-            response = import_redcap(event, service, project)
+            response = import_redcap(event, service, project, sheetID)
             if response == "Import Data to RedCap Successful":
                 imported = response
                 continue

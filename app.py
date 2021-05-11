@@ -117,10 +117,10 @@ def pullData():
 def import_to_redcap():
     if request.json:
         response = import_data(request.json, session['redcap_api_key'])
-        flash(response)
-        return redirect(url_for("home"))
+       # flash(response)
+        return "1"#redirect(url_for("home"))
     else:
-        return print("-1")
+        return "-1"
 
 
 @app.route('/delete_record_redcap', methods=["POST"])
