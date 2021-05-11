@@ -18,9 +18,9 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 
 Install therequirements.txtfile withpip install-r requirements.txt
 
-use the command below
+Using the command below for pip3 on MacOS. ex.
 ```
-● pip3on MacOS. ex.pip3 install -r requirements.txt
+● pip3 install -r requirements.txt
 ```
 Using all commands below to install all modules.
 pip install pandas
