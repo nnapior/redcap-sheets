@@ -20,23 +20,26 @@ var pickedSheetID;
 
 // Create and render a Picker object for searching images.
 function createPicker() {
+	if(!window.localStorage.getItem("pickerCredToken")) {
+		alert("please sign into google");
+	} else {
 	var oauthToken = atob(window.localStorage.getItem("pickerCredToken"));
-	console.log(oauthToken);
-  if (pickerApiLoaded && oauthToken) {
-	  console.log("1")
-	var view = new google.picker.View(google.picker.ViewId.DOCS);
-	view.setMimeTypes("application/vnd.google-apps.spreadsheet");
-	var picker = new google.picker.PickerBuilder()
-		.enableFeature(google.picker.Feature.NAV_HIDDEN)
-		.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
-		.setAppId(appId)
-		.setOAuthToken(oauthToken)
-		.addView(view)
-		.addView(new google.picker.DocsUploadView())
-		.setDeveloperKey(developerKey)
-		.setCallback(pickerCallback)
-		.build();
-	 picker.setVisible(true);
+	  if (pickerApiLoaded && oauthToken) {
+		  console.log("1")
+		var view = new google.picker.View(google.picker.ViewId.DOCS);
+		view.setMimeTypes("application/vnd.google-apps.spreadsheet");
+		var picker = new google.picker.PickerBuilder()
+			.enableFeature(google.picker.Feature.NAV_HIDDEN)
+			.enableFeature(google.picker.Feature.MULTISELECT_ENABLED)
+			.setAppId(appId)
+			.setOAuthToken(oauthToken)
+			.addView(view)
+			.addView(new google.picker.DocsUploadView())
+			.setDeveloperKey(developerKey)
+			.setCallback(pickerCallback)
+			.build();
+		 picker.setVisible(true);
+	  }
   }
 }
 

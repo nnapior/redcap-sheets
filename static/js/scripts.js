@@ -276,14 +276,13 @@ function pushToSheets(object) {
 			exportBtn.classList.add("btn-loading");
 			r.send(reqData);
 		} else {
-			var sheetID = document.getElementById("sheetIDSelect").value;
-			if(sheetID != null) {
+			if(pickedSheetID) {
 				switch(sheetDestination) {
 					case "replace":
 						//put code to replace an existing sheet's data here
 						console.log("writing to an existing sheet (replacing) with id "+sheetID);
 
-						var pushObject = {"mode":"replace", "id":sheetID, "object":object, "creds":window.localStorage.getItem("googleCreds")};
+						var pushObject = {"mode":"replace", "id":pickedSheetID, "object":object, "creds":window.localStorage.getItem("googleCreds")};
 
 						var r = new XMLHttpRequest();
 						var spreadsheet_address = "https://docs.google.com/spreadsheets/d/";
