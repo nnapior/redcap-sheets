@@ -22,6 +22,14 @@
     <meta name="robots" content="noindex,nofollow,noarchive"/>
     
     <!-- Load the Google API Loader script. -->
+    <script type="text/javascript">
+    function onPickerApiLoad() {
+          pickerApiLoaded = true;
+        }
+        function loadPicker() {
+          gapi.load('picker', {'callback': onPickerApiLoad});
+        }
+    </script>
     <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
     <script src="{{ url_for('static', filename='js/picker.js') }}" type="text/javascript"></script>
 
@@ -49,6 +57,7 @@
 
 </head>
 <body onload="pageLoad()" class="antialiased">
+    <button onclick="createPicker()">picker</button>
     <!-- Top horizontal bar -->
     <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
         <div class="container">
