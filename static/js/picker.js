@@ -15,13 +15,9 @@ var scope = ['https://www.googleapis.com/auth/drive.file'];
 var pickerApiLoaded = false;
 
 // Use the Google API Loader script to load the google.picker script.
-function loadPicker() {
-  gapi.load('picker', {'callback': onPickerApiLoad});
-}
 
-function onPickerApiLoad() {
-  pickerApiLoaded = true;
-}
+var pickedSheetID;
+
 // Create and render a Picker object for searching images.
 function createPicker() {
 	var oauthToken = atob(window.localStorage.getItem("pickerCredToken"));
@@ -48,7 +44,7 @@ function createPicker() {
 function pickerCallback(data) {
   if (data.action == google.picker.Action.PICKED) {
 	console.log(data.docs[0]);
-	var fileId = data.docs[0].id;
-	alert('The user selected: ' + fileId);
+	pickedSheetID = data.docs[0].id;
+	document.getElementById("sheetName").innerHTML = data.docs[0].name;
   }
 }
