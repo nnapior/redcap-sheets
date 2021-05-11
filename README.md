@@ -120,6 +120,8 @@ the target sheet. Finally, click Export button
 2. You can import all events to REDCap or you can select the data which you want to. And also
 to choose the target sheet. Finally, click ImportButton
 
+![image](https://user-images.githubusercontent.com/54848986/117846244-d5282480-b2b3-11eb-8199-fe9dde134e92.png)
+
 **3.How to delete data from REDCap.**
 1.In the middle section, you can delete data from REDCap
 
