@@ -23,12 +23,13 @@ Using the command below for pip3 on MacOS. ex.
 ● pip3 install -r requirements.txt
 ```
 Using all commands below to install all modules.
+```
 pip install pandas
 
 pip install --upgrade google-api-python-client google-auth-httplib2google-auth-oauthlib
 
 pip install pycap
-
+```
 
 ## Configuration
 
