@@ -122,10 +122,13 @@ Returns: "1" - if successful
 
 ### Export-CSV-To-GoogleSheets.py
 
-Function: 
-Purpose:
-Parameters:
+Function: export_csv_file(file_path: str, parents: list = None)
+Purpose: Function that takes in a file path and adds it to a google sheet
+Parameters: file_path - 
+            parents - 
 Returns:
+
+### Google.py
 
 Function:
 Purpose:
