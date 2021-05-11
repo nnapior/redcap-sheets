@@ -81,8 +81,8 @@ def import_redcap(sheet, service, project, sheetID):
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
-        return print("Import Data to RedCap Failed")
-    return print("Import Data to RedCap Successful")
+        return "Import Data to RedCap Failed"
+    return "Import Data to RedCap Successful"
 
 
 def import_data(object, apiKey):
