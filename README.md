@@ -115,6 +115,7 @@ the target sheet. Finally, click Export button
 **2.How to import data from Google sheets to REDCap.**
 1.In the lower left section, you can import data fromGoogle Sheets to REDCap
 
+![image](https://user-images.githubusercontent.com/54848986/117846178-c6417200-b2b3-11eb-94bf-2cad0b78cafe.png)
 
 2. You can import all events to REDCap or you can select the data which you want to. And also
 to choose the target sheet. Finally, click ImportButton
