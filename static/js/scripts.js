@@ -62,6 +62,7 @@ function disableImport() {
 	var importBtn = document.getElementById('importBtn');
 	importCard.classList.add('cursor-not-allowed');
 	importBtn.classList.add('disabled');
+	
 }
 
 function disableExport() {

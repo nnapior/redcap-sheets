@@ -20,6 +20,22 @@
     <meta name="HandheldFriendly" content="True"/>
     <meta name="MobileOptimized" content="320"/>
     <meta name="robots" content="noindex,nofollow,noarchive"/>
+    
+    <script>
+    
+        function onPickerApiLoad() {
+            // pickerApiLoaded = true;
+            // createPicker();
+          }
+    
+        // Use the API Loader script to load google.picker and gapi.auth.
+        function onApiLoad() {
+            gapi.load('picker', onPickerApiLoad);
+        }
+    </script>
+    
+    <!-- Load the Google API Loader script. -->
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=onApiLoad"></script>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
@@ -45,7 +61,6 @@
 
 </head>
 <body onload="pageLoad()" class="antialiased">
-
     <!-- Top horizontal bar -->
     <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
         <div class="container">

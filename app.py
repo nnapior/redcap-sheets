@@ -37,7 +37,6 @@ def settings():
         return redirect(url_for('home'))
     return render_template('settings.html', form=form, hasKey=hasKey)
 
-
 @app.route('/checkAPIKey', methods=['GET'])
 def checkKey():
     if 'redcap_api_key' in session:
@@ -118,7 +117,7 @@ def import_to_redcap():
         flash(response)
         return redirect(url_for("home"))
     else:
-        return print("-1")
+        return "-1"
 
 
 @app.route('/delete_record_redcap', methods=["POST"])
