@@ -96,6 +96,10 @@ function pageLoad() {
 }
 
 function getValues(object, level = 0) {
+	//getValues
+	//Function that gets google sheets values
+	//Parameters: object: any datatype, level: number
+	//Returns outputStr:
 	if(typeof(object) == "string") {
 		return object;
 	}
@@ -119,6 +123,9 @@ function getValues(object, level = 0) {
 }
 
 function showParticipant(eventKey, participantID) {
+	//showParticpant
+	//Function that gets google sheets values
+	//Parameters: eventKey , participantID:
 	console.log(eventKey, participantID);
 
 	// Populate table keys
@@ -167,7 +174,7 @@ function showParticipant(eventKey, participantID) {
 }
 
 function exportData() {
-	//this function gets the json data ready to push to sheets
+	//Function that gets the json data ready to push to sheets
 	var exportMode = document.getElementById("exportMode").value;
 
 	if(exportMode == "select") {
@@ -236,8 +243,10 @@ function pushToRedcap(object) {
 }
 
 function pushToSheets(object) {
-	//put code to write to a sheet here
-	//the "object" parameter is the json data we're writing
+	//pushToSheets
+	//Function that puts code to write to a sheet and pushes it
+	//Parameters: object: parameter is the json data we're writing
+
 	if(window.localStorage.getItem("googleCredData") != undefined && window.localStorage.getItem("googleCredKey") != undefined) {
 	document.getElementById("export-btn-icon").classList.add("btn-loading");
 		//if we're doing sheet destination control, use this outline
@@ -461,6 +470,10 @@ function refreshSheets() {
 }
 
 function showSheetSelection(value) {
+	//showSheetSelection
+	//Function that gets sheet selection based on sheet ID
+	//Parameters: value:
+
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
 		sheetSelection.style.display = "none";
@@ -488,11 +501,10 @@ function deleteUser(id) {
 	r.send(reqData);
 }
 
-function setup() {
-
-}
-
 function getData() {
+	//getData
+	//Function that retrieves data
+
 	document.getElementById("refresh-btn").classList.add("btn-loading");
 	var r = new XMLHttpRequest();
 	r.open("GET", "/pullData", true);
