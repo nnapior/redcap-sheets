@@ -72,12 +72,6 @@ def getSheetsRequest():
     else:
         return print("-1")
 
-
-@app.route('/authREDCap', methods=['POST'])
-def authREDCapRequest():
-    return "1"
-
-
 @app.route('/authGoogle', methods=['POST'])
 def authGoogleRequest():
     CLIENT_SECRET_FILE = 'config/client_secret.json'
