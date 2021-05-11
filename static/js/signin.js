@@ -14,7 +14,10 @@ function signInGoogle() {
 	req.open("POST","/authGoogle", true);
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
-			window.localStorage.setItem("googleCreds",this.response);
+			var res = JSON.parse(this.response);
+			
+			window.localStorage.setItem("pickerCredToken", btoa(res["token"]));
+			window.localStorage.setItem("googleCreds",res["creds"]);
 			alert("successfully signed in");
 			getUserInfo();
 		}
@@ -34,6 +37,7 @@ function signOutGoogle() {
 	req.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			window.localStorage.removeItem("googleCreds");
+			window.localStorage.removeItem("pickerCredToken");
 			alert("successfully signed out");
 			getUserInfo();
 		}

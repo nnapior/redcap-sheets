@@ -7,6 +7,7 @@ from google.auth.transport.requests import Request
 import io
 import codecs
 import requests
+import json
 
 
 def signOutGoogle(credData):
@@ -25,15 +26,21 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
     SCOPES = [scope for scope in scopes[0]]
     print(SCOPES)
     cred = None
-
     if not cred or not cred.valid:
         if cred and cred.expired and cred.refresh_token:
             cred.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
             cred = flow.run_local_server()
-
-        return codecs.encode(pickle.dumps(cred), "base64").decode()
+        
+        
+        jsonObj = json.loads(cred.to_json())
+        print(jsonObj)
+        print(jsonObj['token'])
+        outputObj = {}
+        outputObj["token"] = jsonObj['token']
+        outputObj["creds"] = codecs.encode(pickle.dumps(cred), "base64").decode()
+        return json.dumps(outputObj)
 
 
 def Create_Service(client_secret_file, api_name, api_version, credData, *scopes):
