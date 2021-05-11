@@ -89,9 +89,12 @@ https://console.cloud.google.com/home/dashboard
 
 8.Then submit your RedCap API
 
+![image](https://user-images.githubusercontent.com/54848986/117845738-677bf880-b2b3-11eb-8479-a152f9ceeec4.png)
 
 9.After you submit your REDCap API, it will show thatREDCap Api key entered successfully!
 Then back to the home page in the top left
+
+![image](https://user-images.githubusercontent.com/54848986/117845829-78c50500-b2b3-11eb-9113-6890916ee4d9.png)
 
 **Congratulations, you've completed all the steps. Nowyou can start using this
 app!!!**
@@ -102,6 +105,7 @@ app!!!**
 **1.How to export data to Google sheets.**
 1.In the lower right section, you can export datato Google Sheets.
 
+![image](https://user-images.githubusercontent.com/54848986/117846018-a27e2c00-b2b3-11eb-9064-310ae0955629.png)
 
 2. You can export all events or you can select the data which you want to. And also to choose
 the target sheet. Finally, click Export button
