@@ -7,27 +7,35 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 ### What can you do using this web app?
 
 1.Export data to Google sheets.
-2.Import data from Google sheets to REDCap.
-3.Delete data from REDCap.
+
+
+3.Import data from Google sheets to REDCap.
+
+
+5.Delete data from REDCap.
 
 ## Dependencies
 
-Install therequirements.txtfile withpip install-r requirements.txt
-
+Install the requirements.txt file with 
 ```
-● Usepip3on MacOS. ex.pip3 install -r requirements.txt
+pip install-r requirements.txt
+```
+Using the command below for pip3 on MacOS. ex.
+```
+● pip3 install -r requirements.txt
 ```
 Using all commands below to install all modules.
+```
 pip install pandas
 
 pip install --upgrade google-api-python-client google-auth-httplib2google-auth-oauthlib
 
 pip install pycap
-
+```
 
 ## Configuration
 
-**if you use these scripts, you need aconfig.jsonfileinconfig/with the following
+**if you use these scripts, you need a ```config.json ```file in ```config/``` with the following
 contents:**
 
 **{
@@ -36,7 +44,7 @@ contents:**
 "spreadsheet_id": "your-spreadsheet-id"
 }**
 
-**The user will also need aclinet_secret.jsonfileinconfig/.**
+**The user will also need a ```clinet_secret.json ```file in ```config/```.**
 
 ```
 ● To get the client secret.json you must go to:
@@ -115,13 +123,17 @@ the target sheet. Finally, click Export button
 **2.How to import data from Google sheets to REDCap.**
 1.In the lower left section, you can import data fromGoogle Sheets to REDCap
 
+![image](https://user-images.githubusercontent.com/54848986/117846178-c6417200-b2b3-11eb-94bf-2cad0b78cafe.png)
 
 2. You can import all events to REDCap or you can select the data which you want to. And also
 to choose the target sheet. Finally, click ImportButton
 
+![image](https://user-images.githubusercontent.com/54848986/117846244-d5282480-b2b3-11eb-8199-fe9dde134e92.png)
+
 **3.How to delete data from REDCap.**
 1.In the middle section, you can delete data from REDCap
 
+![image](https://user-images.githubusercontent.com/54848986/117846283-e07b5000-b2b3-11eb-8211-b834a56b515f.png)
 
 2. You can click the delete button (red one) to deletethe data, but make sure that you have
 permission to delete those. If you don't have permission,it will show “you don't have permission
