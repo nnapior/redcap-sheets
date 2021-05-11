@@ -18,7 +18,7 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 
 Install the ```requirements.txt``` file with 
 ```
-pip install-r requirements.txt
+pip install -r requirements.txt
 ```
 Using the command below on MacOS. ex.
 ```
@@ -80,7 +80,8 @@ https://console.cloud.google.com/home/dashboard
 ![image](https://user-images.githubusercontent.com/54848986/117843794-b9238380-b2b1-11eb-903c-0144cc3780e1.png)
 
 2.Run this python script with the following:
-**python app.py**
+
+**```python app.py```**
 
 ![image](https://user-images.githubusercontent.com/54848986/117843979-e2dcaa80-b2b1-11eb-9a53-2e34b0944943.png)
 
