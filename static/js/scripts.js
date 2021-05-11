@@ -66,7 +66,7 @@ function APIkey(){
 		
 		}
 	}
-	console.log('ASHDFASJHDFASJFOASJDF')
+	
 }
 
 function showUser(name, avatar_url) {
@@ -244,6 +244,7 @@ function importData() {
 }
 
 function pushToRedcap(object) {
+	var sheetID = document.getElementById("sheetIDSelect").value;
 	var r = new XMLHttpRequest();
 	var importBtn = document.getElementById('importBtn');
 	r.open("POST","/import_sheets_to_redcap",true);
@@ -256,7 +257,7 @@ function pushToRedcap(object) {
 	}
 
 	if(window.localStorage.getItem("googleCreds") != undefined) {
-		var pushObject = {"events":object, "creds":window.localStorage.getItem("googleCreds")};
+		var pushObject = {"events":object, "id":sheetID, "creds":window.localStorage.getItem("googleCreds")};
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
 		reqData = reqData.replace("'", "\"");
@@ -428,6 +429,7 @@ function setButtons(object) {
 
 var sheetIDs = {};
 var sheetsRefreshing = false;
+var importSheetsRefreshing = false;
 
 function refreshSheets() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
@@ -480,12 +482,9 @@ function refreshSheets() {
 	}
 }
 
-
-
-/*function importRefreshSheets() {
-	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
-	if(!sheetsRefreshing) {
-		sheetsRefreshing = true;
+function importRefreshSheets(){
+	if(!importSheetsRefreshing) {
+		importSheetsRefreshing = true;
 		document.getElementById("importSheetName").innerHTML = "Loading sheets...";
 		document.getElementById("importRefreshSheetsButton").innerHTML = "Refreshing...";
 
@@ -506,7 +505,7 @@ function refreshSheets() {
 
 
 				document.getElementById("importRefreshSheetsButton").innerHTML = "Refresh";
-				sheetsRefreshing = false;
+				importSheetsRefreshing = false;
 
 
 				var selectContainer = document.getElementById("importSheetIDSelect");
@@ -531,11 +530,21 @@ function refreshSheets() {
 			alert("There was an error reading your google credentials. please make sure you are logged in");
 		}
 	}
-}*/
+}
 
 function showSheetSelection(value) {
 	console.log(value);
 	let sheetSelection = document.getElementById("sheetSelection");
+	if(value == "new") {
+		sheetSelection.style.display = "none";
+	} else {
+		sheetSelection.style.display = "block";
+	}
+}
+
+function importShowSheetSelection(value) {
+	console.log(value);
+	let sheetSelection = document.getElementById("sheetImportSelection");
 	if(value == "new") {
 		sheetSelection.style.display = "none";
 	} else {
