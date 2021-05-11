@@ -1,12 +1,5 @@
 ﻿**REDCap Google Sheets**
 
-Created by:
-
-- Mario Durso
-- Justin Hamilton
-- Nick Napior
-- Kojo Otchere-Addo
-- Zhenghan Wang
 
 **Introduce:**
 
@@ -128,3 +121,13 @@ pip install pycap
 
 2. You can click the delete button (red one) to delete the data, but make sure that you have permission to delete those. If you don't have permission, it will show “you don't have permission to delete”. If you have permission to delete, it will show “delete successfully.”
 2. You can choose which event, and which participant ID you want to delete.
+
+
+
+Created by:
+
+- Mario Durso
+- Justin Hamilton
+- Nick Napior
+- Kojo Otchere-Addo
+- Zhenghan Wang
