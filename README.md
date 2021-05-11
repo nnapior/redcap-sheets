@@ -9,18 +9,18 @@ Thanks for using our webapp.Thisweb application usedto interact with the REDcap 
 1.Export data to Google sheets.
 
 
-3.Import data from Google sheets to REDCap.
+2.Import data from Google sheets to REDCap.
 
 
-5.Delete data from REDCap.
+3.Delete data from REDCap.
 
 ## Dependencies
 
-Install the requirements.txt file with 
+Install the ```requirements.txt``` file with 
 ```
 pip install-r requirements.txt
 ```
-Using the command below for pip3 on MacOS. ex.
+Using the command below on MacOS. ex.
 ```
 ● pip3 install -r requirements.txt
 ```
@@ -39,21 +39,29 @@ pip install pycap
 contents:**
 
 **{
+
 "api_key":"your-api-key",
+
 "api_url":"link-to-REDCap-API",
+
 "spreadsheet_id": "your-spreadsheet-id"
+
 }**
 
 **The user will also need a ```clinet_secret.json ```file in ```config/```.**
 
-```
 ● To get the client secret.json you must go to:
+
 https://console.cloud.google.com/home/dashboard
+
 ● On this page click:
-○ Navigation Menu->APIs & Services->Credentials ->Desktopclient 1
+
+    ○ Navigation Menu->APIs & Services->Credentials ->Desktop client 1
+
 ● On this page click:
-○ "DOWNLOAD JSON" Move this file into your project directory
-```
+
+    ○ "DOWNLOAD JSON" Move this file into your project directory
+
 ### What do you need?
 
 1. A Google account named Which has the right to editGoogle Sheets.
