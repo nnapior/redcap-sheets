@@ -34,7 +34,6 @@ Returns: newSpreadsheet.get('spreadsheetId') - a spreadsheet ID of the newly cre
 
 Function: getSpreadsheetID() <br/>
 Purpose: Function that opens the config.json file and returns the spreadsheetID in the file <br/>
-Parameters: N/A <br/>
 Returns: content["spreadsheet_id"] - returns a spreadsheet ID of the spreadsheet in the config.json <br/>
 
 Function: getWorksheetID(title, creds, id=getSpreadsheetID()) <br/>
@@ -190,7 +189,6 @@ Returns: service - returns service object <br/>
 
 Function: getConfig() <br/>
 Purpose: Function returns the configuration data in json form<br/>
-Parameters:<br/>
 Returns: config<br/>
 
 Function: getEvents(google_service=None)<br/>
@@ -219,7 +217,6 @@ Returns: None<br/>
 
 Function: getAPIKey()<br/>
 Purpose: Function that opens a config.json file in the same directory and returns the REDCap API key<br/>
-Parameters: <br/>
 Returns: content["api_key"] - Returns a string object containing the api key<br/>
 
 Function: getProjName(apiKey=getAPIKey())<br/>
@@ -234,24 +231,20 @@ Returns: (json.dumps(outputObject, indent=4, sort_keys=False)) - Returns a json 
 
 Function: getValueDict()<br/>
 Purpose:  Function that returns the data in a redcap project as a python dictionary by reading the api key in config.json<br/>
-Parameters:<br/>
 Returns: (outputObject) - Returns python dictionary<br/>
 
 ### summary_webapp.py
 
 Function: checkColumnNames()<br/>
 Purpose: Function that checks redcap sheet columns against google sheets columns to compare column names<br/>
-Parameters:<br/>
 Returns: Prints comparison results <br/>
 
 Function: checkcellData()<br/>
 Purpose: Function that checks redcap sheet data against google sheets data to
          compare data and highlight any missing data points between the two<br/>
-Parameters:<br/>
 Returns: Prints comparison results <br/>
 
 Function: checkworksheetNames()<br/>
 Purpose: Function that checks redcap sheet names against google sheets names to
          compare sheet names and identify if any sheets are missing between the two<br/>
-Parameters:<br/>
 Returns: Prints comparison results <br/>
