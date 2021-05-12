@@ -2,7 +2,7 @@
 
 ### Introduce:
 
-Thanks for using our webapp.Thisweb application usedto interact with the REDcap API
+Thanks for using our webapp. This web application used to import and export data with the REDcap and google sheets.
 
 ### What can you do using this web app?
 
