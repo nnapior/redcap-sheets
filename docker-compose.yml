@@ -3,7 +3,7 @@ version: '3'
 services:
   webapp:
     container_name: webapp
-    image: 'redcap-sheets:latest'
+    image: 'nnapior/redcap-sheets:latest'
     ports:
       - '8080:8080'
     volumes:
@@ -24,8 +24,8 @@ services:
       DB_MYSQL_PASSWORD: "npm"
       DB_MYSQL_NAME: "npm"
     volumes:
-      - ./data:/data
-      - ./letsencrypt:/etc/letsencrypt
+      - ./nginx-data:/data
+      - ./nginx-letsencrypt:/etc/letsencrypt
     restart: unless-stopped
 
   db:
@@ -37,5 +37,12 @@ services:
       MYSQL_USER: 'npm'
       MYSQL_PASSWORD: 'npm'
     volumes:
-      - ./data/mysql:/var/lib/mysql
+      - ./nginx-data/mysql:/var/lib/mysql
+    restart: unless-stopped
+
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
     restart: unless-stopped
