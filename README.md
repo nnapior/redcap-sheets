@@ -35,15 +35,6 @@ pip install pycap
 
 ## Configuration
 
-**if you use these scripts, you need a ```config.json ```file in ```config/``` with the following
-contents:**
-
-**{
-"api_key":"your-api-key",
-"api_url":"link-to-REDCap-API",
-"spreadsheet_id": "your-spreadsheet-id"
-}**
-
 **The user will also need a ```clinet_secret.json ```file in ```config/```.**
 
 ```
