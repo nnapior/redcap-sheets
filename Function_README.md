@@ -130,12 +130,58 @@ Returns:
 
 ### Google.py
 
+Function: authGoogle(client_secret_file, scopes, redirect_uri)
+Purpose: Creates a flow instance to manage the OAuth 2.0 Authorization Grant Flow steps
+Parameters: client_secret_file -  
+            scopes - 
+            redirect_uri - 
+Returns: (authorization_url, state) - 
+
+Function: authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri)
+Purpose: 
+Parameters: client_secret_file -
+            scopes -
+            state - 
+            response - 
+            redirect_uri - 
+Returns: json.dumps(object) - 
+
+Function: signOutGoogle(credData, key)
+Purpose: Function that signs out of google
+Parameters: credData - 
+            key - 
+Returns: "1" - 
+
+Function: signInGoogle(client_secret_file, api_name, api_version, *scopes)
+Purpose: Function that signs into Google 
+Parameters: client_secret_file -
+            api_name - 
+            api_version - 
+            *scopes - 
+Returns: json.dumps(object) - 
+
+Function: Create_Service(client_secret_file, api_name, api_version, credData, *scopes)
+Purpose: 
+Parameters: client_secret_file
+            api_name, 
+            api_version, 
+            credData, 
+            *scopes
+Returns: service - 
+
+Function: convert_to_RFC_datetime(year=1900, month=1, day=1, hour=0, minute=0)
+Purpose: Function that returns a datatime string for January 1st, 1900
+Parameters:year=1900, month=1, day=1, hour=0, minute=0 
+Returns: dt
+
+### py_REDcap_delete.py
+
 Function:
 Purpose:
 Parameters:
 Returns:
 
-Function: 
+Function:
 Purpose:
 Parameters:
 Returns:
@@ -145,7 +191,7 @@ Purpose:
 Parameters:
 Returns:
 
-Function: 
+Function:
 Purpose:
 Parameters:
 Returns:
@@ -155,7 +201,62 @@ Purpose:
 Parameters:
 Returns:
 
-Function: 
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
+Purpose:
+Parameters:
+Returns:
+
+Function:
 Purpose:
 Parameters:
 Returns:
