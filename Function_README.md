@@ -212,32 +212,34 @@ Returns: imported - imported data
 
 ### py_REDcap.py
 
+Function: getRecords(apiKey)
+Purpose: Function to get the project records from the database
+Parameters: apiKey - REDCap API key
+Returns: None
+
+Function: getAPIKey()
+Purpose: Function that opens a config.json file in the same directory and returns the REDCap API key
+Parameters: 
+Returns: content["api_key"] - Returns a string object containing the api key
+
+Function: getProjName(apiKey=getAPIKey())
+Purpose: Function that takes in an api key and returns the title of the REDCap project
+Parameters: apiKey - api key for REDCap project
+Returns: r.json()['project_title'] - Returns a string of the title of the REDCap project name
+
+Function: getValues(apiKey)
+Purpose: Function that returns the data in a redcap project as a json by reading the api key in config.json
+Parameters: apiKey - REDCap api key
+Returns: (json.dumps(outputObject, indent=4, sort_keys=False)) - Returns a json object containing the data within a REDCap
+
+Function: getValueDict()
+Purpose:  Function that returns the data in a redcap project as a python dictionary by reading the api key in config.json
+Parameters:
+Returns: (outputObject) - Returns python dictionary
+
+### summary_webapp.py
+
 Function: 
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
 Purpose:
 Parameters:
 Returns:
