@@ -176,10 +176,12 @@ Returns: dt
 
 ### py_REDcap_delete.py
 
-Function:
-Purpose:
-Parameters:
-Returns:
+Function: delete_records(id)
+Purpose: Function that deletes all records in redcap id
+Parameters: id - 
+Returns: 
+
+### pyREDcap_import.py
 
 Function:
 Purpose:
