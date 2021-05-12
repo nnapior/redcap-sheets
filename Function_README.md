@@ -239,37 +239,19 @@ Returns: (outputObject) - Returns python dictionary
 
 ### summary_webapp.py
 
-Function: 
-Purpose:
+Function: checkColumnNames()
+Purpose: Function that checks redcap sheet columns against google sheets columns to compare column names
 Parameters:
-Returns:
+Returns: Prints comparison results 
 
-Function:
-Purpose:
+Function: checkcellData()
+Purpose: Function that checks redcap sheet data against google sheets data to
+         compare data and highlight any missing data points between the two
 Parameters:
-Returns:
+Returns: Prints comparison results 
 
-Function:
-Purpose:
+Function: checkworksheetNames()
+Purpose: Function that checks redcap sheet names against google sheets names to
+         compare sheet names and identify if any sheets are missing between the two
 Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
-
-Function:
-Purpose:
-Parameters:
-Returns:
+Returns: Prints comparison results 
