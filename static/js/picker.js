@@ -6,6 +6,15 @@ var pickerApiLoaded = false;
 
 var pickedSheetID;
 
+/*
+	createPicker()
+		Initializes and displays the Google Picker via the Google Picker API
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function createPicker() {
 	if(!window.localStorage.getItem("pickerCredToken")) {
 		alert("please sign into google");
@@ -30,6 +39,15 @@ function createPicker() {
   }
 }
 
+/*
+	pickerCallBack(data)
+		Receives the document selected via the Google Picker (createPicker()) and sets it as the export replacement target
+		
+		Parameters:
+			data: The document(s) picked via the Google Picker
+		Returns:
+			None
+*/
 function pickerCallback(data) {
   if (data.action == google.picker.Action.PICKED) {
 	console.log(data.docs[0]);
