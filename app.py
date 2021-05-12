@@ -120,6 +120,10 @@ def delete_record():
         deleted = delete_records(request.json['id'])
         return json.dumps({'deleted': deleted})
 
+@app.route('/get_picker_creds', methods=["GET"])
+def getPickerCreds():
+    file = open("config/picker_dependencies.json","r")
+    return file.read()
 
 if __name__ == '__main__':
     app.run(debug=True)

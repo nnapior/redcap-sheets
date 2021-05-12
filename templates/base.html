@@ -23,8 +23,19 @@
     
     <!-- Load the Google API Loader script. -->
     <script type="text/javascript">
-    function onPickerApiLoad() {
-          pickerApiLoaded = true;
+        function onPickerApiLoad() {
+            var r = new XMLHttpRequest();
+            r.open("GET","/get_picker_creds",true);
+            r.onreadystatechange = function() {
+                if(this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.response);
+                    appId = res["appID"];
+                    developerKey = res["devKey"];
+                    clientID = res["clientID"];
+                    pickerApiLoaded = true;
+                }
+            }
+            r.send();
         }
         function loadPicker() {
           gapi.load('picker', {'callback': onPickerApiLoad});
