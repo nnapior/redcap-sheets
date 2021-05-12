@@ -183,32 +183,36 @@ Returns:
 
 ### pyREDcap_import.py
 
-Function:
-Purpose:
-Parameters:
-Returns:
+Function: createService(creds)
+Purpose: Function creates google service 
+Parameters: creds - 
+Returns: service - returns service object
 
-Function:
-Purpose:
+Function: getConfig()
+Purpose: Function returns the configuration data in json form
 Parameters:
-Returns:
+Returns: config
 
-Function:
-Purpose:
-Parameters:
-Returns:
+Function: getEvents(google_service=None)
+Purpose: Function gets all sheet events from google sheets
+Parameters: google_service=None 
+Returns: events - google sheet events
 
-Function:
-Purpose:
-Parameters:
-Returns:
+Function: import_redcap(sheet, service, project)
+Purpose: Funciton imports records to redcap
+Parameters: sheet - 
+            service - 
+            project - 
+Returns: "Success" or "Fail" 
 
-Function:
-Purpose:
-Parameters:
-Returns:
+Function: import_data(object)
+Purpose: Functions that imports data to Redcap
+Parameters: object - 
+Returns: imported - imported data 
 
-Function:
+### py_REDcap.py
+
+Function: 
 Purpose:
 Parameters:
 Returns:
