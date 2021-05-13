@@ -1,6 +1,15 @@
 var data;
 var sheetID;
 
+/*
+	getUserInfo()
+		Queries the server and returns returns the current Google user's information
+		
+		Parameters:
+			None
+		Returns:
+			True if logged in, false otherwise
+*/
 function getUserInfo() {
 	if(window.localStorage.getItem("googleCreds") != undefined) {
 		var creds = window.localStorage.getItem("googleCreds");
@@ -34,6 +43,16 @@ function getUserInfo() {
 	}
 }
 
+/*
+	showUser(name, avatar_url)
+		Styles and displays the Google login button to show the associated Google account's information
+		
+		Parameters:
+			name: The name of the Google user currently logged in
+			avatar_url: The URL of the current Google user's profile picture
+		Returns:
+			None
+*/
 function showUser(name, avatar_url) {
 	var avatar = document.getElementById('avatar');
 	var nameDiv = document.getElementById('userName');
@@ -48,6 +67,15 @@ function showUser(name, avatar_url) {
 	googleAlert.style.display = "none";
 }
 
+/*
+	showSignInGoogle()
+		Styles and displays the Google login button
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function showSignInGoogle() {
 	var signinBtn = document.getElementById('googleBtn');
 	var userInfo = document.getElementById('userInfo');
@@ -57,6 +85,15 @@ function showSignInGoogle() {
 	googleAlert.style.display = "block";
 }
 
+/*
+	disableImport()
+		Styles the Import card to disallow user interaction
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function disableImport() {
 	var importCard = document.getElementById('importCard');
 	var importBtn = document.getElementById('importBtn');
@@ -65,6 +102,15 @@ function disableImport() {
 	
 }
 
+/*
+	disableExport()
+		Styles the Export card to disallow user interaction
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function disableExport() {
 	var exportCard = document.getElementById('exportCard');
 	var exportBtn = document.getElementById('exportBtn');
@@ -72,6 +118,15 @@ function disableExport() {
 	exportBtn.classList.add('disabled');
 }
 
+/*
+	enableImport()
+		Styles the Import card to allow user interaction
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function enableImport() {
 	var importCard = document.getElementById('importCard');
 	var importBtn = document.getElementById('importBtn');
@@ -79,6 +134,15 @@ function enableImport() {
 	importBtn.classList.remove('disabled');
 }
 
+/*
+	enableExport()
+		Styles the Export card to allow user interaction
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function enableExport() {
 	var exportCard = document.getElementById('exportCard');
 	var exportBtn = document.getElementById('exportBtn');
@@ -86,6 +150,15 @@ function enableExport() {
 	exportBtn.classList.remove('disabled');
 }
 
+/*
+	pageLoad()
+		Runs whenever the webpage is loaded in a browser, redirects to Settings if REDCap API key is not entered
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function pageLoad() {
 	if(document.getElementById("dataContainer") != undefined) {
 		var r = new XMLHttpRequest();
@@ -104,29 +177,16 @@ function pageLoad() {
 	}
 }
 
-function getValues(object, level = 0) {
-	if(typeof(object) == "string") {
-		return object;
-	}
-
-	if(level >= 10) {
-		return null;
-	}
-	var keys = Object.keys(object);
-
-	var outputStr = "<br><div class='test'></div>"
-	for(key of keys) {
-		if(key != "0") {
-			for(var i = 0; i < level; i++) {
-				outputStr+="--";
-			}
-			 outputStr+=key+": "+(getValues(object[key], level+1))+"<br>";
-		}
-	}
-
-	return outputStr;
-}
-
+/*
+	showParticipant(eventKey, participantID)
+		Shows a particular participant's data for a REDCap event and adds it to the data preview
+		
+		Parameters:
+			eventKey: The key of the REDCap event for which the participant data is drawn from
+			participantID: The ID of the specific participant whose data to show, or "all" to show all participants
+		Returns:
+			None
+*/
 function showParticipant(eventKey, participantID) {
 	console.log(eventKey, participantID);
 
@@ -175,6 +235,15 @@ function showParticipant(eventKey, participantID) {
 	tableBody.innerHTML = outputStr; // update table body
 }
 
+/*
+	exportData
+		Gathers the events to export to Google Sheets from REDCap and pushes them to pushToSheets(object)
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function exportData() {
 	//this function gets the json data ready to push to sheets
 	var exportMode = document.getElementById("exportMode").value;
@@ -197,7 +266,15 @@ function exportData() {
 		pushToSheets(data);
 	}
 }
-
+/*
+	importData
+		Gathers the events to import to REDCap from Google Sheets and pushes them to pushToRedcap(object)
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function importData() {
 	var importMode = document.getElementById("importMode").value;
 
@@ -220,6 +297,15 @@ function importData() {
 	}
 }
 
+/*
+	pushToRedcap(object)
+		Writes Google Sheets data to REDCap with the selected import mode
+		
+		Parameters:
+			object: The Google Sheets data to be exported
+		Returns:
+			None
+*/
 function pushToRedcap(object) {
 	var r = new XMLHttpRequest();
 	var importBtn = document.getElementById('importBtn');
@@ -244,8 +330,16 @@ function pushToRedcap(object) {
 	}
 }
 
+/*
+	pushToSheets(object)
+		Writes REDCap data to Google Sheets with the selected export mode
+		
+		Parameters:
+			object: The REDCap data to be exported
+		Returns:
+			None
+*/
 function pushToSheets(object) {
-	//put code to write to a sheet here
 	//the "object" parameter is the json data we're writing
 	if(window.localStorage.getItem("googleCreds") != undefined) {
 
@@ -317,6 +411,15 @@ function pushToSheets(object) {
 	}
 }
 
+/* 
+showEventCheckboxes(value)
+	Displays the event checkboxes for exporting if exporting only selected events
+	
+	Parameters:
+		value: The value of the export mode selection (all/select)
+	Returns:
+		None
+*/
 function showEventCheckboxes(value) {
 	var eventCheckboxes = document.getElementById("exportEventContainer");
 	if(value == "select") {
@@ -326,6 +429,15 @@ function showEventCheckboxes(value) {
 	}
 }
 
+/* 
+	showImportEventCheckboxes(value)
+		Displays the event checkboxes for importing if importing only selected events
+		
+		Parameters:
+			value: The value of the import mode selection (all/select)
+		Returns:
+			None
+*/
 function showImportEventCheckboxes(value) {
 	var eventCheckboxes = document.getElementById("importEventContainer");
 	if(value == "import-select") {
@@ -335,6 +447,15 @@ function showImportEventCheckboxes(value) {
 	}
 }
 
+/*
+	showEvent(eventKey)
+		Shows the REDCap data for the selected event
+		
+		Parameters:
+			eventKey: The key of the event whose data will be displayed
+		Returns:
+			None
+*/
 function showEvent(eventKey) {
 	var object = data[eventKey];
 	var keys = Object.keys(object);
@@ -357,6 +478,15 @@ function showEvent(eventKey) {
 	showParticipant(eventKey, "all");
 }
 
+/*
+	setButtons(object)
+		Sets the event selection checkboxes for exporting and importing, and sets the event dropdown for the data preview
+		
+		Parameters:
+			object: The JSON object containing the event names
+		Returns:
+			None
+*/
 function setButtons(object) {
 	var keys = Object.keys(object);
 	var buttons = document.getElementById("eventSelection");
@@ -452,8 +582,17 @@ function setButtons(object) {
 var sheetIDs = {};
 var sheetsRefreshing = false;
 
+/*
+	refreshSheets()
+		THIS CODE IS NO LONGER NEEDED. IT HAS BEEN REPLACED WITH THE NATIVE GOOGLE PICKER.
+		Get the names and IDs of all spreadsheets in a user's Google Drive
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function refreshSheets() {
-	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
 	if(!sheetsRefreshing) {
 		sheetsRefreshing = true;
 		document.getElementById("sheetName").innerHTML = "Loading sheets...";
@@ -503,6 +642,15 @@ function refreshSheets() {
 	}
 }
 
+/*
+	showSheetSelection(value)
+		Displays the export location (spreadsheet) if exporting to an existing spreadsheet
+		
+		Parameters:
+			value: The value of the export mode selection (new/existing)
+		Returns:
+			None
+*/
 function showSheetSelection(value) {
 	let sheetSelection = document.getElementById("sheetSelection");
 	if(value == "new") {
@@ -512,6 +660,15 @@ function showSheetSelection(value) {
 	}
 }
 
+/*
+	deleteUser(id)
+		Deletes a record from the current REDCap project
+		
+		Parameters:
+			id: The ID of the record to be deleted
+		Returns:
+			None
+*/
 function deleteUser(id) {
 	var r = new XMLHttpRequest();
 	r.open("POST", "/delete_record_redcap", true);
@@ -531,6 +688,15 @@ function deleteUser(id) {
 	r.send(reqData);
 }
 
+/*
+	getData()
+		Queries the server and pulls records from the REDCap project associated with the inputted API key
+		
+		Parameters:
+			None
+		Returns:
+			True if data was returned, false otherwise
+*/
 function getData() {
 	document.getElementById("refresh-btn").classList.add("btn-loading");
 	var r = new XMLHttpRequest();
@@ -550,6 +716,15 @@ function getData() {
 	r.send();
 }
 
+/*
+	getRedCapAPIKey()
+		Toggles visibility of the inputted REDCap API key on the Settings page
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function getRedCapAPIKey(){
 	var x = document.getElementById("key");
 	if (x.style.visibility === "visible") {
