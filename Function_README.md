@@ -78,7 +78,6 @@ Returns: N/A <br/>
 ![Screen Shot 2021-05-13 at 10 41 58 AM](https://user-images.githubusercontent.com/43176706/118142017-fa15b800-b3d7-11eb-9fcf-947fa073792e.png)
 ![Screen Shot 2021-05-13 at 10 43 54 AM](https://user-images.githubusercontent.com/43176706/118142166-203b5800-b3d8-11eb-855f-1f605b85dafb.png)
 
-
 Function: renameWorkSheet(worksheetId, newName, spreadsheet_id, creds) <br/>
 Purpose: Function that executes a batch update on a spreadsheet to rename a worksheet in the spreadsheet <br/>
 Parameters: worksheetId - string representing the ID of the worksheet in a googlesheet to be changed <br/>
@@ -86,6 +85,9 @@ Parameters: worksheetId - string representing the ID of the worksheet in a googl
             spreadsheet_id - spreadsheetID of the spreadsheet to be updated <br/>
             creds -  <br/>
 Returns: <br/>
+
+![Screen Shot 2021-05-13 at 10 45 09 AM](https://user-images.githubusercontent.com/43176706/118142364-4cef6f80-b3d8-11eb-8c41-b1a6a733c2d6.png)
+![Screen Shot 2021-05-13 at 10 45 35 AM](https://user-images.githubusercontent.com/43176706/118142413-5b3d8b80-b3d8-11eb-89ed-33a03bfa2589.png)
 
 Function: updateData(service, spreadsheet_id, worksheet_range: str, values: tuple, value_range_body: dict) <br/>
 Purpose: Function that executes an update on a spreadsheet to change the data in a range on a worksheet <br/>
