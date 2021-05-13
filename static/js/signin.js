@@ -1,3 +1,12 @@
+/*
+	signInGoogle()
+		Signs in to a user's Google account and stores the credentials in the browser's local storage.
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function signInGoogle() {
 	var req = new XMLHttpRequest();
 	req.open("POST","/authGoogle", true);
@@ -14,6 +23,15 @@ function signInGoogle() {
 	req.send();
 }
 
+/*
+	signOutGoogle()
+		Signs out of a user's Google account, and removes the credentials from local storage.
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function signOutGoogle() {
 	var obj = {"creds":window.localStorage.getItem("googleCreds")};
 	var reqData = JSON.stringify(obj);
