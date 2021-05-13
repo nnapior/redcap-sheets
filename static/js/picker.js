@@ -21,7 +21,6 @@ function createPicker() {
 	} else {
 	var oauthToken = atob(window.localStorage.getItem("pickerCredToken"));
 	  if (pickerApiLoaded && oauthToken) {
-		  console.log("1")
 		var view = new google.picker.View(google.picker.ViewId.DOCS);
 		view.setMimeTypes("application/vnd.google-apps.spreadsheet");
 		var picker = new google.picker.PickerBuilder()
@@ -50,7 +49,6 @@ function createPicker() {
 */
 function pickerCallback(data) {
   if (data.action == google.picker.Action.PICKED) {
-	console.log(data.docs[0]);
 	pickedSheetID = data.docs[0].id;
 	document.getElementById("sheetName").innerHTML = data.docs[0].name;
   }

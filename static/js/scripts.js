@@ -19,9 +19,6 @@ function getUserInfo() {
 		r.onreadystatechange = function() {
 			if(this.readyState == 4 && this.status == 200) {
 				var userData = JSON.parse(this.response);
-				console.log(userData);
-				console.log(userData["name"]);
-				console.log(userData["picture"]);
 				showUser(userData["name"], userData["picture"]);
 				enableImport();
 				enableExport();
@@ -188,8 +185,6 @@ function pageLoad() {
 			None
 */
 function showParticipant(eventKey, participantID) {
-	console.log(eventKey, participantID);
-
 	// Populate table keys
 	var tableKeys = document.getElementById("table-keys");
 	var keys = Object.keys(data[eventKey][1]); // get keys from data object
@@ -250,7 +245,6 @@ function exportData() {
 
 	if(exportMode == "select") {
 		//export only selected events"
-		console.log("exporting selected events");
 		var newObject = {};
 		var checkboxes = document.getElementsByClassName("eventSelectionCheckbox");
 		for(checkbox of checkboxes) {
@@ -258,11 +252,9 @@ function exportData() {
 				newObject[checkbox.value] = data[checkbox.value];
 			}
 		}
-		console.log(Object.keys(newObject));
 		pushToSheets(newObject);
 	} else {
 		//export all events in data
-		console.log("exporting all events");
 		pushToSheets(data);
 	}
 }
@@ -280,7 +272,6 @@ function importData() {
 
 	if(importMode == "select") {
 
-		console.log("importing selected events");
 		var newObject = {};
 		var checkboxes = document.getElementsByClassName("eventImportSelectionCheckbox");
 		for(checkbox of checkboxes) {
@@ -288,7 +279,6 @@ function importData() {
 				newObject[checkbox.value] = data[checkbox.value];
 			}
 		}
-		console.log(Object.keys(newObject));
 
 		pushToRedcap(newObject)
 
@@ -313,7 +303,6 @@ function pushToRedcap(object) {
 	r.setRequestHeader("Content-Type","application/json");
 	r.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
-			console.log(this.response);
 			importBtn.classList.remove("btn-loading");
 		}
 	}
@@ -348,7 +337,6 @@ function pushToSheets(object) {
 		var exportBtn = document.getElementById('exportBtn');
 		if(sheetDestination == "new") {
 			//put code to create/write to a new sheet here
-			console.log("writing to new sheet");
 			var pushObject = {"mode":"new", "object":object, "creds":window.localStorage.getItem("googleCreds")};
 
 			var r = new XMLHttpRequest();
@@ -357,7 +345,6 @@ function pushToSheets(object) {
 			r.setRequestHeader("Content-Type","application/json");
 			r.onreadystatechange = function() {
 				if(this.readyState == 4 && this.status == 200) {
-					console.log(this.response);
 					var id = this.response;
 					exportBtn.classList.remove("btn-loading");
 					window.open(spreadsheet_address+this.response);
@@ -374,7 +361,6 @@ function pushToSheets(object) {
 				switch(sheetDestination) {
 					case "replace":
 						//put code to replace an existing sheet's data here
-						console.log("writing to an existing sheet (replacing) with id "+sheetID);
 
 						var pushObject = {"mode":"replace", "id":pickedSheetID, "object":object, "creds":window.localStorage.getItem("googleCreds")};
 
@@ -384,7 +370,6 @@ function pushToSheets(object) {
 						r.setRequestHeader("Content-Type","application/json");
 						r.onreadystatechange = function() {
 							if(this.readyState == 4 && this.status == 200) {
-								console.log(this.response);
 								var id = this.response;
 								exportBtn.classList.remove("btn-loading");
 								window.open(spreadsheet_address+this.response);
