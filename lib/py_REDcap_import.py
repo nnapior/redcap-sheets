@@ -20,28 +20,28 @@ def createService(creds):
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
 
-
+'''
 def getConfig():
     """This function returns the configuration data in json form
     :returns config"""
     file = open("config/config.json", "r")
     config = json.load(file)
     file.close()
-    return config
+    return config'''
 
 
-def getEvents(google_service=None):
+def getEvents(google_service, sheetID ):
     """This function get all the sheet events from google sheets
     :return events list"""
-    service = None
-    if google_service == None:
+    service = google_service
+    ''' if google_service == None:
         service = createService()
     else:
         service = google_service
-    config = getConfig()
+    config = getConfig()'''
 
     # request for google sheets data and extract the sheeets names
-    sheet_metadata = service.spreadsheets().get(spreadsheetId=config["spreadsheet_id"]).execute()
+    sheet_metadata = service.spreadsheets().get(spreadsheetId=sheetID).execute()
     sheets_info = sheet_metadata.get('sheets', '')
     events = [sheets_info[x].get("properties", {}).get("title", "Sheet1")
               for x in range(len(sheets_info))]
@@ -49,17 +49,18 @@ def getEvents(google_service=None):
     return events
 
 
-def import_redcap(sheet, service, project):
+def import_redcap(sheet, service, project, sheetID):
     """
     This funciton import records to redcap
     return: Successfull/Failed
     """
 
-    config = getConfig()
+   # config = getConfig()
     # request for particular sheet data
-    request = service.spreadsheets().values().get(spreadsheetId=config["spreadsheet_id"], majorDimension='ROWS',
+    request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
     rows = request['values']
+    
 
     # create dataframe from rows get from sheet
     df = pandas.DataFrame(rows[1:], columns=rows[0])
@@ -67,6 +68,8 @@ def import_redcap(sheet, service, project):
 
     # create dict from dataframe
     rows = df.to_dict(orient='records')
+    
+    
 
     try:
         # iterate through each record from rows: dict
@@ -74,6 +77,7 @@ def import_redcap(sheet, service, project):
             row["redcap_event_name"] = sheet  # append event name to record
             rec = json.dumps(row)  # converting record to  json format
             data = [json.loads(rec)]  # load json object and put that in list
+            #print(data)
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
@@ -81,7 +85,7 @@ def import_redcap(sheet, service, project):
     return "Import Data to RedCap Successful"
 
 
-def import_data(object):
+def import_data(object, apiKey):
     """
     Function that imports data to Redcap
 
@@ -92,18 +96,18 @@ def import_data(object):
     Imported data
     """
 
-    config = getConfig()
     imported = False
     creds = object['creds']
     events = object['events']
+    sheetID = object['id']
     service = createService(creds)
 
-    project = Project(config["api_url"], config["api_key"])
+    project = Project("https://dri.udel.edu/redcap/api/", apiKey)
 
     if events == "All Events":
-        events = getEvents(service)
+        events = getEvents(service, sheetID)
         for event in events:
-            response = import_redcap(event, service, project)
+            response = import_redcap(event, service, project, sheetID)
             if response == "Import Data to RedCap Successful":
                 imported = response
                 continue
@@ -112,7 +116,7 @@ def import_data(object):
 
     else:
         for event in events:
-            response = import_redcap(event, service, project)
+            response = import_redcap(event, service, project, sheetID)
             if response == "Import Data to RedCap Successful":
                 imported = response
                 continue

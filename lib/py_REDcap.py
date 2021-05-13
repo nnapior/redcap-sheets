@@ -33,7 +33,7 @@ def getRecords(apiKey):
         print("error "+str(r.status_code)+": "+r.text)
         return None
 
-
+'''
 def getAPIKey():
     """
     getAPIKey
@@ -44,9 +44,9 @@ def getAPIKey():
     configFile = open("config/config.json", "r")
     content = json.loads(configFile.read())
     return content["api_key"]
+'''
 
-
-def getProjName(apiKey=getAPIKey()):
+def getProjName(apiKey):
     """
     getProjName
         Function that takes in an api key and returns the title of the REDCap project
@@ -172,4 +172,5 @@ def getValueDict():
 if __name__ == "__main__":
     # print(getValues())
 
-    print(getValues(getAPIKey()))
+    #print(getValues(getAPIKey()))
+    pass

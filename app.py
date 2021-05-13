@@ -41,13 +41,21 @@ def settings():
         return redirect(url_for('home'))
     return render_template('settings.html', form=form, hasKey=hasKey)
 
+@app.route('/hasAPIkey', methods=['GET', 'POST'])
+def hasAPIkey():
+    if 'redcap_api_key' in session:
+        return "true"
+    else:
+        return "false"
+
 
 @app.route('/pushData', methods=['PUT', 'POST'])
 def pushData():
-    if(request.json):
-        return pushJSON(request.json)
+    if(request.json) and 'redcap_api_key' in session:
+        return pushJSON(request.json, session['redcap_api_key'])
     else:
-        return print("-1")
+        flash("Please enter your REDcap API key in the Settings", "info")
+        return render_template('homepage.html')
 
 
 @app.route('/renameSheet', methods=['PUT', 'POST'])
@@ -128,24 +136,28 @@ def user_info():
 
 @app.route('/pullData')
 def pullData():
-    return getValues(session['redcap_api_key'])
+    if 'redcap_api_key' in session:
+        return getValues(session['redcap_api_key'])
+    else:
+        return "none"
 
 
 @app.route('/import_sheets_to_redcap', methods=['PUT', 'POST'])
 def import_to_redcap():
     if request.json:
-        response = import_data(request.json)
+        response = import_data(request.json, session['redcap_api_key'])
         flash(response)
         return redirect(url_for("home"))
     else:
-        return print("-1")
+        return "-1"
 
 
 @app.route('/delete_record_redcap', methods=["POST"])
 def delete_record():
     if request.json:
-        deleted = delete_records(request.json['id'])
-        return json.dumps({'deleted': deleted})
+        if('redcap_api_key' in session):
+            deleted = delete_records(request.json['id'], session['redcap_api_key'] )
+            return json.dumps({'deleted': deleted})
 
 
 if __name__ == '__main__':

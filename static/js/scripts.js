@@ -13,8 +13,7 @@ function getUserInfo() {
 				console.log(userData["name"]);
 				console.log(userData["picture"]);
 				showUser(userData["name"], userData["picture"]);
-				enableImport();
-				enableExport();
+				
 			}
 		}
 
@@ -27,11 +26,51 @@ function getUserInfo() {
 		reqData = reqData.replace("'", "\"");
 
 		r.send(reqData);
+
+		checkEnable();
 	} else {
 		showSignInGoogle();
-		disableImport();
-		disableExport();
+		
 	}
+}
+
+function checkEnable(){
+
+	//var response ="";
+	var r = new XMLHttpRequest();
+	r.open("GET","/hasAPIkey",true);
+	r.setRequestHeader("Content-Type","application/json");
+	r.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200) {
+			if(window.localStorage.getItem("googleCreds") != undefined &&this.response == "true") {
+				enableImport();
+				enableExport();
+				importShowSheetSelection("show");
+			}
+			else{
+				disableImport();
+				disableExport();
+				importShowSheetSelection("hide");
+			}
+			
+		}
+	}
+	r.send();
+
+	
+}
+
+function APIkey(){
+	var response ="";
+	var r = new XMLHttpRequest();
+	r.open("GET", "/hasAPIkey", true);
+	r.onreadystatechange = function() {
+		if(this.status == 200 && this.readyState == 4) {
+			return r.response;
+		
+		}
+	}
+	
 }
 
 function showUser(name, avatar_url) {
@@ -93,6 +132,8 @@ function pageLoad() {
 	}
 	getUserInfo();
 	getData();
+	
+	checkEnable();
 }
 
 function getValues(object, level = 0) {
@@ -194,6 +235,8 @@ function exportData() {
 		console.log("exporting all events");
 		pushToSheets(data);
 	}
+	
+	
 }
 
 function importData() {
@@ -219,6 +262,7 @@ function importData() {
 }
 
 function pushToRedcap(object) {
+	var sheetID = document.getElementById("importSheetIDSelect").value;
 	var r = new XMLHttpRequest();
 	var importBtn = document.getElementById('importBtn');
 	r.open("POST","/import_sheets_to_redcap",true);
@@ -230,8 +274,9 @@ function pushToRedcap(object) {
 		}
 	}
 
-	if(window.localStorage.getItem("googleCreds") != undefined) {
-		var pushObject = {"events":object, "creds":window.localStorage.getItem("googleCreds")};
+	if(window.localStorage.getItem("googleCreds") != undefined && sheetID != "") {
+		var pushObject = {"events":object, "id":sheetID, "creds":window.localStorage.getItem("googleCreds")};
+		console.log(pushObject);
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
 		reqData = reqData.replace("'", "\"");
@@ -348,6 +393,15 @@ function showEventCheckboxes(value) {
 	}
 }
 
+function importShowEventCheckboxes(value) {
+	var eventCheckboxes = document.getElementById("selectedImportEvents");
+	if(value == "select") {
+		eventCheckboxes.style.display = "block";
+	} else {
+		eventCheckboxes.style.display = "none";
+	}
+}
+
 function showEvent(eventKey) {
 	var object = data[eventKey];
 	var keys = Object.keys(object);
@@ -417,6 +471,7 @@ function setButtons(object) {
 
 var sheetIDs = {};
 var sheetsRefreshing = false;
+var importSheetsRefreshing = false;
 
 function refreshSheets() {
 	//TODO: put code to choose a sheet here and set the global "sheetID" variable to the id or however sheets are identified
@@ -472,6 +527,56 @@ function refreshSheets() {
 	}
 }
 
+function importRefreshSheets(){
+	if(!importSheetsRefreshing) {
+		importSheetsRefreshing = true;
+		document.getElementById("importSheetName").innerHTML = "Loading sheets...";
+		document.getElementById("importRefreshSheetsButton").innerHTML = "Refreshing...";
+
+		var req = new XMLHttpRequest();
+		req.open("POST","/getSheets", true);
+		req.setRequestHeader("Content-Type","application/json");
+		req.onreadystatechange = function() {
+			if(this.status == 200 && this.readyState == 4) {
+				var res = JSON.parse(this.response);
+				document.getElementById("importSheetIDSelect");
+				if(res == {}) {
+					document.getElementById("importSheetName").innerHTML = "No sheets found.";
+					document.getElementById("importSheetIDSelect").style.display = "none";
+				} else {
+					document.getElementById("importSheetName").innerHTML = "Pick a sheet";
+					document.getElementById("importSheetIDSelect").style.display = "block";
+				}
+
+
+				document.getElementById("importRefreshSheetsButton").innerHTML = "Refresh";
+				importSheetsRefreshing = false;
+
+
+				var selectContainer = document.getElementById("importSheetIDSelect");
+				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
+
+				for(var key in res) {
+					var option = document.createElement("option");
+					option.value = key;
+					option.innerHTML = res[key];
+					selectContainer.appendChild(option);
+				}
+			}
+		}
+		if(window.localStorage.getItem("googleCreds") != undefined) {
+			var pushObject = {"creds":window.localStorage.getItem("googleCreds")};
+			var reqData = JSON.stringify(pushObject);
+			reqData = reqData.replace("\n","");
+			reqData = reqData.replace("'", "\"");
+
+			req.send(reqData);
+		} else {
+			alert("There was an error reading your google credentials. please make sure you are logged in");
+		}
+	}
+}
+
 function showSheetSelection(value) {
 	//showSheetSelection
 	//Function that gets sheet selection based on sheet ID
@@ -484,6 +589,17 @@ function showSheetSelection(value) {
 		sheetSelection.style.display = "block";
 	}
 }
+
+function importShowSheetSelection(value) {
+	
+	let sheetSelection = document.getElementById("sheetImportSelection");
+	if(value == "hide") {
+		sheetSelection.style.display = "none";
+	} else {
+		sheetSelection.style.display = "block";
+	}
+}
+
 
 function deleteUser(id) {
 	var r = new XMLHttpRequest();
