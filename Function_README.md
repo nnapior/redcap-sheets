@@ -75,6 +75,10 @@ Parameters: new_name - string to become the new name of the google sheet <br/>
             creds -  <br/>
 Returns: N/A <br/>
 
+![Screen Shot 2021-05-13 at 10 41 58 AM](https://user-images.githubusercontent.com/43176706/118142017-fa15b800-b3d7-11eb-9fcf-947fa073792e.png)
+![Screen Shot 2021-05-13 at 10 43 54 AM](https://user-images.githubusercontent.com/43176706/118142166-203b5800-b3d8-11eb-855f-1f605b85dafb.png)
+
+
 Function: renameWorkSheet(worksheetId, newName, spreadsheet_id, creds) <br/>
 Purpose: Function that executes a batch update on a spreadsheet to rename a worksheet in the spreadsheet <br/>
 Parameters: worksheetId - string representing the ID of the worksheet in a googlesheet to be changed <br/>
