@@ -111,6 +111,9 @@ Parameters: worksheetID - ID of the worksheet in the sheet to be deleted <br/>
             creds - <br/>
 Returns: <br/>
 
+![Screen Shot 2021-05-13 at 1 25 03 PM](https://user-images.githubusercontent.com/43176706/118162353-a367a880-b3ee-11eb-8761-2b24dd52c68c.png)
+![Screen Shot 2021-05-13 at 1 25 28 PM](https://user-images.githubusercontent.com/43176706/118162402-b24e5b00-b3ee-11eb-81a4-1b18e29d8b88.png)
+
 Function: cleanSheet(spreadsheet_id, creds) <br/>
 Purpose: Funtion that takes in a google sheet id and deletes all worksheets and leaves a single empty 
          worksheet titled "Sheet1" <br/>
@@ -118,12 +121,18 @@ Parameters: spreadsheet_id - spreadsheetID of the spreadsheet to be cleaned <br/
             creds - <br/>
 Returns: "1" <br/>
 
+![Screen Shot 2021-05-13 at 1 26 13 PM](https://user-images.githubusercontent.com/43176706/118162474-cd20cf80-b3ee-11eb-9dea-040975cac6bc.png)
+![Screen Shot 2021-05-13 at 1 27 18 PM](https://user-images.githubusercontent.com/43176706/118162605-f2add900-b3ee-11eb-9cf9-86b5cc6a72e1.png)
+
 Function: createWorksheet(title: str, spreadsheet_id, creds) <br/>
 Purpose: Function that creates a new worksheet in the a google sheet <br/>
 Parameters: title : string of the name of the worksheet that will be add <br/>
             spreadsheet_id : spreadsheetID of the spreadsheet to be added to <br/>
             creds - <br/>
 Returns: "1" - if successful <br/>
+
+![Screen Shot 2021-05-13 at 1 27 46 PM](https://user-images.githubusercontent.com/43176706/118162667-03f6e580-b3ef-11eb-842f-d0e89a0d1376.png)
+![Screen Shot 2021-05-13 at 1 28 05 PM](https://user-images.githubusercontent.com/43176706/118162711-0f4a1100-b3ef-11eb-8a1b-fd9319adde1d.png)
 
 ### Export-CSV-To-GoogleSheets.py
 
