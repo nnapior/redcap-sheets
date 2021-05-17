@@ -152,6 +152,7 @@ permission to delete those. If you don't have permission,it will show “you don
 to delete”. If you have permission to delete, it willshow “delete successfully.”
 3. You can choose which event, and which participantID you want to delete.
 
+[Link text](/README.md) 
 
 Created by:
 
