@@ -72,10 +72,10 @@ https://console.cloud.google.com/home/dashboard
 
 ### After installing the commands above.
 
-## How to Run the WEBAPP
+## How to Run and setup the WEBAPP
 
 
-[Click here to go to How to Run WebApp](/Runing_the_webapp.md)
+[Click here to go to How to Run and setup WebApp](/Runing_the_webapp.md)
 
 1. Login to your UD VPN
 
