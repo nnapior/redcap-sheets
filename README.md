@@ -81,7 +81,9 @@ https://console.cloud.google.com/home/dashboard
 ### Help on how to use all the features.
 include:
     Export data to Google sheets.
+    
     Import data from Google sheets to REDCap.
+    
     Delete data from REDCap.
     
 
