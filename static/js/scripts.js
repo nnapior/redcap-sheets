@@ -149,6 +149,7 @@ function enableImport() {
 	document.getElementById("importMode").classList.remove('disabled');
 	document.getElementById("refreshSheetsButtonImport").classList.remove('cursor-not-allowed');
 	document.getElementById("refreshSheetsButtonImport").classList.remove('disabled');
+	showImportEventCheckboxes(document.getElementById("importMode").value);
 }
 
 /*
@@ -171,6 +172,8 @@ function enableExport() {
 	document.getElementById("exportMode").classList.remove('disabled');
 	document.getElementById("refreshSheetsButton").classList.remove('cursor-not-allowed');
 	document.getElementById("refreshSheetsButton").classList.remove('disabled');
+	showEventCheckboxes(document.getElementById("exportMode").value);
+	showSheetSelection(document.getElementById("sheetMode").value)
 }
 
 /*
@@ -614,123 +617,6 @@ function setButtons(object) {
 	}
 	buttons.value = keys[0];
 	showEvent(keys[0]);
-}
-
-var sheetIDs = {};
-var sheetsRefreshing = false;
-var importSheetsRefreshing = false;
-
-/*
-	refreshSheets()
-		THIS CODE IS NO LONGER NEEDED. IT HAS BEEN REPLACED WITH THE NATIVE GOOGLE PICKER.
-		Get the names and IDs of all spreadsheets in a user's Google Drive
-		
-		Parameters:
-			None
-		Returns:
-			None
-*/
-function refreshSheets() {
-	if(!sheetsRefreshing) {
-		sheetsRefreshing = true;
-		document.getElementById("sheetName").innerHTML = "Loading sheets...";
-		document.getElementById("refreshSheetsButton").innerHTML = "Refreshing...";
-
-		var req = new XMLHttpRequest();
-		req.open("POST","/getSheets", true);
-		req.setRequestHeader("Content-Type","application/json");
-		req.onreadystatechange = function() {
-			if(this.status == 200 && this.readyState == 4) {
-				var res = JSON.parse(this.response);
-				document.getElementById("sheetIDSelect");
-				if(res == {}) {
-					document.getElementById("sheetName").innerHTML = "No sheets found.";
-					document.getElementById("sheetIDSelect").style.display = "none";
-				} else {
-					document.getElementById("sheetName").innerHTML = "Pick a sheet";
-					document.getElementById("sheetIDSelect").style.display = "block";
-				}
-
-
-				document.getElementById("refreshSheetsButton").innerHTML = "Refresh";
-				sheetsRefreshing = false;
-
-
-				var selectContainer = document.getElementById("sheetIDSelect");
-				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
-
-				for(var key in res) {
-					var option = document.createElement("option");
-					option.value = key;
-					option.innerHTML = res[key];
-					selectContainer.appendChild(option);
-				}
-			}
-		}
-		if(window.localStorage.getItem("googleCredData") != undefined && window.localStorage.getItem("googleCredKey") != undefined) {
-			var pushObject = {
-				"key":window.localStorage.getItem("googleCredKey"),
-				"creds":window.localStorage.getItem("googleCredData")
-			};
-			var reqData = JSON.stringify(pushObject);
-			reqData = reqData.replace("\n","");
-			reqData = reqData.replace("'", "\"");
-
-			req.send(reqData);
-		} else {
-			alert("There was an error reading your google credentials. please make sure you are logged in");
-		}
-	}
-}
-
-function importRefreshSheets(){
-	if(!importSheetsRefreshing) {
-		importSheetsRefreshing = true;
-		document.getElementById("importSheetName").innerHTML = "Loading sheets...";
-		document.getElementById("importRefreshSheetsButton").innerHTML = "Refreshing...";
-
-		var req = new XMLHttpRequest();
-		req.open("POST","/getSheets", true);
-		req.setRequestHeader("Content-Type","application/json");
-		req.onreadystatechange = function() {
-			if(this.status == 200 && this.readyState == 4) {
-				var res = JSON.parse(this.response);
-				document.getElementById("importSheetIDSelect");
-				if(res == {}) {
-					document.getElementById("importSheetName").innerHTML = "No sheets found.";
-					document.getElementById("importSheetIDSelect").style.display = "none";
-				} else {
-					document.getElementById("importSheetName").innerHTML = "Pick a sheet";
-					document.getElementById("importSheetIDSelect").style.display = "block";
-				}
-
-
-				document.getElementById("importRefreshSheetsButton").innerHTML = "Refresh";
-				importSheetsRefreshing = false;
-
-
-				var selectContainer = document.getElementById("importSheetIDSelect");
-				selectContainer.innerHTML = "<option value=\"NONE\">Select A Sheet</option>";
-
-				for(var key in res) {
-					var option = document.createElement("option");
-					option.value = key;
-					option.innerHTML = res[key];
-					selectContainer.appendChild(option);
-				}
-			}
-		}
-		if(window.localStorage.getItem("googleCreds") != undefined) {
-			var pushObject = {"creds":window.localStorage.getItem("googleCreds")};
-			var reqData = JSON.stringify(pushObject);
-			reqData = reqData.replace("\n","");
-			reqData = reqData.replace("'", "\"");
-
-			req.send(reqData);
-		} else {
-			alert("There was an error reading your google credentials. please make sure you are logged in");
-		}
-	}
 }
 
 /*
