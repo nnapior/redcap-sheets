@@ -89,7 +89,7 @@ include:
    Delete data from REDCap.
     
 
-[Click here to go to help page](/Help.md)
+[Click here to go to help page](/Collection/Help.md)
 
 
 Created by:
