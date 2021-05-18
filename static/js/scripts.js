@@ -316,7 +316,7 @@ function pushToRedcap(object) {
 	}
 
 	if(window.localStorage.getItem("googleCreds") != undefined && sheetID != "") {
-		var pushObject = {"events":object, "id":sheetID, "creds":window.localStorage.getItem("googleCreds")};
+		var pushObject = {"events":object, "id":pickedImportSheetID, "creds":window.localStorage.getItem("googleCreds")};
 		console.log(pushObject);
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");

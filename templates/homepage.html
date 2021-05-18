@@ -71,12 +71,9 @@
                     </div>
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
-                        <select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="showSheetSelection(this.value)">
-                            <option value="disabled">DISABLED</option>
-                        </select>
-                        <div id="sheetImportSelection" style="display:none">
-                            <button style="display:inline" onclick="chooseSheet()" class="btn btn-secondary">Select Google Sheet</button>
-                        </div>
+                        
+                            <button style="display:inline" onclick="createPickerImport()" class="btn" id="refreshSheetsButton">Pick A Sheet</button><br><br>
+                            <p id="sheetNameImport">No Sheet Selected</p>
 
                     </div>
                     <div class="col">
