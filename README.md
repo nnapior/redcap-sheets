@@ -75,7 +75,7 @@ https://console.cloud.google.com/home/dashboard
 ## How to Run and setup the WEBAPP
 
 
-[Click here to go to How to Run and setup WebApp](/Runing_the_webapp.md)
+[Click here to go to How to Run and setup WebApp](/Collection/Runing_the_webapp.md)
 
 
 ### Help on how to use all the features.
