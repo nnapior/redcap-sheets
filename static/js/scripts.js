@@ -103,8 +103,10 @@ function disableImport() {
 	var importBtn = document.getElementById('importBtn');
 	importCard.classList.add('cursor-not-allowed');
 	importBtn.classList.add('disabled');
-	
-	
+	document.getElementById("importMode").classList.add('cursor-not-allowed');
+	document.getElementById("importMode").classList.add('disabled');
+	document.getElementById("refreshSheetsButtonImport").classList.add('cursor-not-allowed');
+	document.getElementById("refreshSheetsButtonImport").classList.add('disabled');
 }
 
 /*
@@ -121,6 +123,12 @@ function disableExport() {
 	var exportBtn = document.getElementById('exportBtn');
 	exportCard.classList.add('cursor-not-allowed');
 	exportBtn.classList.add('disabled');
+	document.getElementById("sheetMode").classList.add('cursor-not-allowed');
+	document.getElementById("sheetMode").classList.add('disabled');
+	document.getElementById("exportMode").classList.add('cursor-not-allowed');
+	document.getElementById("exportMode").classList.add('disabled');
+	document.getElementById("refreshSheetsButton").classList.add('cursor-not-allowed');
+	document.getElementById("refreshSheetsButton").classList.add('disabled');
 }
 
 /*
@@ -137,6 +145,10 @@ function enableImport() {
 	var importBtn = document.getElementById('importBtn');
 	importCard.classList.remove('cursor-not-allowed');
 	importBtn.classList.remove('disabled');
+	document.getElementById("importMode").classList.remove('cursor-not-allowed');
+	document.getElementById("importMode").classList.remove('disabled');
+	document.getElementById("refreshSheetsButtonImport").classList.remove('cursor-not-allowed');
+	document.getElementById("refreshSheetsButtonImport").classList.remove('disabled');
 }
 
 /*
@@ -153,6 +165,12 @@ function enableExport() {
 	var exportBtn = document.getElementById('exportBtn');
 	exportCard.classList.remove('cursor-not-allowed');
 	exportBtn.classList.remove('disabled');
+	document.getElementById("sheetMode").classList.remove('cursor-not-allowed');
+	document.getElementById("sheetMode").classList.remove('disabled');
+	document.getElementById("exportMode").classList.remove('cursor-not-allowed');
+	document.getElementById("exportMode").classList.remove('disabled');
+	document.getElementById("refreshSheetsButton").classList.remove('cursor-not-allowed');
+	document.getElementById("refreshSheetsButton").classList.remove('disabled');
 }
 
 /*
