@@ -173,7 +173,7 @@ function enableExport() {
 	document.getElementById("refreshSheetsButton").classList.remove('cursor-not-allowed');
 	document.getElementById("refreshSheetsButton").classList.remove('disabled');
 	showEventCheckboxes(document.getElementById("exportMode").value);
-	showSheetSelection(document.getElementById("sheetMode").value)
+	showSheetSelection(document.getElementById("sheetMode").value);
 }
 
 /*
