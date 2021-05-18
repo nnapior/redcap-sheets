@@ -7,10 +7,7 @@ from google.auth.transport.requests import Request
 import io
 import codecs
 import requests
-<<<<<<< HEAD
 from cryptography.fernet import Fernet
-=======
->>>>>>> login-redirecting
 import json
 
 
