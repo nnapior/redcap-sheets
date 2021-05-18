@@ -7,7 +7,10 @@ from google.auth.transport.requests import Request
 import io
 import codecs
 import requests
+<<<<<<< HEAD
 from cryptography.fernet import Fernet
+=======
+>>>>>>> login-redirecting
 import json
 
 
@@ -92,7 +95,6 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
     cred = None
-
     if not cred or not cred.valid:
         if cred and cred.expired and cred.refresh_token:
             cred.refresh(Request())
@@ -108,15 +110,16 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
         fernet = Fernet(key)
 
         encrypted = fernet.encrypt(content.encode())
-
-        object = {}
-
-        object["key"] = key.decode("utf-8")
-        object["data"] = encrypted.decode("utf-8")
-
-        print(object)
-
-        return json.dumps(object)
+        
+        
+        jsonObj = json.loads(cred.to_json())
+        print(jsonObj)
+        print(jsonObj['token'])
+        outputObj = {}
+        outputObj["token"] = jsonObj['token']
+        outputObj["data"] = encrypted.decode("utf-8")
+        outputObj["key"] = key.decode("utf-8")
+        return json.dumps(outputObj)
 
 
 def Create_Service(client_secret_file, api_name, api_version, credData, *scopes):

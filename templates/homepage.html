@@ -2,7 +2,7 @@
 {% set active_page = "home" %}
 
 {% block content %}
-<div id="data-container">
+<div id="dataContainer">
 <div class="row mb-3">
     <div class="col">
         <div class="card">
@@ -42,6 +42,17 @@
         </div>
     </div>
 </div>
+
+<div class="row" id="googleAccountAlert">
+    <div class="col">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="card-title">Sign into your Google account above to enable importing from and exporting to Google Sheets.</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<br>
 <div class="row">
     <div class="col">
         <div class="card cursor-not-allowed" id="importCard">
@@ -50,22 +61,21 @@
                 <div class="row mb-3" id="">
                     <div class="col">
                         <div class="form-label">Events to Import</div>
-                        <select class="form-select mb-2" id="importMode" name="importMode" oninput="importShowEventCheckboxes(this.value)">
+                        <select class="form-select mb-2" id="importMode" name="importMode" oninput="showImportEventCheckboxes(this.value)" value="import-all">
                             <option value="import-all">All Events</option>
                             <option value="import-select">Selected Events</option>
                         </select>
-                        <div id="selectedImportEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                        <div id="importEventContainer" style="display:none">
+                            <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="selectedImportEvents"></div>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
-                        <!--<select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="importShowSheetSelection(this.value)">
-                            <option value="new">New Sheet</option>
-                            <option value="replace">Existing Sheet (Replace)</option>
-                        </select>-->
+                        <select class="form-select mb-2" id="sheetImportMode" name="sheetImportMode" oninput="showSheetSelection(this.value)">
+                            <option value="disabled">DISABLED</option>
+                        </select>
                         <div id="sheetImportSelection" style="display:none">
-                            <button style="display:inline" onclick="importRefreshSheets()" class="btn" id="importRefreshSheetsButton">Refresh</button>
-                            <p id="importSheetName">Pick a Sheet</p>
-                            <select id="importSheetIDSelect" type="select" style="display:none"></select>
+                            <button style="display:inline" onclick="chooseSheet()" class="btn btn-secondary">Select Google Sheet</button>
                         </div>
 
                     </div>
@@ -87,11 +97,13 @@
                 <div class="row mb-3" id="exportOptions">
                     <div class="col">
                         <div class="form-label">Events to Export</div>
-                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)">
+                        <select class="form-select mb-2" id="exportMode" name="exportMode" oninput="showEventCheckboxes(this.value)" value="all">
                             <option value="all">All Events</option>
                             <option value="select">Selected Events</option>
                         </select>
-                        <div id="selectedEvents" style="visibility:hidden; position: absolute; z-index=-10"></div>
+                        <div id="exportEventContainer" style="display:none">
+                        <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column" id="selectedEvents"></div>
+                        </div>
                     </div>
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
@@ -100,9 +112,8 @@
                             <option value="replace">Existing Sheet (Replace)</option>
                         </select>
                         <div id="sheetSelection" style="display:none">
-                            <button style="display:inline" onclick="refreshSheets()" class="btn" id="refreshSheetsButton">Refresh</button>
-                            <p id="sheetName">Pick a Sheet</p>
-                            <select id="sheetIDSelect" type="select" style="display:none"></select>
+                            <button style="display:inline" onclick="createPicker()" class="btn" id="refreshSheetsButton">Pick A Sheet</button><br><br>
+                            <p id="sheetName">No Sheet Selected</p>
                         </div>
                     </div>
                     <div class="col">

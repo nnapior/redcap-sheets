@@ -1,29 +1,12 @@
-function signInREDCap() {
-	var req = new XMLHttpRequest();
-	req.open("POST","/authREDCap", true);
-	req.onreadystatechange = function() {
-		if(this.readyState == 4 && this.status == 200) {
-			console.log(this.response);
-		}
-	}
-	req.send();
-}
-
-function signInGoogle2() {
-	var req = new XMLHttpRequest();
-	req.open("POST","/auth", true);
-	req.onreadystatechange = function() {
-		console.log(this.response);
-		window.location.href = this.response;
-		if(this.readyState == 4 && this.status == 200) {
-			// window.localStorage.setItem("googleCreds",this.response);
-			// alert("successfully signed in");
-			// getUserInfo();
-		}
-	}
-	req.send();
-}
-
+/*
+	signInGoogle()
+		Signs in to a user's Google account and stores the credentials in the browser's local storage.
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function signInGoogle() {
 	var req = new XMLHttpRequest();
 	req.open("POST","/authGoogle", true);
@@ -32,6 +15,7 @@ function signInGoogle() {
 			var res = JSON.parse(this.response);
 			window.localStorage.setItem("googleCredKey", res["key"]);
 			window.localStorage.setItem("googleCredData", res["data"]);
+			window.localStorage.setItem("pickerCredToken", btoa(res["token"]));
 			alert("successfully signed in");
 			getUserInfo();
 		}
@@ -39,6 +23,15 @@ function signInGoogle() {
 	req.send();
 }
 
+/*
+	signOutGoogle()
+		Signs out of a user's Google account, and removes the credentials from local storage.
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function signOutGoogle() {
 	var obj = {
 		"creds":window.localStorage.getItem("googleCredData"),
@@ -55,7 +48,8 @@ function signOutGoogle() {
 		if(this.readyState == 4 && this.status == 200) {
 			window.localStorage.removeItem("googleCredKey");
 			window.localStorage.removeItem("googleCredData");
-			//alert("successfully signed out");
+			window.localStorage.removeItem("pickerCredToken");
+			alert("successfully signed out");
 			getUserInfo();
 		}
 	}

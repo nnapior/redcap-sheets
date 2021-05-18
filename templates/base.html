@@ -20,6 +20,29 @@
     <meta name="HandheldFriendly" content="True"/>
     <meta name="MobileOptimized" content="320"/>
     <meta name="robots" content="noindex,nofollow,noarchive"/>
+    
+    <!-- Load the Google API Loader script. -->
+    <script type="text/javascript">
+        function onPickerApiLoad() {
+            var r = new XMLHttpRequest();
+            r.open("GET","/get_picker_creds",true);
+            r.onreadystatechange = function() {
+                if(this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.response);
+                    appId = res["appID"];
+                    developerKey = res["devKey"];
+                    clientID = res["clientID"];
+                    pickerApiLoaded = true;
+                }
+            }
+            r.send();
+        }
+        function loadPicker() {
+          gapi.load('picker', {'callback': onPickerApiLoad});
+        }
+    </script>
+    <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
+    <script src="{{ url_for('static', filename='js/picker.js') }}" type="text/javascript"></script>
 
     <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
@@ -45,7 +68,6 @@
 
 </head>
 <body onload="pageLoad()" class="antialiased">
-
     <!-- Top horizontal bar -->
     <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
         <div class="container">
@@ -88,7 +110,7 @@
     <div class="page">
         <nav class="navbar navbar-expand-lg navbar-light navbar-primary" id="navbar-primary">
             <div class="container">
-                <div class="navbar-collapse collapse">
+                <div class="navbar-collapse">
                     <a href="#" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical" id="primary-logo">
                         <h2 class="navbar-brand-logo navbar-brand-logo-large">Redcap Google Sheets</h2>
                     </a>
@@ -167,7 +189,7 @@
                                 <button class="btn btn-secondary" data-theme-toggle="navbar-position:both">Side navigation</button>
                             </div>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3" id="sidebarPositionOptions">
                             <label class="form-label">Sidebar position</label>
                             <div class="form-hint">Choose whether the sidebar should appear on the left or on the right.</div>
                             <div class="btn-group w-100">
@@ -217,12 +239,14 @@
                         document.getElementById('secondary-logo').style.display = "block";
                         document.getElementById('primary-logo').style.display = "none";
                         document.getElementById('navbar-heading').style.display = "none";
+                        document.getElementById("sidebarPositionOptions").style.display = "none";
                     },
                     'navbar-position:both': function () {
                         navbarPrimary.classList.add('navbar-vertical');
                         document.getElementById('navbar-heading').style.display = "block";
                         document.getElementById('primary-logo').style.display = "block";
                         document.getElementById('secondary-logo').style.display = "none";
+                        document.getElementById("sidebarPositionOptions").style.display = "block";
                     },
                     'navbar-side:left': function () {
                     },
