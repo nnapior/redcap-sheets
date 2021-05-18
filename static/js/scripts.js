@@ -17,11 +17,15 @@ function getUserInfo() {
 		r.setRequestHeader("Content-Type","application/json");
 		r.onreadystatechange = function() {
 			if(this.readyState == 4 && this.status == 200) {
-				var userData = JSON.parse(this.response);
-				showUser(userData["name"], userData["picture"]);
-				enableImport();
-				enableExport();
-				return true;
+				if(this.response != "-1") {
+					var userData = JSON.parse(this.response);
+					showUser(userData["name"], userData["picture"]);
+					enableImport();
+					enableExport();
+					return true;
+				} else {
+					return false;
+				}
 			}
 		}
 
@@ -34,8 +38,6 @@ function getUserInfo() {
 		reqData = reqData.replace("'", "\"");
 
 		r.send(reqData);
-
-		checkEnable();
 	} else {
 		showSignInGoogle();
 		disableImport();
@@ -101,6 +103,7 @@ function disableImport() {
 	var importBtn = document.getElementById('importBtn');
 	importCard.classList.add('cursor-not-allowed');
 	importBtn.classList.add('disabled');
+	
 	
 }
 

@@ -39,6 +39,15 @@ function createPicker() {
   }
 }
 
+/*
+	createPickerImport()
+		Initializes and displays the Google Picker via the Google Picker API
+		
+		Parameters:
+			None
+		Returns:
+			None
+*/
 function createPickerImport() {
 	if(!window.localStorage.getItem("pickerCredToken")) {
 		alert("please sign into google");
@@ -78,6 +87,15 @@ function pickerCallback(data) {
   }
 }
 
+/*
+	pickerCallBackImport(data)
+		Receives the document selected via the Google Picker (createPicker()) and sets it as the export replacement target
+		
+		Parameters:
+			data: The document(s) picked via the Google Picker
+		Returns:
+			None
+*/
 function pickerCallbackImport(data) {
   if (data.action == google.picker.Action.PICKED) {
 	pickedImportSheetID = data.docs[0].id;
