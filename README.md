@@ -27,7 +27,7 @@ Thanks for using our webapp.This web application usedto interact with the REDcap
 4. UD VPN
 
 
-### After installing the commands above.
+### After installation.
 
 ## How to Run and setup the WEBAPP
 
