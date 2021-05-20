@@ -38,15 +38,17 @@ pip install pycap
 **if you use these scripts, you need a ```config.json ```file in ```config/``` with the following
 contents:**
 
-**{
-"api_url":"link-to-REDCap-API",
-"secret_key" : "secret-key-for-flask",
-"client_secret" : "path-to-client-secret",
-	scopes" : ["https://www.googleapis.com/auth/spreadsheets",
-				    "https://www.googleapis.com/auth/drive.metadata.readonly",
-				    "https://www.googleapis.com/auth/userinfo.profile"],
+```
+{
+	"api_url": "link-to-REDCap-API",
+	"secret_key": "secret-key-for-flask",
+	"client_secret": "path-to-client-secret",
+	"scopes": 	["https://www.googleapis.com/auth/spreadsheets",
+				"https://www.googleapis.com/auth/drive.metadata.readonly",
+				"https://www.googleapis.com/auth/userinfo.profile"],
 	"base_url" : "link-to-local-host"
-}**
+}
+```
 
 
 
