@@ -2,7 +2,7 @@
 
 ### Introduction:
 
-Thanks for using our webapp. This web application used to import and export data with the REDcap and Google Sheets.
+Thanks for using our webapp. This web application is used to import and export data with the REDcap and Google Sheets.
 
 ### What can you do using this web app?
 
@@ -65,8 +65,8 @@ https://console.cloud.google.com/home/dashboard
 
 ### What do you need?
 
-1. A Google account named Which has the right to edit Google Sheets.
-2. A RedCap account and API key
+1. A Google account which has the right to edit Google Sheets.
+2. A REDCap account and API key
 3. Install the above Requirements
 4. UD VPN
 
