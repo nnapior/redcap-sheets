@@ -2,6 +2,7 @@
 import pandas
 import json
 from redcap import Project
+from cryptography.fernet import Fernet
 from lib.Google import Create_Service
 
 
@@ -20,6 +21,7 @@ def createService(creds):
     service = Create_Service(CLIENT_SECRET_FILE, API_NAME, API_VERSION, creds, SCOPES)
     return service
 
+
 '''
 def getConfig():
     """This function returns the configuration data in json form
@@ -30,7 +32,7 @@ def getConfig():
     return config'''
 
 
-def getEvents(google_service, sheetID ):
+def getEvents(google_service, sheetID):
     """This function get all the sheet events from google sheets
     :return events list"""
     service = google_service
@@ -60,7 +62,6 @@ def import_redcap(sheet, service, project, sheetID):
     request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
     rows = request['values']
-    
 
     # create dataframe from rows get from sheet
     df = pandas.DataFrame(rows[1:], columns=rows[0])
@@ -68,8 +69,6 @@ def import_redcap(sheet, service, project, sheetID):
 
     # create dict from dataframe
     rows = df.to_dict(orient='records')
-    
-    
 
     try:
         # iterate through each record from rows: dict
@@ -77,7 +76,7 @@ def import_redcap(sheet, service, project, sheetID):
             row["redcap_event_name"] = sheet  # append event name to record
             rec = json.dumps(row)  # converting record to  json format
             data = [json.loads(rec)]  # load json object and put that in list
-            #print(data)
+            # print(data)
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
@@ -90,16 +89,23 @@ def import_data(object, apiKey):
     Function that imports data to Redcap
 
     Parameters
-    Object : list of redcap data 
-    
+    Object : list of redcap data
+
     Returns
     Imported data
     """
 
     imported = False
-    creds = object['creds']
     events = object['events']
     sheetID = object['id']
+    encCreds = bytes(object["creds"].encode("utf-8"))
+    print(object["key"])
+    key = bytes(object["key"].encode("utf-8"))
+    print(key)
+
+    fernet = Fernet(key)
+
+    creds = fernet.decrypt(encCreds).decode()
     service = createService(creds)
 
     project = Project("https://dri.udel.edu/redcap/api/", apiKey)
