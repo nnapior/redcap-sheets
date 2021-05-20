@@ -4,7 +4,9 @@
 
 Thanks for using our webapp. This web application is used to import and export data with the REDcap and Google Sheets.
 
-### What can you do using this web app?
+*Note: This webapp was developed and deployed by students at University of Delaware, but other universities can deploy their own versions with the instructions below.*
+
+### What can you do with this webapp?
 
 1. Export data to Google sheets.
 
@@ -22,7 +24,7 @@ pip install-r requirements.txt
 ```
 Using the command below for pip3 on MacOS. ex.
 ```
-● pip3 install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 Using all commands below to install all modules.
 ```
@@ -68,7 +70,7 @@ https://console.cloud.google.com/home/dashboard
 1. A Google account which has the right to edit Google Sheets.
 2. A REDCap account and API key
 3. Install the above Requirements
-4. UD VPN
+4. University of Delaware VPN (if using UD's instance)
 
 
 ### After installing the commands above.
