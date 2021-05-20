@@ -2,17 +2,17 @@
 
 ### Introduction:
 
-Thanks for using our webapp. This web application used to import and export data with the REDcap and google sheets.
+Thanks for using our webapp. This web application used to import and export data with the REDcap and Google Sheets.
 
 ### What can you do using this web app?
 
-1.Export data to Google sheets.
+1. Export data to Google sheets.
 
 
-3.Import data from Google sheets to REDCap.
+2. Import data from Google sheets to REDCap.
 
 
-5.Delete data from REDCap.
+3. Delete data from REDCap.
 
 ## Dependencies
 
@@ -65,7 +65,7 @@ https://console.cloud.google.com/home/dashboard
 
 ### What do you need?
 
-1. A Google account named Which has the right to editGoogle Sheets.
+1. A Google account named Which has the right to edit Google Sheets.
 2. A RedCap account and API key
 3. Install the above Requirements
 4. UD VPN
@@ -155,10 +155,8 @@ to delete”. If you have permission to delete, it willshow “delete successful
 
 Created by:
 
-```
-● Mario Durso
-● Justin Hamilton
-● Nick Napior
-● Kojo Otchere-Addo
-● Zhenghan Wang
-```
+* Mario Durso
+* Justin Hamilton
+* Nick Napior
+* Kojo Otchere-Addo
+* Zhenghan Wang
