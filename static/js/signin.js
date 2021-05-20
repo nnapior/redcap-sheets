@@ -1,7 +1,22 @@
+function signInGoogle2() {
+	var req = new XMLHttpRequest();
+	req.open("POST","/auth", true);
+	req.onreadystatechange = function() {
+		console.log(this.response);
+		window.location.href = this.response;
+		if(this.readyState == 4 && this.status == 200) {
+			// window.localStorage.setItem("googleCreds",this.response);
+			// alert("successfully signed in");
+			// getUserInfo();
+		}
+	}
+	req.send();
+}
+
 /*
 	signInGoogle()
 		Signs in to a user's Google account and stores the credentials in the browser's local storage.
-		
+
 		Parameters:
 			None
 		Returns:
@@ -26,7 +41,7 @@ function signInGoogle() {
 /*
 	signOutGoogle()
 		Signs out of a user's Google account, and removes the credentials from local storage.
-		
+
 		Parameters:
 			None
 		Returns:
