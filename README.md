@@ -52,16 +52,17 @@ contents:**
 
 
 
-**The user will also need a ```clinet_secret.json ```file in ```config/```.**
+**The user will also need a ```clinet_secret.json```file in ```config/```.**
 
-```
-● To get the client secret.json you must go to:
+
+* To get the client secret.json you must go to:
 https://console.cloud.google.com/home/dashboard
-● On this page click:
-○ Navigation Menu->APIs & Services->Credentials ->Desktopclient 1
-● On this page click:
-○ "DOWNLOAD JSON" Move this file into your project directory
-```
+* On this page click:
+	* Navigation Menu->APIs & Services->Credentials ->Desktopclient 1
+* On this page click:
+	* "DOWNLOAD JSON" Move this file into your project directory
+
+
 ### What do you need?
 
 1. A Google account named Which has the right to editGoogle Sheets.
