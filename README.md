@@ -1,6 +1,6 @@
 # REDCap Google Sheets
 
-### Introduce:
+### Introduction:
 
 Thanks for using our webapp. This web application used to import and export data with the REDcap and google sheets.
 
