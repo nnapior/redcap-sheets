@@ -45,9 +45,10 @@ def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri
     encrypted = fernet.encrypt(content.encode())
 
     object = {}
-
+    jsonObj = json.loads(creds.to_json())
     object["key"] = key.decode("utf-8")
     object["data"] = encrypted.decode("utf-8")
+    object["token"] = jsonObj['token']
 
     # print(object)
 
@@ -107,8 +108,7 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
         fernet = Fernet(key)
 
         encrypted = fernet.encrypt(content.encode())
-        
-        
+
         jsonObj = json.loads(cred.to_json())
         print(jsonObj)
         print(jsonObj['token'])
