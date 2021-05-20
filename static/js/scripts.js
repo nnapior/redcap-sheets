@@ -4,7 +4,7 @@ var sheetID;
 /*
 	getUserInfo()
 		Queries the server and returns returns the current Google user's information
-		
+
 		Parameters:
 			None
 		Returns:
@@ -44,13 +44,13 @@ function getUserInfo() {
 		disableExport();
 		return false;
 	}
-	
+
 }
 
 /*
 	showUser(name, avatar_url)
 		Styles and displays the Google login button to show the associated Google account's information
-		
+
 		Parameters:
 			name: The name of the Google user currently logged in
 			avatar_url: The URL of the current Google user's profile picture
@@ -74,7 +74,7 @@ function showUser(name, avatar_url) {
 /*
 	showSignInGoogle()
 		Styles and displays the Google login button
-		
+
 		Parameters:
 			None
 		Returns:
@@ -92,7 +92,7 @@ function showSignInGoogle() {
 /*
 	disableImport()
 		Styles the Import card to disallow user interaction
-		
+
 		Parameters:
 			None
 		Returns:
@@ -112,7 +112,7 @@ function disableImport() {
 /*
 	disableExport()
 		Styles the Export card to disallow user interaction
-		
+
 		Parameters:
 			None
 		Returns:
@@ -134,7 +134,7 @@ function disableExport() {
 /*
 	enableImport()
 		Styles the Import card to allow user interaction
-		
+
 		Parameters:
 			None
 		Returns:
@@ -155,7 +155,7 @@ function enableImport() {
 /*
 	enableExport()
 		Styles the Export card to allow user interaction
-		
+
 		Parameters:
 			None
 		Returns:
@@ -179,34 +179,44 @@ function enableExport() {
 /*
 	pageLoad()
 		Runs whenever the webpage is loaded in a browser, redirects to Settings if REDCap API key is not entered
-		
+
 		Parameters:
 			None
 		Returns:
 			None
 */
 function pageLoad() {
-	if(document.getElementById("dataContainer") != undefined) {
+	var urlParams = new URLSearchParams(window.location.search);
+	//console.log(urlParams.get('values'));
+	var values = JSON.parse(urlParams.get('values'));
+	if(urlParams.get('values')){
+		window.localStorage.setItem("googleCredData",values['data']);
+		window.localStorage.setItem("googleCredKey",values['key']);
+		window.localStorage.setItem("pickerCredToken", btoa(values["token"]));
+		window.location.replace(window.location.href.split('?')[0]);
+		// alert("successfully signed in");
+	} else if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined) {
+		signInGoogle2();
+	} else if(document.getElementById("dataContainer") != undefined) {
 		var r = new XMLHttpRequest();
 		r.open("GET", "/checkAPIKey", true);
 		r.onreadystatechange = function() {
 			if(this.status == 200 && this.readyState == 4) {
-				if(this.response != "-1") {
-					getData();
-					getUserInfo();
-				} else {
+				if(this.response == "-1") {
 					window.location = "/settings";
 				}
 			}
 		}
 		r.send();
 	}
+	getUserInfo();
+	getData();
 }
 
 /*
 	showParticipant(eventKey, participantID)
 		Shows a particular participant's data for a REDCap event and adds it to the data preview
-		
+
 		Parameters:
 			eventKey: The key of the REDCap event for which the participant data is drawn from
 			participantID: The ID of the specific participant whose data to show, or "all" to show all participants
@@ -262,7 +272,7 @@ function showParticipant(eventKey, participantID) {
 /*
 	exportData
 		Gathers the events to export to Google Sheets from REDCap and pushes them to pushToSheets(object)
-		
+
 		Parameters:
 			None
 		Returns:
@@ -286,13 +296,13 @@ function exportData() {
 		//export all events in data
 		pushToSheets(data);
 	}
-	
-	
+
+
 }
 /*
 	importData
 		Gathers the events to import to REDCap from Google Sheets and pushes them to pushToRedcap(object)
-		
+
 		Parameters:
 			None
 		Returns:
@@ -321,14 +331,14 @@ function importData() {
 /*
 	pushToRedcap(object)
 		Writes Google Sheets data to REDCap with the selected import mode
-		
+
 		Parameters:
 			object: The Google Sheets data to be exported
 		Returns:
 			None
 */
 function pushToRedcap(object) {
-	var sheetID = document.getElementById("importSheetIDSelect").value;
+	var sheetID = pickedImportSheetID;
 	var r = new XMLHttpRequest();
 	var importBtn = document.getElementById('importBtn');
 	r.open("POST","/import_sheets_to_redcap",true);
@@ -339,8 +349,14 @@ function pushToRedcap(object) {
 		}
 	}
 
-	if(window.localStorage.getItem("googleCreds") != undefined && sheetID != "") {
-		var pushObject = {"events":object, "id":pickedImportSheetID, "creds":window.localStorage.getItem("googleCreds")};
+	if(window.localStorage.getItem("googleCredData") != undefined &&
+		window.localStorage.getItem("googleCredKey") != undefined && sheetID != "") {
+		var pushObject = {
+			"events":object,
+			"id":pickedImportSheetID,
+			"key":window.localStorage.getItem("googleCredKey"),
+			"creds":window.localStorage.getItem("googleCredData")
+		};
 		console.log(pushObject);
 		var reqData = JSON.stringify(pushObject);
 		reqData = reqData.replace("\n","");
@@ -355,7 +371,7 @@ function pushToRedcap(object) {
 /*
 	pushToSheets(object)
 		Writes REDCap data to Google Sheets with the selected export mode
-		
+
 		Parameters:
 			object: The REDCap data to be exported
 		Returns:
@@ -451,10 +467,10 @@ function pushToSheets(object) {
 	}
 }
 
-/* 
+/*
 showEventCheckboxes(value)
 	Displays the event checkboxes for exporting if exporting only selected events
-	
+
 	Parameters:
 		value: The value of the export mode selection (all/select)
 	Returns:
@@ -469,10 +485,10 @@ function showEventCheckboxes(value) {
 	}
 }
 
-/* 
+/*
 	showImportEventCheckboxes(value)
 		Displays the event checkboxes for importing if importing only selected events
-		
+
 		Parameters:
 			value: The value of the import mode selection (all/select)
 		Returns:
@@ -490,7 +506,7 @@ function showImportEventCheckboxes(value) {
 /*
 	showEvent(eventKey)
 		Shows the REDCap data for the selected event
-		
+
 		Parameters:
 			eventKey: The key of the event whose data will be displayed
 		Returns:
@@ -521,7 +537,7 @@ function showEvent(eventKey) {
 /*
 	setButtons(object)
 		Sets the event selection checkboxes for exporting and importing, and sets the event dropdown for the data preview
-		
+
 		Parameters:
 			object: The JSON object containing the event names
 		Returns:
@@ -546,35 +562,35 @@ function setButtons(object) {
 
 		var label = document.createElement("label");
 		label.className = "form-selectgroup-item";
-		
+
 		var checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
 		checkbox.className = "form-selectgroup-input";
 		checkbox.value = key;
 		checkbox.name = "selectedEvents"
 		checkbox.checked = true;
-		
+
 		var div = document.createElement("div");
 		div.className = "form-selectgroup-label";
-		
+
 		var checkContainer = document.createElement("div");
 		checkContainer.className = "me-3";
-		
+
 		var checkBoxElement = document.createElement("span");
 		checkBoxElement.className = "form-selectgroup-check";
-		
+
 		var labelContainer = document.createElement("div");
 		labelContainer.className = "form-selectgroup-label-content d-flex align-items-center";
 		labelContainer.innerHTML = key;
-		
+
 		checkContainer.appendChild(checkBoxElement);
 		div.appendChild(checkContainer);
 		div.appendChild(labelContainer);
-		
+
 		label.appendChild(checkbox);
 		label.appendChild(div);
 		eventCheckboxes.appendChild(label);
-		
+
 		// var label = document.createElement("label");
 		// label.htmlFor = key;
 		// label.innerHTML = key;
@@ -583,34 +599,34 @@ function setButtons(object) {
 		// eventCheckboxes.appendChild(document.createElement("br"));
 
 		// eventImportCheckboxes.appendChild(label);
-		
+
 		label = document.createElement("label");
 		label.className = "form-selectgroup-item";
-		
+
 		checkbox = document.createElement("input");
 		checkbox.type = "checkbox";
 		checkbox.className = "form-selectgroup-input";
 		checkbox.value = key;
 		checkbox.name = "selectedEvents"
 		checkbox.checked = true;
-		
+
 		div = document.createElement("div");
 		div.className = "form-selectgroup-label";
-		
+
 		checkContainer = document.createElement("div");
 		checkContainer.className = "me-3";
-		
+
 		checkBoxElement = document.createElement("span");
 		checkBoxElement.className = "form-selectgroup-check";
-		
+
 		labelContainer = document.createElement("div");
 		labelContainer.className = "form-selectgroup-label-content d-flex align-items-center";
 		labelContainer.innerHTML = key;
-		
+
 		checkContainer.appendChild(checkBoxElement);
 		div.appendChild(checkContainer);
 		div.appendChild(labelContainer);
-		
+
 		label.appendChild(checkbox);
 		label.appendChild(div);
 		eventImportCheckboxes.appendChild(label);
@@ -622,7 +638,7 @@ function setButtons(object) {
 /*
 	showSheetSelection(value)
 		Displays the export location (spreadsheet) if exporting to an existing spreadsheet
-		
+
 		Parameters:
 			value: The value of the export mode selection (new/existing)
 		Returns:
@@ -644,7 +660,7 @@ function showSheetSelection(value) {
 /*
 	deleteUser(id)
 		Deletes a record from the current REDCap project
-		
+
 		Parameters:
 			id: The ID of the record to be deleted
 		Returns:
@@ -672,7 +688,7 @@ function deleteUser(id) {
 /*
 	getData()
 		Queries the server and pulls records from the REDCap project associated with the inputted API key
-		
+
 		Parameters:
 			None
 		Returns:
@@ -702,7 +718,7 @@ function getData() {
 /*
 	getRedCapAPIKey()
 		Toggles visibility of the inputted REDCap API key on the Settings page
-		
+
 		Parameters:
 			None
 		Returns:

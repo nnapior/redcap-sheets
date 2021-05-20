@@ -12,6 +12,18 @@ import json
 
 
 def authGoogle(client_secret_file, scopes, redirect_uri):
+    """
+    Function that signs into google
+
+    Parameters
+    client_secret_file : String name of the json file containing api access information
+    scopes : List of strings indicating the scope of the API service
+    redirect_uri : String url where to redirect after authentication flow
+
+    Returns the url for google sign in prompt and the current state to be stored in Flask
+    session for authGoogleComplete.
+
+    """
     # Create flow instance to manage the OAuth 2.0 Authorization Grant Flow steps.
     flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes)
     # The URI created here must exactly match one of the authorized redirect URIs
@@ -31,6 +43,19 @@ def authGoogle(client_secret_file, scopes, redirect_uri):
 
 
 def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri):
+    """
+    Function to be called as callback for authGoogle when the sign in prompt is complete
+
+    Paramaters
+    client_secret_file : String name of the json file containing api access information
+    scopes : List of strings indicating the scope of the API service
+    state : google authentication flow states variable. Should be passed in from Flask
+    session storage from authGoogle initiating authentication
+    redirect_uri : String url where to redirect after authentication flow
+
+    Returns JSON object containing the encrypted creds, key, and token for google Picker
+
+    """
     flow = Flow.from_client_secrets_file(client_secret_file, scopes=scopes, state=state)
     flow.redirect_uri = redirect_uri
 
@@ -45,9 +70,10 @@ def authGoogleComplete(client_secret_file, scopes, state, response, redirect_uri
     encrypted = fernet.encrypt(content.encode())
 
     object = {}
-
+    jsonObj = json.loads(creds.to_json())
     object["key"] = key.decode("utf-8")
     object["data"] = encrypted.decode("utf-8")
+    object["token"] = jsonObj['token']
 
     # print(object)
 
@@ -107,8 +133,7 @@ def signInGoogle(client_secret_file, api_name, api_version, *scopes):
         fernet = Fernet(key)
 
         encrypted = fernet.encrypt(content.encode())
-        
-        
+
         jsonObj = json.loads(cred.to_json())
         print(jsonObj)
         print(jsonObj['token'])

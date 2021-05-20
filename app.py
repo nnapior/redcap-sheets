@@ -34,7 +34,7 @@ def settings():
         flash('REDcap API key entered successfully!', "info")
         hasKey = True
         theKey = session['redcap_api_key']
-        return render_template('settings.html', form=form, hasKey=hasKey, key = theKey)
+        return render_template('settings.html', form=form, hasKey=hasKey, key=theKey)
     else:
         flash("Please enter your REDCap API key.", "info")
     if request.method == 'POST' and form.validate():
@@ -43,12 +43,14 @@ def settings():
         return redirect(url_for('home'))
     return render_template('settings.html', form=form, hasKey=hasKey)
 
+
 @app.route('/checkAPIKey', methods=['GET'])
 def checkKey():
     if 'redcap_api_key' in session:
         return "1"
     else:
         return "-1"
+
 
 @app.route('/pushData', methods=['PUT', 'POST'])
 def pushData():
@@ -77,7 +79,8 @@ def getSheetsRequest():
     if request.json:
         return getSheets(request.json)
     else:
-        return print("-1")
+        return "-1"
+
 
 @app.route('/auth', methods=['POST'])
 def auth():
@@ -101,16 +104,17 @@ def authComplete():
     # print(object)
     return redirect(url_for('home', values=object))
 
-@app.route('/authGoogle', methods=['POST'])
-def authGoogleRequest():
-    CLIENT_SECRET_FILE = 'config/client_secret.json'
-    API_NAME = 'sheets'
-    API_VERSION = 'v4'
-    SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
-              'https://www.googleapis.com/auth/drive.metadata.readonly',
-              'https://www.googleapis.com/auth/userinfo.profile']
 
-    return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
+# @app.route('/authGoogle', methods=['POST'])
+# def authGoogleRequest():
+#     CLIENT_SECRET_FILE = 'config/client_secret.json'
+#     API_NAME = 'sheets'
+#     API_VERSION = 'v4'
+#     SCOPES = ['https://www.googleapis.com/auth/spreadsheets',
+#               'https://www.googleapis.com/auth/drive.metadata.readonly',
+#               'https://www.googleapis.com/auth/userinfo.profile']
+#
+#     return signInGoogle(CLIENT_SECRET_FILE, API_NAME, API_VERSION, SCOPES)
 
 
 @app.route('/signOutGoogle', methods=['POST'])
@@ -150,13 +154,15 @@ def import_to_redcap():
 def delete_record():
     if request.json:
         if('redcap_api_key' in session):
-            deleted = delete_records(request.json['id'], session['redcap_api_key'] )
+            deleted = delete_records(request.json['id'], session['redcap_api_key'])
             return json.dumps({'deleted': deleted})
+
 
 @app.route('/get_picker_creds', methods=["GET"])
 def getPickerCreds():
-    file = open("config/picker_dependencies.json","r")
+    file = open("config/picker_dependencies.json", "r")
     return file.read()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
