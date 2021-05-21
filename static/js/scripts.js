@@ -26,6 +26,13 @@ function getUserInfo() {
 				} else {
 					return false;
 				}
+			} else {
+				window.localStorage.removeItem("googleCredData");
+				window.localStorage.removeItem("googleCredKey");
+				window.localStorage.removeItem("pickerCredToken");
+				showSignInGoogle();
+				disableImport();
+				disableExport();
 			}
 		}
 
