@@ -26,7 +26,7 @@ function getUserInfo() {
 				} else {
 					return false;
 				}
-			} else {
+			} else if(this.status != 200) {
 				window.localStorage.removeItem("googleCredData");
 				window.localStorage.removeItem("googleCredKey");
 				window.localStorage.removeItem("pickerCredToken");
@@ -734,10 +734,14 @@ function getData() {
 			None
 */
 function getRedCapAPIKey(){
-	var x = document.getElementById("key");
-	if (x.style.visibility === "visible") {
-    	x.style.visibility = "hidden";
+	var x = document.getElementById("key_field");
+	var y = document.getElementById("show");
+	if (x.type == "password") {
+    	x.type = 'text';
+		y.innerHTML = "Hide API Key";
+		//x.value = y.innerHTML;
   	} else {
-    	x.style.visibility = "visible";
+		x.type = 'password';
+		y.innerHTML = "Show API Key";
   	}
 }

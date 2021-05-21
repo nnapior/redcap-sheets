@@ -101,7 +101,6 @@ def get_user_info(jsonObject):
     creds = fernet.decrypt(encCreds).decode()
     service = create_user_service(creds)
     response = service.userinfo().get().execute()
-    print(response)
     return response
 
 
