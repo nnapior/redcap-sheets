@@ -1,0 +1,11 @@
+{
+    "api_key": "YOUR_REDCAP_API_KEY",
+    "api_url": "URL_TO_REDCAP_API",
+    "spreadsheet_id": "SPREADSHEET_ID",
+    "scopes": ["https://www.googleapis.com/auth/spreadsheets",
+              "https://www.googleapis.com/auth/drive.metadata.readonly",
+              "https://www.googleapis.com/auth/userinfo.profile"],
+    "client_secret": "PATH/TO/client_secret.json",
+    "secret_key": "FLASK_SECRET_KEY",
+    "base_url": "https://example.com/"
+}
