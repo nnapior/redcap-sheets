@@ -658,7 +658,7 @@ function showSheetSelection(value) {
 	//Function that gets sheet selection based on sheet ID
 	//Parameters: value:
 
-	let sheetSelection = document.getElementById("sheetSelection");
+	let sheetSelection = document.getElementById("refreshSheetsButton");
 	if(value == "new") {
 		sheetSelection.style.display = "none";
 	} else {

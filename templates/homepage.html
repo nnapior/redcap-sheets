@@ -55,7 +55,7 @@
 <br>
 <div class="row">
     <div class="col">
-        <div class="card cursor-not-allowed" id="importCard">
+        <div class="card cursor-not-allowed h-100" id="importCard">
             <div class="card-body">
                 <h3 class="card-title">Import From Google Sheets</h3>
                 <div class="row mb-3" id="">
@@ -71,7 +71,7 @@
                     </div>
                     <div class="col">
                         <div class="form-label">Target Sheet</div>
-                        <button style="display:inline" onclick="createPickerImport()" class="btn" id="refreshSheetsButtonImport">Pick A Sheet</button><br><br>
+                        <button style="display:inline" onclick="createPickerImport()" class="btn w-100" id="refreshSheetsButtonImport">Pick A Sheet</button><br><br>
                         <p id="sheetNameImport">No Sheet Selected</p>
                     </div>
                     <div class="col">
@@ -86,7 +86,7 @@
         </div>
     </div>
     <div class="col">
-        <div class="card cursor-not-allowed" id="exportCard">
+        <div class="card cursor-not-allowed h-100" id="exportCard">
             <div class="card-body">
                 <h3 class="card-title">Export to Google Sheets</h3>
                 <div class="row mb-3" id="exportOptions">
@@ -106,9 +106,9 @@
                             <option value="new">New Sheet</option>
                             <option value="replace">Existing Sheet (Replace)</option>
                         </select>
-                        <div id="sheetSelection" style="display:none">
-                            <button style="display:inline" onclick="createPicker()" class="btn" id="refreshSheetsButton">Pick A Sheet</button><br><br>
-                            <p id="sheetName">No Sheet Selected</p>
+                        <div id="sheetSelection">
+                            <p id="sheetName" class="mt-3">New Sheet Selected</p>
+                            <button style="display:none" onclick="createPicker()" class="btn w-100" id="refreshSheetsButton">Pick A Sheet</button>
                         </div>
                     </div>
                     <div class="col">
