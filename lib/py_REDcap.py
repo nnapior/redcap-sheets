@@ -33,6 +33,19 @@ def getRecords(apiKey):
         print("error "+str(r.status_code)+": "+r.text)
         return None
 
+
+def getProjInfo(apiKey):
+    data = {
+        'token': apiKey,
+        'content': 'project',
+        'format': 'json',
+        'returnFormat': 'json'
+    }
+
+    r = requests.post(url, data=data)
+    return r.json()
+
+
 '''
 def getAPIKey():
     """
@@ -45,6 +58,7 @@ def getAPIKey():
     content = json.loads(configFile.read())
     return content["api_key"]
 '''
+
 
 def getProjName(apiKey):
     """
@@ -172,5 +186,5 @@ def getValueDict():
 if __name__ == "__main__":
     # print(getValues())
 
-    #print(getValues(getAPIKey()))
+    # print(getValues(getAPIKey()))
     pass

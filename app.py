@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, flash, session, redirect, url_for
-from lib.py_REDcap import getValues
+from lib.py_REDcap import getValues, getProjInfo
 from lib.createModifySpreadsheet import *
 from lib.py_REDcap_import import import_data
 from lib.py_REDcap_delete import delete_records
 from lib.Google import *
 from lib.config import Config
 from forms import SettingsForm
-from wtforms import PasswordField, validators
 import json
 import os
 import cv2
@@ -34,7 +33,7 @@ def settings():
         flash('REDcap API key entered successfully!', "info")
         hasKey = True
         theKey = session['redcap_api_key']
-        return render_template('settings.html', form=form, hasKey=hasKey, key=theKey)
+        return render_template('settings.html', form=form, hasKey=hasKey, key=theKey, proj_data=getProjInfo(theKey))
     else:
         flash("Please enter your REDCap API key.", "info")
     if request.method == 'POST' and form.validate():

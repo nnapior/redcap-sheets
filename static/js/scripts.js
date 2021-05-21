@@ -26,7 +26,7 @@ function getUserInfo() {
 				} else {
 					return false;
 				}
-			} else {
+			} else if(this.status != 200) {
 				window.localStorage.removeItem("googleCredData");
 				window.localStorage.removeItem("googleCredKey");
 				window.localStorage.removeItem("pickerCredToken");
@@ -195,6 +195,10 @@ function enableExport() {
 function pageLoad() {
 	var urlParams = new URLSearchParams(window.location.search);
 	//console.log(urlParams.get('values'));
+	if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined
+	&& window.localStorage.getItem("pickerCredToken") == undefined) {
+		signInGoogle2();
+	}
 	var values = JSON.parse(urlParams.get('values'));
 	if(urlParams.get('values')){
 		window.localStorage.setItem("googleCredData",values['data']);
@@ -202,8 +206,6 @@ function pageLoad() {
 		window.localStorage.setItem("pickerCredToken", btoa(values["token"]));
 		window.location.replace(window.location.href.split('?')[0]);
 		// alert("successfully signed in");
-	} else if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined) {
-		signInGoogle2();
 	} else if(document.getElementById("dataContainer") != undefined) {
 		var r = new XMLHttpRequest();
 		r.open("GET", "/checkAPIKey", true);
@@ -656,7 +658,7 @@ function showSheetSelection(value) {
 	//Function that gets sheet selection based on sheet ID
 	//Parameters: value:
 
-	let sheetSelection = document.getElementById("sheetSelection");
+	let sheetSelection = document.getElementById("refreshSheetsButton");
 	if(value == "new") {
 		sheetSelection.style.display = "none";
 	} else {
@@ -732,10 +734,14 @@ function getData() {
 			None
 */
 function getRedCapAPIKey(){
-	var x = document.getElementById("key");
-	if (x.style.visibility === "visible") {
-    	x.style.visibility = "hidden";
+	var x = document.getElementById("key_field");
+	var y = document.getElementById("show");
+	if (x.type == "password") {
+    	x.type = 'text';
+		y.innerHTML = "Hide API Key";
+		//x.value = y.innerHTML;
   	} else {
-    	x.style.visibility = "visible";
+		x.type = 'password';
+		y.innerHTML = "Show API Key";
   	}
 }

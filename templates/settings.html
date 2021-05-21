@@ -3,6 +3,7 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
+        <h2 class="card-title">Settings</h2>
         <form method=post>
             <label class="form-label mb-2">{{ form.redcap_api_key.label }}</label>
             {% if form.redcap_api_key.errors %}
@@ -15,16 +16,19 @@
             {% else %}
             {{ form.redcap_api_key(class="form-control mb-2") }}
             {% endif %}
-            <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary mr-none">Submit</button>
+                <button class="btn btn-primary" type="button" onclick="getRedCapAPIKey()" id="show">Show API Key</button>
         </form>
+        {% if proj_data %}
+        <h2 class="mt-4">Project Info</h2>
+        <h4><b>Project Name:</b> {{ proj_data['project_title'] }}</h4>
+        <h4><b>Created On:</b> {{ proj_data['creation_time'] }}</h4>
+        {% endif %}
         {% if hasKey %}
-        <br>
-          <button class="btn btn-primary" type="button" onclick="getRedCapAPIKey()">Show API Key</button>
-          
-          <p id="key" style="visibility: hidden;"><br>
-            Your current REDcap API key is:
-            {{ key}}
-          </p>
+          <script>
+              var x = document.getElementById("key_field");
+              x.value = '{{key}}';
+          </script>
         {% endif %}
     </div>
 </div>
