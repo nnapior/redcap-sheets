@@ -3,6 +3,9 @@
 {% block content %}
 <div class="card">
     <div class="card-body">
+        {% if proj_data %}
+        <h2>{{ proj_data['project_title'] }}</h2>
+        {% endif %}
         <form method=post>
             <label class="form-label mb-2">{{ form.redcap_api_key.label }}</label>
             {% if form.redcap_api_key.errors %}
@@ -20,7 +23,7 @@
         {% if hasKey %}
         <br>
           <button class="btn btn-primary" type="button" onclick="getRedCapAPIKey()">Show API Key</button>
-          
+
           <p id="key" style="visibility: hidden;"><br>
             Your current REDcap API key is:
             {{ key}}

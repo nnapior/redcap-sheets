@@ -195,6 +195,10 @@ function enableExport() {
 function pageLoad() {
 	var urlParams = new URLSearchParams(window.location.search);
 	//console.log(urlParams.get('values'));
+	if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined
+	&& window.localStorage.getItem("pickerCredToken") == undefined) {
+		signInGoogle2();
+	}
 	var values = JSON.parse(urlParams.get('values'));
 	if(urlParams.get('values')){
 		window.localStorage.setItem("googleCredData",values['data']);
@@ -202,8 +206,6 @@ function pageLoad() {
 		window.localStorage.setItem("pickerCredToken", btoa(values["token"]));
 		window.location.replace(window.location.href.split('?')[0]);
 		// alert("successfully signed in");
-	} else if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined) {
-		signInGoogle2();
 	} else if(document.getElementById("dataContainer") != undefined) {
 		var r = new XMLHttpRequest();
 		r.open("GET", "/checkAPIKey", true);
