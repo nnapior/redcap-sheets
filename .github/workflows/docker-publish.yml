@@ -46,6 +46,8 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=registry,ref=nnapior/redcap-sheets:latest
+          cache-to: type=inline
       -
         name: Update Docker Hub README
         uses: peter-evans/dockerhub-description@v2
