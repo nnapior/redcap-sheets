@@ -194,12 +194,8 @@ function enableExport() {
 */
 function pageLoad() {
 	var urlParams = new URLSearchParams(window.location.search);
-	//console.log(urlParams.get('values'));
-	if(window.localStorage.getItem("googleCredData") == undefined && window.localStorage.getItem("googleCredKey") == undefined
-	&& window.localStorage.getItem("pickerCredToken") == undefined) {
-		signInGoogle2();
-	}
 	var values = JSON.parse(urlParams.get('values'));
+	//console.log(urlParams.get('values'));
 	if(urlParams.get('values')){
 		window.localStorage.setItem("googleCredData",values['data']);
 		window.localStorage.setItem("googleCredKey",values['key']);
@@ -217,6 +213,11 @@ function pageLoad() {
 			}
 		}
 		r.send();
+	}
+	// redirects to sign in if values are undefined
+	if(window.localStorage.getItem("googleCredData") == undefined || window.localStorage.getItem("googleCredKey") == undefined
+	|| window.localStorage.getItem("pickerCredToken") == undefined) {
+		signInGoogle2();
 	}
 	getUserInfo();
 	getData();
