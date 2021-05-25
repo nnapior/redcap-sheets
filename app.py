@@ -15,6 +15,7 @@ app = Flask(__name__)
 config = Config("config/config.json")
 os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
 app.secret_key = config.get('secret_key')
+app.config['APPLICATION_ROOT'] = config.get('base_url')
 
 
 @app.route('/')
