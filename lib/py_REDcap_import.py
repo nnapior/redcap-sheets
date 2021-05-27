@@ -57,7 +57,7 @@ def import_redcap(sheet, service, project, sheetID):
     return: Successfull/Failed
     """
 
-   config = getConfig()
+    config = getConfig()
     # request for particular sheet data
     request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
