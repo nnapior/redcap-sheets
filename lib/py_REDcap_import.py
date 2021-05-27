@@ -22,7 +22,6 @@ def createService(creds):
     return service
 
 
-
 def getConfig():
     """This function returns the configuration data in json form
     :returns config"""
@@ -57,7 +56,7 @@ def import_redcap(sheet, service, project, sheetID):
     return: Successfull/Failed
     """
 
-   config = getConfig()
+    # config = getConfig()
     # request for particular sheet data
     request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
@@ -80,11 +79,12 @@ def import_redcap(sheet, service, project, sheetID):
             response = project.import_records(to_import=data)  # import record to redcap api
             print(response)
     except Exception as e:
-        return "Import Data to RedCap Failed"
+        print(e)
+        return "Import Data to RedCap Failed because "
     return "Import Data to RedCap Successful"
 
 
-def import_data(object, apiKey):
+def import_data(object, apiKey, api_url):
     """
     Function that imports data to Redcap
 
@@ -107,10 +107,10 @@ def import_data(object, apiKey):
 
     creds = fernet.decrypt(encCreds).decode()
     service = createService(creds)
-    
-    config = getConfig()
 
-    project = Project(config["api_url"], apiKey)
+    # config = getConfig()
+
+    project = Project(api_url, apiKey)
 
     if events == "All Events":
         events = getEvents(service, sheetID)
