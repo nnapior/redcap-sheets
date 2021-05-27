@@ -2,9 +2,9 @@
 {% set navigation_bar = [
     ('home', 'ti-home', 'Home'),
     ('settings', 'ti-tool', 'Settings')
-] %}
+    ] %}
 
-{% set active_page = active_page|default('home') %}
+    {% set active_page = active_page|default('home') %}
 
 <html>
 <head>
@@ -23,23 +23,23 @@
 
     <!-- Load the Google API Loader script. -->
     <script type="text/javascript">
-        function onPickerApiLoad() {
-            var r = new XMLHttpRequest();
-            r.open("GET","/get_picker_creds",true);
-            r.onreadystatechange = function() {
-                if(this.readyState == 4 && this.status == 200) {
-                    var res = JSON.parse(this.response);
-                    appId = res["appID"];
-                    developerKey = res["devKey"];
-                    clientID = res["clientID"];
-                    pickerApiLoaded = true;
-                }
+    function onPickerApiLoad() {
+        var r = new XMLHttpRequest();
+        r.open("GET","/get_picker_creds",true);
+        r.onreadystatechange = function() {
+            if(this.readyState == 4 && this.status == 200) {
+                var res = JSON.parse(this.response);
+                appId = res["appID"];
+                developerKey = res["devKey"];
+                clientID = res["clientID"];
+                pickerApiLoaded = true;
             }
-            r.send();
         }
-        function loadPicker() {
-          gapi.load('picker', {'callback': onPickerApiLoad});
-        }
+        r.send();
+    }
+    function loadPicker() {
+        gapi.load('picker', {'callback': onPickerApiLoad});
+    }
     </script>
     <script type="text/javascript" src="https://apis.google.com/js/api.js?onload=loadPicker"></script>
     <script src="{{ url_for('static', filename='js/picker.js') }}" type="text/javascript"></script>
@@ -52,18 +52,18 @@
 
     <!-- Tabler CDN -->
     <script src="https://unpkg.com/@tabler/core@1.0.0-beta/dist/js/tabler.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script> -->
     <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@tabler/icons@latest/iconfont/tabler-icons.min.css">
 
-    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-flags.min.css">
+    <!-- <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-flags.min.css">
     <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-payments.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-vendors.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/@tabler/core@1.0.0-beta/dist/css/tabler-vendors.min.css"> -->
 
     <style>
-        body {
-            display: none;
-        }
+    body {
+        display: none;
+    }
     </style>
 
 </head>
@@ -71,7 +71,7 @@
     <!-- Top horizontal bar -->
     <nav class="navbar navbar-light navbar-secondary navbar-expand" id="navbar-secondary">
         <div class="container">
-            <a href="#" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical">
+            <a href="#" class="navbar-brand d-none-navbar-vertical">
                 <img src="{{ url_for('static', filename='images/ud-logo.png') }}" align="middle" class="navbar-brand-image" style="margin-right:10px"/>
                 <h2 class="navbar-brand-logo navbar-brand-logo-large" id="secondary-logo">Redcap Google Sheets</h2>
             </a>
@@ -111,7 +111,7 @@
         <nav class="navbar navbar-expand-lg navbar-light navbar-primary" id="navbar-primary">
             <div class="container">
                 <div class="navbar-collapse">
-                    <a href="#" class="navbar-brand navbar-brand-autodark d-none-navbar-vertical" id="primary-logo">
+                    <a href="#" class="navbar-brand d-none-navbar-vertical" id="primary-logo">
                         <h2 class="navbar-brand-logo navbar-brand-logo-large">Redcap Google Sheets</h2>
                     </a>
                     <h4 class="navbar-heading" id="navbar-heading">Navigation</h4>
@@ -135,25 +135,51 @@
         <div class="content">
             <div class="container">
                 {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                    {% for category, message in messages %}
-                    <div id="alert" class="alert alert-{{category}}" role="alert">
-                        <h4 class="alert-title">{{message}}</h4>
-                    </div>
-                    {% endfor %}
-                    <script>
-                        if(localStorage.getItem('tabler-theme') == 'dark') {
-                            document.getElementById('alert').classList.add('theme-dark');
-                        }
-                        else {
-                            document.getElementById('alert').classList.add('theme-light');
-                        }
-                    </script>
-                    {% endif %}
+                {% if messages %}
+                {% for category, message in messages %}
+                <div id="alert" class="alert alert-{{category}}" role="alert">
+                    <h4 class="alert-title">{{message}}</h4>
+                </div>
+                {% endfor %}
+                <script>
+                if(localStorage.getItem('tabler-theme') == 'dark') {
+                    document.getElementById('alert').classList.add('theme-dark');
+                }
+                else {
+                    document.getElementById('alert').classList.add('theme-light');
+                }
+                </script>
+                {% endif %}
                 {% endwith %}
 
                 {% block content %}
                 {% endblock content %}
+
+                <footer class="footer footer-transparent d-print-none">
+                    <div class="container">
+                        <div class="row text-center align-items-center flex-row-reverse">
+                            <div class="col-lg-auto ms-lg-auto">
+                                <ul class="list-inline list-inline-dots mb-0">
+                                    <li class="list-inline-item"><a href="https://github.com/nnapior/redcap-sheets" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                                    <li class="list-inline-item"><a href="https://hub.docker.com/r/nnapior/redcap-sheets" target="_blank" class="link-secondary">Docker Hub</a></li>
+                                    <li class="list-inline-item"><a href="https://github.com/nnapior/redcap-sheets/blob/main/LICENSE" class="link-secondary">License</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                                <ul class="list-inline list-inline-dots mb-0">
+                                    <li class="list-inline-item">
+                                        Created By
+                                        <a href="https://github.com/MarioDurso" target="_blank" class="link-secondary">Mario Durso</a>,
+                                        <a href="https://github.com/jwhamilton99" target="_blank" class="link-secondary">Justin Hamilton</a>,
+                                        <a href="https://github.com/nnapior" target="_blank" class="link-secondary">Nick Napior</a>,
+                                        <a href="https://github.com/kojoaddo" target="_blank" class="link-secondary">Kojo Otchere-Addo</a>, &
+                                        <a href="https://github.com/zhenghan-wang" target="_blank" class="link-secondary">Zhenghan Wang</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
             </div>
         </div>
 
@@ -209,104 +235,104 @@
 
         <!-- theme script for toggling naviation / theme -->
         <script>
-            (function() {
-                var navbarPrimary = document.getElementById('navbar-primary'),
-                navbarSecondary = document.getElementById('navbar-secondary');
-                var defaults = {
-                    theme: 'light',
-                    'navbar-position': 'horizontal',
-                    'navbar-side': 'left',
-                };
-                var eventsClean = {
-                    'theme': function () {
-                        document.body.classList.remove('theme-dark');
-                    },
-                    'navbar-position': function () {
-                        navbarPrimary.classList.remove('navbar-vertical');
-                        navbarSecondary.classList.remove('d-none');
-                    },
-                    'navbar-side': function () {
-                        navbarPrimary.classList.remove('navbar-right');
-                    },
-                };
-                var events = {
-                    'theme:light': function () {
-                    },
-                    'theme:dark': function () {
-                        document.body.classList.add('theme-dark');
-                    },
-                    'navbar-position:horizontal': function () {
-                        document.getElementById('secondary-logo').style.display = "block";
-                        document.getElementById('primary-logo').style.display = "none";
-                        document.getElementById('navbar-heading').style.display = "none";
-                        document.getElementById("sidebarPositionOptions").style.display = "none";
-                    },
-                    'navbar-position:both': function () {
-                        navbarPrimary.classList.add('navbar-vertical');
-                        document.getElementById('navbar-heading').style.display = "block";
-                        document.getElementById('primary-logo').style.display = "block";
-                        document.getElementById('secondary-logo').style.display = "none";
-                        document.getElementById("sidebarPositionOptions").style.display = "block";
-                    },
-                    'navbar-side:left': function () {
-                    },
-                    'navbar-side:right': function () {
-                        navbarPrimary.classList.add('navbar-right');
-                    },
-                };
-                var updateThemeConfig = function (name) {
-                    var key, value;
-                    if (name) {
-                        [key, value] = name.split(':');
-                        setConfig(key, value);
-                    }
-                    applyConfig();
-                };
-                var disableTransitions = function () {
-                    document.body.classList.add('no-transitions');
-                    setTimeout(function () {
-                        document.body.classList.remove('no-transitions');
-                    }, 300);
-                };
-                var getConfig = function () {
-                    var config = {};
-                    for (var key in defaults) {
-                        config[key] = localStorage.getItem('tabler-' + key) || defaults[key];
-                    }
-                    return config;
-                };
-                var setConfig = function (key, value) {
-                    localStorage.setItem('tabler-' + key, value);
-                };
-                var applyConfig = function () {
-                    disableTransitions();
-                    var config = getConfig();
-                    for (var key in config) {
-                        var value = config[key];
-                        eventsClean[key] && eventsClean[key].call();
-                        events[key + ':' + value] && events[key + ':' + value].call();
-                        ([].slice.call(document.querySelectorAll('[data-theme-toggle^="' + key + '"]'))).map(function (activeTrigger) {
-                            activeTrigger.classList.remove('active')
-                        });
-                        document.querySelector('[data-theme-toggle="' + key + ':' + value + '"]').classList.add('active');
-                    }
-                };
-                applyConfig();
-                for (var name in events) {
-                    var event = events[name];
-                    (function (event, name) {
-                        document.querySelector('[data-theme-toggle="' + name + '"]').addEventListener("click", function (e) {
-                            updateThemeConfig(name);
-                            event.call();
-                            e.preventDefault();
-                            return false;
-                        });
-                    })(event, name);
+        (function() {
+            var navbarPrimary = document.getElementById('navbar-primary'),
+            navbarSecondary = document.getElementById('navbar-secondary');
+            var defaults = {
+                theme: 'light',
+                'navbar-position': 'horizontal',
+                'navbar-side': 'left',
+            };
+            var eventsClean = {
+                'theme': function () {
+                    document.body.classList.remove('theme-dark');
+                },
+                'navbar-position': function () {
+                    navbarPrimary.classList.remove('navbar-vertical');
+                    navbarSecondary.classList.remove('d-none');
+                },
+                'navbar-side': function () {
+                    navbarPrimary.classList.remove('navbar-right');
+                },
+            };
+            var events = {
+                'theme:light': function () {
+                },
+                'theme:dark': function () {
+                    document.body.classList.add('theme-dark');
+                },
+                'navbar-position:horizontal': function () {
+                    document.getElementById('secondary-logo').style.display = "block";
+                    document.getElementById('primary-logo').style.display = "none";
+                    document.getElementById('navbar-heading').style.display = "none";
+                    document.getElementById("sidebarPositionOptions").style.display = "none";
+                },
+                'navbar-position:both': function () {
+                    navbarPrimary.classList.add('navbar-vertical');
+                    document.getElementById('navbar-heading').style.display = "block";
+                    document.getElementById('primary-logo').style.display = "block";
+                    document.getElementById('secondary-logo').style.display = "none";
+                    document.getElementById("sidebarPositionOptions").style.display = "block";
+                },
+                'navbar-side:left': function () {
+                },
+                'navbar-side:right': function () {
+                    navbarPrimary.classList.add('navbar-right');
+                },
+            };
+            var updateThemeConfig = function (name) {
+                var key, value;
+                if (name) {
+                    [key, value] = name.split(':');
+                    setConfig(key, value);
                 }
-            })();
+                applyConfig();
+            };
+            var disableTransitions = function () {
+                document.body.classList.add('no-transitions');
+                setTimeout(function () {
+                    document.body.classList.remove('no-transitions');
+                }, 300);
+            };
+            var getConfig = function () {
+                var config = {};
+                for (var key in defaults) {
+                    config[key] = localStorage.getItem('tabler-' + key) || defaults[key];
+                }
+                return config;
+            };
+            var setConfig = function (key, value) {
+                localStorage.setItem('tabler-' + key, value);
+            };
+            var applyConfig = function () {
+                disableTransitions();
+                var config = getConfig();
+                for (var key in config) {
+                    var value = config[key];
+                    eventsClean[key] && eventsClean[key].call();
+                    events[key + ':' + value] && events[key + ':' + value].call();
+                    ([].slice.call(document.querySelectorAll('[data-theme-toggle^="' + key + '"]'))).map(function (activeTrigger) {
+                        activeTrigger.classList.remove('active')
+                    });
+                    document.querySelector('[data-theme-toggle="' + key + ':' + value + '"]').classList.add('active');
+                }
+            };
+            applyConfig();
+            for (var name in events) {
+                var event = events[name];
+                (function (event, name) {
+                    document.querySelector('[data-theme-toggle="' + name + '"]').addEventListener("click", function (e) {
+                        updateThemeConfig(name);
+                        event.call();
+                        e.preventDefault();
+                        return false;
+                    });
+                })(event, name);
+            }
+        })();
         </script>
         <script>
-            document.body.style.display = "block"
+        document.body.style.display = "block"
         </script>
 
     </body>

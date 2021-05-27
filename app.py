@@ -146,7 +146,7 @@ def pullData():
 @app.route('/import_sheets_to_redcap', methods=['PUT', 'POST'])
 def import_to_redcap():
     if request.json:
-        response = import_data(request.json, session['redcap_api_key'])
+        response = import_data(request.json, session['redcap_api_key'], config.get('api_url'))
         flash(response)
         return redirect(url_for("home"))
     else:
