@@ -22,14 +22,14 @@ def createService(creds):
     return service
 
 
-'''
+
 def getConfig():
     """This function returns the configuration data in json form
     :returns config"""
     file = open("config/config.json", "r")
     config = json.load(file)
     file.close()
-    return config'''
+    return config
 
 
 def getEvents(google_service, sheetID):
@@ -57,7 +57,7 @@ def import_redcap(sheet, service, project, sheetID):
     return: Successfull/Failed
     """
 
-   # config = getConfig()
+   config = getConfig()
     # request for particular sheet data
     request = service.spreadsheets().values().get(spreadsheetId=sheetID, majorDimension='ROWS',
                                                   range=sheet).execute()
@@ -107,8 +107,10 @@ def import_data(object, apiKey):
 
     creds = fernet.decrypt(encCreds).decode()
     service = createService(creds)
+    
+    config = getConfig()
 
-    project = Project("https://dri.udel.edu/redcap/api/", apiKey)
+    project = Project(config["api_url"], apiKey)
 
     if events == "All Events":
         events = getEvents(service, sheetID)
