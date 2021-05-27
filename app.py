@@ -34,6 +34,9 @@ def settings():
         flash('REDcap API key entered successfully!', "info")
         hasKey = True
         theKey = session['redcap_api_key']
+        if(request.method == 'POST'and form.validate()):
+            session['redcap_api_key'] = form.redcap_api_key.data
+            theKey = session['redcap_api_key']
         return render_template('settings.html', form=form, hasKey=hasKey, key=theKey, proj_data=getProjInfo(theKey))
     else:
         flash("Please enter your REDCap API key.", "info")
